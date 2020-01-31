@@ -12,7 +12,7 @@ module.exports = {
         embed.setColor('#ff0000');
         embed.setTitle(member.user.tag);
         embed.setThumbnail(member.user.avatarURL);
-        embed.addField('ID:', member.user.id);
+        embed.addField('Identification:', member.user.id);
         embed.addField('Account created:', member.user.createdAt.toDateString());
         
         message.channel.send(embed);
