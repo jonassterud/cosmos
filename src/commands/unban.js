@@ -4,14 +4,20 @@ module.exports = {
     args: true,
     usage: '<user>',
 	execute(message, args) {
-        const member = message.mentions.members.first();
-        //const reason = args.splice(1).join(' ');
-
         if(message.member.hasPermission('ADMINISTRATOR' /* && */) ) {
-            
-            //message.channel.send("\:pensive: Unbanned <@" + member.user.id + ">" + (reason.length > 0 ? " for " + reason : "") + "!");
+					let flag = false;
+					const toUnban = args.join(" ");
+					message.guild.fetchBans().then(bans => {
+			      bans.forEach(user => {
+			            message.guild.unban(toUnban);
+									flag = true;
+			            return message.channel.send("\:pensive: Unbanned <@" + toUnban.user.id + ">!");
+			      });
+						if(!flag) return message.channel.send("There is no banned user with the name "+toUnban);
+					});
+
         } else {
-            //message.channel.send("\:no_entry: You can't unban that person, <@" + message.author.id + ">!");
+            message.channel.send("\:no_entry: You can't unban that person, <@" + message.author.id + ">!");
         }
 	}
 };
