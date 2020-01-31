@@ -17,19 +17,19 @@ commandFiles.forEach(f => {
 // Ready event
 client.once('ready', () => {    
     // Create data:
-    if(!fs.existsSync('./data.json')) {
-        fs.writeFileSync('./data.json', '{}');
-    }
+    if(!fs.existsSync('./data.json')) fs.writeFileSync('./data.json', '{}');
     let data = JSON.parse(fs.readFileSync('./data.json'));
     client.guilds.tap(guild => {
-        if(!data.hasOwnProperty(guild.id)) {
-            data[guild.id] = {};
-        }
+        if(!data.hasOwnProperty(guild.id)) data[guild.id] = {};
         // etc..
     });
 
+    // Write data:
+    fs.writeFileSync('./data.json', JSON.stringify(data));
+
     // Other:
     console.log("Online!");
+    client.user.setActivity(secret.prefix + "help", {type: "LISTENING"});
 });
 
 // Message event
