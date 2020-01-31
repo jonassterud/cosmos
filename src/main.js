@@ -15,9 +15,21 @@ commandFiles.forEach(f => {
 });
 
 // Ready event
-client.once('ready', () => {
+client.once('ready', () => {    
+    // Create data:
+    if(!fs.existsSync('./data.json')) {
+        fs.writeFileSync('./data.json', '{}');
+    }
+    let data = JSON.parse(fs.readFileSync('./data.json'));
+    client.guilds.tap(guild => {
+        if(!data.hasOwnProperty(guild.id)) {
+            data[guild.id] = {};
+        }
+        // etc..
+    });
+
+    // Other:
     console.log("Online!");
-    // Build data here..
 });
 
 // Message event
@@ -27,6 +39,7 @@ client.on('message', message => {
     const args = message.content.slice(secret.prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
     if(!client.commands.has(commandName)) return;
+    
     // Retrieve command:
     const command = client.commands.get(commandName);
     if(command.args && !args.length) {
@@ -34,6 +47,7 @@ client.on('message', message => {
         if(command.usage) reply += "\nFormat: `" + secret.prefix + command.name + " " + command.usage + "`";
         message.channel.send(reply);
     }
+    
     // Execute command:
     try {
         command.execute(message, args);
