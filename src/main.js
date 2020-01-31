@@ -4,7 +4,7 @@ const Discord = require('discord.js'); // Node.js package - Discord API
 const secret = require('./config.json'); // Secret data
 
 // Create bot
-const client = new Discord.Client();
+global.client = new Discord.Client();
 
 // Create commands
 client.commands = new Discord.Collection();
