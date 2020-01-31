@@ -1,33 +1,50 @@
-const fs = require('fs'); // Node JS file system, not avalible at all in vanilla js.
-const Discord = require("discord.js");
-const {prefix,token} = require("../config.json");
+// Get libraries
+const fs = require('fs'); // Node.js package - file system
+const Discord = require('discord.js'); // Node.js package - Discord API
+const secret = require('./config.json'); // Secret data
 
+// Create bot
 const client = new Discord.Client();
+
+// Create commands
 client.commands = new Discord.Collection();
-
-const comFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-
-comFiles.forEach((file,i) => {
-  const command = require(`./commands/${file}`);
-  client.commands.set(command.name,command);
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+commandFiles.forEach(f => {
+    const command = require(`./commands/${f}`);
+    client.commands.set(command.name, command);
 });
 
+// Ready event
 client.once('ready', () => {
-  console.log("ready!");
+    console.log("Online!");
+    // Build data here..
 });
 
+// Message event
 client.on('message', message => {
-  if(!message.content.startsWith(prefix) || message.author.bot) return;
-  const args = message.content.slice(prefix.length).split(/ +/);
-  const command = args.shift().toLowerCase();
-
-  if(!client.commands.has(command)) return;
-  try{
-    client.commands.get(command).excecute(message,args);
-  }catch(e){
-    console.error(e);
-    message.reply('I\'m sorry, I have some issues excecuting this command');
-  }
+    // Split command and arguments:
+    if(!message.content.startsWith(secret.prefix) || message.author.bot) return;
+    const args = message.content.slice(secret.prefix.length).split(/ +/);
+    const commandName = args.shift().toLowerCase();
+    if(!client.commands.has(commandName)) return;
+    // Retrieve command:
+    const command = client.commands.get(commandName);
+    if(command.args && !args.length) {
+        let reply = "Missing arguments!";
+        if(command.usage) reply += "\nFormat: `" + secret.prefix + command.name + " " + command.usage + "`";
+        message.channel.send(reply);
+    }
+    // Execute command:
+    try {
+        command.execute(message, args);
+    } catch(e) {
+        console.error("Command execution error:\n\n" + e);
+    }
 });
 
-client.login(token);
+// Bot login
+try {
+    client.login(secret.token);
+} catch(e) {
+    console.error("Bot login error:\n" + e);
+}
