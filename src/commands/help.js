@@ -8,6 +8,7 @@ module.exports = {
     usage: '',
 	execute(message, args) {
         let embed = new Discord.RichEmbed();
+        
         embed.setTitle('\:closed_book: Command list');
         embed.setColor('#ff0000');
         
