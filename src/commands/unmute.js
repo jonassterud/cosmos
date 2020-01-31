@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'unmute',
-    description: '\:loud_sound: Mute a user!',
+    description: '\:loud_sound: Unmute a user!',
     args: true,
     usage: '<user>',
 	execute(message, args) {
