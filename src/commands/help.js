@@ -21,7 +21,7 @@ module.exports = {
             
             // Edit embed:
             embed.setTitle(command.name);
-            embed.addField('Description', command.description + (command.usage ? '\n' + command.usage : ''));
+            embed.addField('Description', command.description);
             embed.addField('Format', '`' + secret.prefix + command.name + (command.usage ? ' ' + command.usage : '') + '`');
         } else {
             // Edit embed:
