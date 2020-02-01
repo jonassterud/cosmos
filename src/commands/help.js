@@ -7,12 +7,16 @@ module.exports = {
     args: false,
     usage: '',
 	execute(message, args) {
-        // Create embed:
+        // Variables
         let embed = new Discord.RichEmbed();
 
+        // Execute:
+        embed.setColor('#ff0000');
         if(args.length) {
             // Get command:
             const command = client.commands.get(args[0]);
+            
+            // Check for errors:
             if(command === undefined) return message.channel.send("\:no_entry: Command wasn't found, <@" + message.author.id + ">!");
             
             // Edit embed:
@@ -28,7 +32,6 @@ module.exports = {
         }
         
         // Send embed:
-        embed.setColor('#ff0000');
-        message.channel.send(embed);        
+        return message.channel.send(embed);        
 	}
 };

@@ -4,14 +4,16 @@ module.exports = {
     args: true,
     usage: '<user>',
 	execute(message, args) {
+        // Variables:
         const member = message.mentions.members.first();
         const reason = args.splice(1).join(' ');
 
-        if(member.bannable && message.member.hasPermission('ADMINISTRATOR')) {
-            member.ban(reason);
-            message.channel.send("\:hammer: Banned <@" + member.user.id + ">" + (reason.length > 0 ? " for " + reason : "") + "!");
-        } else {
-            message.channel.send("\:no_entry: You can't ban that person, <@" + message.author.id + ">!");
-        }
+        // Check for errors:
+        if(member === undefined || !message.guild.member(member.id)) return message.channel.send("\:no_entry: Wasn't able to find that person, <@" + message.author.id + ">!");
+        if(!member.bannable || !message.member.hasPermission('ADMINISTRATOR')) return message.channel.send("\:no_entry: You can't ban that person, <@" + message.author.id + ">!");
+
+        // Execute:
+        member.ban(reason);
+        return message.channel.send("\:hammer: Banned <@" + member.user.id + ">" + (reason.length > 0 ? " for " + reason : "") + "!");
 	}
 };

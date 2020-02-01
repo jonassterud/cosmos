@@ -52,7 +52,7 @@ client.on('message', message => {
     try {
         command.execute(message, args);
     } catch(e) {
-        console.error("Command execution error:\n\n" + e);
+        console.error("Command execution error:\n" + e);
     }
 });
 
