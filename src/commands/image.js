@@ -14,8 +14,8 @@ module.exports = {
         },
         function(e, r, body) {
             // Errors:
-            if(e) return message.channel.send("Wasn't able to retrieve any images, <@" + message.author.id + ">!");
-            if(!body.hits.length) return message.channel.send("No images were found, <@" + message.author.id + ">!");
+            if(e) return message.channel.send("\:no_entry: Wasn't able to retrieve any images, <@" + message.author.id + ">!");
+            if(!body.hits.length) return message.channel.send("\:no_entry: No images were found, <@" + message.author.id + ">!");
             
             // Variables:
             let embed = new Discord.RichEmbed();
