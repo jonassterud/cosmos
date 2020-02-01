@@ -1,4 +1,3 @@
-const Discord = require('discord.js'); // Node.js package - Discord API
 const secret = require('../config.json'); // Secret data
 
 module.exports = {

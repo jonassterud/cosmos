@@ -1,7 +1,7 @@
 // Get libraries
-const fs = require('fs'); // Node.js package - file system
-const Discord = require('discord.js'); // Node.js package - Discord API
 const secret = require('./config.json'); // Secret data
+const fs = require('fs'); // Node.js package - file system
+global.Discord = require('discord.js'); // Node.js package - Discord API
 
 // Create bot
 global.client = new Discord.Client();

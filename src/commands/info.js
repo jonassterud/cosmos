@@ -1,5 +1,3 @@
-const Discord = require('discord.js'); // Node.js package - Discord API
-
 module.exports = {
 	name: 'info',
     description: '\:mag: Get info about a user!',
