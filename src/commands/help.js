@@ -8,14 +8,20 @@ module.exports = {
     usage: '',
 	execute(message, args) {
         let embed = new Discord.RichEmbed();
-        
-        embed.setTitle('\:closed_book: Command list');
         embed.setColor('#ff0000');
-        
-        client.commands.tap(command => {
-            embed.addField(secret.prefix + command.name + ' ' + (command.usage ? command.usage : ''), command.description);
-        });
-        
-        message.channel.send(embed);
+
+        if(args.length) {
+            const command = client.commands.get(args[0]);
+            embed.setTitle(command.name);
+            embed.addField('Description', command.description + (command.usage ? '\n' + command.usage : ''));
+            embed.addField('Format', '`' + secret.prefix + command.name + (command.usage ? ' ' + command.usage : '') + '`');
+        } else {
+            embed.setTitle('\:closed_book: Command list');
+            client.commands.tap(command => {
+                embed.addField(secret.prefix + command.name + ' ' + (command.usage ? command.usage : ''), command.description);
+            });  
+        }
+
+        message.channel.send(embed);        
 	}
 };
