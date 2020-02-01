@@ -13,7 +13,7 @@ module.exports = {
             json: true
         },
         function(e, r, body) {
-            // Errors:
+            // Check for errors:
             if(e) return message.channel.send("\:no_entry: Wasn't able to retrieve any images, <@" + message.author.id + ">!");
             if(!body.hits.length) return message.channel.send("\:no_entry: No images were found, <@" + message.author.id + ">!");
             
