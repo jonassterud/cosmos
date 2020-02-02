@@ -21,7 +21,10 @@ client.once('ready', () => {
     let data = JSON.parse(fs.readFileSync('./data.json'));
     client.guilds.tap(guild => {
         if(!data.hasOwnProperty(guild.id)) data[guild.id] = {};
-        // etc..
+        if(!data[guild.id].hasOwnProperty('users')) data[guild.id]['users'] = {};
+        guild.members.tap(member => {
+            if(!data[guild.id]['users'][member.id]) data[guild.id]['users'][member.id] = {credits: 5000};
+        });
     });
 
     // Write data:
