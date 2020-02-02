@@ -12,6 +12,6 @@ module.exports = {
         const credits = data[message.guild.id]['users'][user.id]['credits'];
 
         // Execute:
-        return message.channel.send("<@" + user.id + "> has " + credits + " credit" + ((credits > 1) ? "s" : "") + "!");
+        return message.channel.send("<@" + user.id + "> has " + credits + " credit" + ((credits === 1) ? "" : "s") + "!");
 	}
 };
