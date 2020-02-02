@@ -23,7 +23,28 @@ client.once('ready', () => {
         if(!data.hasOwnProperty(guild.id)) data[guild.id] = {};
         if(!data[guild.id].hasOwnProperty('users')) data[guild.id]['users'] = {};
         guild.members.tap(member => {
-            if(!data[guild.id]['users'][member.id]) data[guild.id]['users'][member.id] = {credits: 5000};
+            // Easier to write line by line if you want to add things later, but the final version will pass only one big object to each category.
+            if(!data[guild.id]['users'].hasOwnProperty(member.id)) data[guild.id]['users'][member.id] = {};
+            if(!data[guild.id]['users'][member.id].hasOwnProperty('credits')) data[guild.id]['users'][member.id]['credits'] = 5000;
+            if(!data[guild.id]['users'][member.id].hasOwnProperty('coinflip')) data[guild.id]['users'][member.id]['coinflip'] = {};
+            if(!data[guild.id]['users'][member.id]['coinflip'].hasOwnProperty('amount')) data[guild.id]['users'][member.id]['coinflip']['amount'] = 0;
+            if(!data[guild.id]['users'][member.id]['coinflip'].hasOwnProperty('opponent')) data[guild.id]['users'][member.id]['coinflip']['opponent'] = '';
+
+            /* This is what data.json looks like:
+            {
+                guild.id: {
+                    user.id: {
+                        credits: 0,                 <-- The credit balance
+                        coinflip: {                 <-- Holds information for current coinflip bet against another user
+                            amount: 0,              <-- Amount of current coinflip bet
+                            opponent: ''            <-- ID of opponent in coinflip bet
+                        }
+                    }
+                    etc..
+                }
+                etc..
+            }
+            */
         });
     });
 
