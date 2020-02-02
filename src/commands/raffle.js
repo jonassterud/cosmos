@@ -12,7 +12,9 @@ module.exports = {
     let creditGiveaway = false;
     const decideType = /^(\d)+(credit)s*$/
     let data = JSON.parse(fs.readFileSync('./data.json'));
-    creditGiveaway = decideType.test(args.slice(1));
+    let testString = "";
+    args.slice(1).forEach(inner => testString += inner);
+    creditGiveaway = decideType.test(testString);
     if(creditGiveaway && Number(args[1]) > data[message.guild.id]['users'][message.author.id]['credits']){
       return message.channel.send("\:moneybag: You don't have enough credits, <@" + message.author.id + ">!");
     }
@@ -47,18 +49,18 @@ module.exports = {
         //There is probably a much better way to do this, will look into it later
         let keyVals = [];
         for(const [key,value] of collection.first().users.entries()){
-          if(key == creator.id) continue;
+          if(key == creator.id || key == client.user.id) continue;
           keyVals.push(key);
         }
-        keyVals.shift();
         if(keyVals.length < 1) return message.channel.send("Nobody joined the raffle in time");
-        let winner = keyVals[Math.floor(Math.random() * (keyVals.length+1))];
+        let winner = keyVals[Math.floor(Math.random() * (keyVals.length))];
         client.fetchUser(winner).then(nm => {
           console.log(keyVals);
           message.channel.send("💎 Hey "+ creator + ", "+nm+" won your raffle").then(msg => {
+            console.log(creditGiveaway);
             if(!creditGiveaway) return;
-            data[message.guild.id]['users'][nm]['credits'] += args[1];
-            data[message.guild.id]['users'][message.author.id]['credits'] -= args[1];
+            data[message.guild.id]['users'][nm.id]['credits'] += Number(args[1]);
+            data[message.guild.id]['users'][message.author.id]['credits'] -= Number(args[1]);
             return fs.writeFileSync('./data.json', JSON.stringify(data));
           }).catch();
         }).catch();
