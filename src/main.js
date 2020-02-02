@@ -100,6 +100,17 @@ global.readData = (...layers) => {
 }
 
 global.writeData = (finalValue, ...layers) => {
+    
+    // Very good regex to use on data.json as a string
+    /*
+        User object --> /669874450212323337.*users.*181250087442317312.*?([\w\d]+|{.*?}|""|'')/
+        User credits -> /669874450212323337.*users.*181250087442317312.*?credits.*?([\w\d]+|{.*?}|""|'')/
+        User coinflip opponent --> 669874450212323337.*users.*181250087442317312.*?coinflip.*?opponent.*?([\w\d]+|{.*?}|""|'')
+        
+        Format:
+        /guildID.*users.*userID.*?prop1.*?prop2.*?prop3.*?([\w\d]+|{.*?}|""|'')/;
+    */
+
     let dataString = JSON.stringify(JSON.parse(fs.readFileSync('./data.json')));
     let index = 0;
     layers.forEach(layer => index = dataString.indexOf(layer, index) + layer.length);
