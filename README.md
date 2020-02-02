@@ -22,5 +22,3 @@ The *config.json* file holds secret information such as the the [Discord bot tok
     "giphy": "your Giphy API token here"
 }
 ```
-
-### The *data.json* file
