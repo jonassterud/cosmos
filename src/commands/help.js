@@ -10,7 +10,6 @@ module.exports = {
         let embed = new Discord.RichEmbed();
 
         // Execute:
-        embed.setColor('#ff0000');
         if(args.length) {
             // Get command:
             const command = client.commands.get(args[0]);
@@ -31,6 +30,7 @@ module.exports = {
         }
         
         // Send embed:
+        embed.setColor('#ff0000');
         return message.channel.send(embed);        
 	}
 };
