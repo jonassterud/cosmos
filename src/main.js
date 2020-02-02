@@ -91,3 +91,20 @@ try {
 } catch(e) {
     console.error("Bot login error:\n" + e);
 }
+
+// Functions:
+global.readData = (...layers) => {
+    let data = JSON.parse(fs.readFileSync('./data.json'));
+    layers.forEach(layer => data = data[layer]);
+    return data;
+}
+
+global.writeData = (finalValue, ...layers) => {
+    let dataString = JSON.stringify(JSON.parse(fs.readFileSync('./data.json')));
+    let index = 0;
+    layers.forEach(layer => index = dataString.indexOf(layer, index) + layer.length);
+    const start = dataString.indexOf(":", index);
+    const end = dataString.indexOf(",", index);
+    dataString = dataString.substring(0, start + 1) + finalValue.toString() + dataString.substring(end);
+    fs.writeFileSync('./data.json', dataString);
+}
