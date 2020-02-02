@@ -5,7 +5,7 @@ module.exports = {
     usage: '<username>',
 	execute(message, args) {
         // Check for errors:
-        if(!message.member.hasPermission('ADMINISTRATOR')) message.channel.send("\:no_entry: You can't unban that person, <@" + message.author.id + ">!");
+        if(!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send("\:no_entry: You can't unban that person, <@" + message.author.id + ">!");
 
         // Execute:
         let foundUser = false;
