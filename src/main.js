@@ -92,7 +92,7 @@ try {
     console.error("Bot login error:\n" + e);
 }
 
-// Functions:
+// Functions and variables:
 global.readData = (...layers) => {
     let data = JSON.parse(fs.readFileSync('./data.json'));
     layers.forEach(layer => data = data[layer]);
@@ -100,22 +100,18 @@ global.readData = (...layers) => {
 }
 
 global.writeData = (finalValue, ...layers) => {
-    
-    // Very good regex to use on data.json as a string
-    /*
-        User object --> /669874450212323337.*users.*181250087442317312.*?([\w\d]+|{.*?}|""|'')/
-        User credits -> /669874450212323337.*users.*181250087442317312.*?credits.*?([\w\d]+|{.*?}|""|'')/
-        User coinflip opponent --> 669874450212323337.*users.*181250087442317312.*?coinflip.*?opponent.*?([\w\d]+|{.*?}|""|'')
-        
-        Format:
-        /guildID.*users.*userID.*?prop1.*?prop2.*?prop3.*?([\w\d]+|{.*?}|""|'')/;
-    */
+    // Create regex:
+    let string = "(.*?";
+    layers.forEach(layer => string += layer + ".*?");
+    const regex = new RegExp(string + ")([\\w\\d]+|{.*?}|\"\"|'')(.*)");
 
+    // Use regex on data:
     let dataString = JSON.stringify(JSON.parse(fs.readFileSync('./data.json')));
-    let index = 0;
-    layers.forEach(layer => index = dataString.indexOf(layer, index) + layer.length);
-    const start = dataString.indexOf(":", index);
-    const end = dataString.indexOf(",", index);
-    dataString = dataString.substring(0, start + 1) + finalValue.toString() + dataString.substring(end);
-    fs.writeFileSync('./data.json', dataString);
+    let groups = regex.exec(dataString);
+
+    // Write data:
+    fs.writeFileSync('./data.json', groups[1] + finalValue + groups[3]);
 }
+
+global.validNumber = /^-*\d+$/;
+global.validMention = /t/;
