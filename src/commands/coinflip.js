@@ -1,7 +1,6 @@
 const fs = require('fs'); // Node.js package - file system
 const secret = require('../config.json'); // Secret data
 
-//! NEEDS REFORMATTING
 module.exports = {
 	name: 'coinflip',
     description: '\:dollar: Make a coinflip bet!',
