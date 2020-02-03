@@ -114,4 +114,5 @@ global.writeData = (finalValue, ...layers) => {
 }
 
 global.validNumber = /^-*\d+$/;
-global.validMention = /t/;
+global.validWord = /\w*$/;
+global.validUser = /^<@!\d+>$/;
