@@ -74,29 +74,3 @@ try {
 } catch(e) {
     console.error("Bot login error:\n" + e);
 }
-
-// Functions and variables
-global.readData = (...layers) => {
-    let data = JSON.parse(fs.readFileSync('./data.json'));
-    layers.forEach(layer => data = data[layer]);
-    return data;
-}
-
-global.writeData = (finalValue, ...layers) => {
-    // Create regex:
-    let string = "(.*?";
-    layers.forEach(layer => string += layer + ".*?");
-    const regex = new RegExp(string + ")([\\w\\d]+|{.*?}|\"\"|'')(.*)");
-
-    // Use regex on data:
-    let dataString = JSON.stringify(JSON.parse(fs.readFileSync('./data.json')));
-    let groups = regex.exec(dataString);
-
-    // Write data:
-    fs.writeFileSync('./data.json', groups[1] + finalValue + groups[3]);
-}
-
-// Regexes
-global.validNumber = /^-*\d+$/;
-global.validWord = /\w*$/;
-global.validUser = /^<@!\d+>$/;
