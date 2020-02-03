@@ -15,7 +15,7 @@ module.exports = {
             const command = client.commands.get(args[0]);
             
             // Check for errors:
-            if(command === undefined) return message.channel.send("\:no_entry: Command wasn't found, <@" + message.author.id + ">!");
+            if(!command) return message.channel.send("\:no_entry: Command wasn't found, <@" + message.author.id + ">!");
             
             // Edit embed:
             embed.setTitle(command.name);
