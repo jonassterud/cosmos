@@ -2,7 +2,7 @@ module.exports = {
 	name: 'mute',
     description: '\:mute: Mute a user!',
     args: true,
-    usage: '<user>',
+    usage: '<user> <reason?>',
 	execute(message, args) {
         // Variables:
         const member = message.mentions.members.first();

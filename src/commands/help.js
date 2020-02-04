@@ -4,7 +4,7 @@ module.exports = {
 	name: 'help',
     description: '\:closed_book: Get help!',
     args: false,
-    usage: '',
+    usage: '<command?>',
 	execute(message, args) {
         // Variables
         let embed = new Discord.RichEmbed();

@@ -5,7 +5,7 @@ module.exports = {
 	name: 'coinflip',
     description: '\:dollar: Make a coinflip bet!',
     args: true,
-    usage: '<amount> <user>',
+    usage: '<amount> <user?>',
 	execute(message, args) {
         // Variables:
         const member = message.mentions.members.first();
