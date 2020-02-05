@@ -41,7 +41,7 @@ client.once('ready', () => {
 
 // Message event
 client.on('message', message => {
-    // Add to balance
+    // Add to balance:
     let data = JSON.parse(fs.readFileSync('./data.json'));
     data[message.guild.id]['users'][message.author.id]['credits']++;
     fs.writeFileSync('./data.json', JSON.stringify(data));
