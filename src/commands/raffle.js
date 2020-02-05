@@ -1,7 +1,7 @@
 const fs = require('fs');
 module.exports = {
     name: 'raffle',
-    description: '\:moneybag: Create giveaways!',
+    description: '\:tada: Create giveaways!',
     args: true,
     usage: '<user>',
     execute(message,args){
