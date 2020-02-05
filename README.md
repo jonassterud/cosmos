@@ -1,4 +1,6 @@
-# Cosmos - The Discord Bot
+![Image](https://i.ibb.co/dLp1FSX/Untitled.png)
+
+
 
 [Invite me!](https://discordapp.com/oauth2/authorize?client_id=672828141743374340&scope=bot&permissions=2146958591)
 
