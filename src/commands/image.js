@@ -8,7 +8,7 @@ module.exports = {
     usage: '<search>',
 	execute(message, args) {
         request({
-            url: 'https://pixabay.com/api/?key=' + secret.pixabay + '&q=' + args.join('+') + '&image_type=photo',
+            url: 'https://pixabay.com/api/?key=' + secret.pixabay + '&q=' + args.join('+').toLowerCase() + '&image_type=photo',
             json: true
         },
         function(e, r, body) {

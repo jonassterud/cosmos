@@ -12,7 +12,7 @@ module.exports = {
         // Execute:
         if(args.length) {
             // Get command:
-            const command = client.commands.get(args[0]);
+            const command = client.commands.get(args[0].toLowerCase());
             
             // Check for errors:
             if(!command) return message.channel.send("\:no_entry: Command wasn't found, <@" + message.author.id + ">!");
