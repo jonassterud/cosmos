@@ -8,7 +8,7 @@ module.exports = {
     usage: '<search>',
 	execute(message, args) {
         request({
-            url: 'http://api.giphy.com/v1/gifs/search?api_key=' + secret.giphy + '&q=' + args.join('+'),
+            url: 'http://api.giphy.com/v1/gifs/search?api_key=' + secret.giphy + '&q=' + args.join('+').toLowerCase(),
             json: true
         },
         function(e, r, body) {
