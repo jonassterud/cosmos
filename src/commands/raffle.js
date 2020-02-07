@@ -3,16 +3,16 @@ module.exports = {
     name: 'raffle',
     description: '\:tada: Create giveaways!',
     args: true,
-    usage: '<user>',
+    usage: 'hh:mm:ss item',
     execute(message,args){
         const guild = message.guild.id;
         const auth = message.author.id;
         const re = /^(\d\d:\d\d:\d\d)$/;
-        if(!re.test(args[0]) || args.length <= 1) return message.channel.send("Wrong usage, do 00:00:00 with hours, minutes, seconds then what you want to raffle");
+        if(!re.test(args[0]) || args.length <= 1) return;
         const nums = args[0].split(":");
         const creator = message.author;
         let creditGiveaway = false;
-        const decideType = /^(\d)+(credit)s*$/
+        const decideType = /^(\d)+/;
         let data = JSON.parse(fs.readFileSync('./data.json'));
         let testString = "";
         
@@ -30,7 +30,8 @@ module.exports = {
         });
 
         //Choose winner:
-        const price = args.slice(1).join(" ");
+        data[guild]['users'][auth]['credits'] -= parseFloat(args[1]);
+        fs.writeFileSync('./data.json', JSON.stringify(data));
         const filter = reaction => { return ['💎'].includes(reaction.emoji.name); }
         let embed = new Discord.RichEmbed();
         embed.setTitle(message.author.username + " started a raffle!");
@@ -49,7 +50,11 @@ module.exports = {
                     keyVals.push(key);
                 }
 
-                if(keyVals.length < 1) return message.channel.send("Nobody joined the raffle in time");
+                if(keyVals.length < 1){ 
+                    data[guild]['users'][auth]['credits'] += parseFloat(args[1]);
+                    fs.writeFileSync('./data.json', JSON.stringify(data));
+                    return message.channel.send("Nobody joined the raffle in time")
+                };
             
                 let winner = keyVals[Math.floor(Math.random() * (keyVals.length))];
                 client.fetchUser(winner).then(nm => {
@@ -58,7 +63,6 @@ module.exports = {
                         console.log(creditGiveaway);
                         if(!creditGiveaway) return;
                         data[guild]['users'][nm.id]['credits'] += parseFloat(args[1]);
-                        data[guild]['users'][auth]['credits'] -= parseFloat(args[1]);
                         return fs.writeFileSync('./data.json', JSON.stringify(data));
                     }).catch();
                 }).catch();
