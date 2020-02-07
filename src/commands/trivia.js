@@ -29,6 +29,8 @@ module.exports = {
             if (!body.results.length) return message.channel.send("\:no_entry: No questions were found, <@" + message.author.id + ">!");
 
             // Variables:
+            const aps = /&#039;/g;
+            const quot = /&quot;/g;
             let emos = ["🍉", "🍇", "🍍", "🥥"];
             let emoAns;
             let answers = [];
@@ -50,9 +52,9 @@ module.exports = {
                 .setTitle("Trivia! Respond by reacting to the correct answer")
                 .setThumbnail(message.author.avatarURL)
                 .setColor('#ff0000')
-                .addField('Category:', " " + body.results[0].category)
-                .addField('Question:', " " + body.results[0].question)
-                .addField('Options:', " " + optionString)
+                .addField('Category:', " " + body.results[0].category.replace(aps,"'").replace(quot,"\""))
+                .addField('Question:', " " + body.results[0].question.replace(aps,"'").replace(quot,"\""))
+                .addField('Options:', " " + optionString.replace(aps,"'").replace(quot,"\""))
                 .setTimestamp(new Date());
 
             // Send embed with reactions:
