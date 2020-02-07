@@ -5,6 +5,8 @@ module.exports = {
     args: true,
     usage: '<user>',
     execute(message,args){
+        const guild = message.guild.id;
+        const auth = message.author.id;
         const re = /^(\d\d:\d\d:\d\d)$/;
         if(!re.test(args[0]) || args.length <= 1) return message.channel.send("Wrong usage, do 00:00:00 with hours, minutes, seconds then what you want to raffle");
         const nums = args[0].split(":");
@@ -55,8 +57,8 @@ module.exports = {
                     message.channel.send("💎 Hey "+ creator + ", "+nm+" won your raffle").then(msg => {
                         console.log(creditGiveaway);
                         if(!creditGiveaway) return;
-                        data[message.guild.id]['users'][nm.id]['credits'] += Number(args[1]);
-                        data[message.guild.id]['users'][message.author.id]['credits'] -= Number(args[1]);
+                        data[guild]['users'][nm.id]['credits'] += parseFloat(args[1]);
+                        data[guild]['users'][auth]['credits'] -= parseFloat(args[1]);
                         return fs.writeFileSync('./data.json', JSON.stringify(data));
                     }).catch();
                 }).catch();
