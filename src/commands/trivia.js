@@ -1,4 +1,21 @@
 const request = require('request');
+
+//Helper function
+function shuffle(array) {
+  let currentIndex = array.length,
+    tempVal, randomIndex;
+  while (0 !== currentIndex) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    tempVal = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = tempVal;
+
+  }
+  return array;
+}
+
 module.exports = {
   name: 'trivia',
   description: 'Answer trivia for a chance to win credits!',
@@ -13,26 +30,23 @@ module.exports = {
       if (!body.results.length) return message.channel.send("\:no_entry: No questions were found, <@" + message.author.id + ">!");
 
       let emos = ["🍉", "🍇", "🍍", "🥥"];
+      let emoAns;
 
       let answers = [];
       answers.push(body.results[0].correct_answer);
       body.results[0].incorrect_answers.forEach(ans => answers.push(ans));
-
       let optionString = "";
-      let emc = emos.slice();
-      const len = answers.length;
-      for (let i = 0; i < len; i++) {
-        const randIndex = Math.floor(Math.random() * answers.length);
-        optionString += ('Option:', " " + answers[randIndex] + " " + emc[randIndex] + "\n");
-        if (answers[randIndex] == body.results[0].correct_answer) ans = emc[randIndex];
-        answers.splice(randIndex, 1);
-        emc.splice(randIndex, 1);
-      }
+      answers = shuffle(answers);
+      answers.forEach((ans, i) => {
+        optionString += (ans + " " + emos[i] + " \n");
+        if (ans == body.results[0].correct_answer) emoAns = emos[i];
+      });
 
       let embed = new Discord.RichEmbed();
       embed.setTitle("Trivia! Respond by reacting to the correct answer");
       embed.setThumbnail(message.author.avatarURL);
       embed.setColor('#ff0000');
+      embed.addField('Category:', " " + body.results[0].category);
       embed.addField('Question:', " " + body.results[0].question);
       embed.addField('Options:', " " + optionString);
       embed.setTimestamp(new Date());
@@ -48,7 +62,7 @@ module.exports = {
                   max: 1,
                   time: 60000
                 }).then(collected => {
-                  if (collected.first().emoji.name == ans) {
+                  if (collected.first().emoji.name == emoAns) {
                     message.reply("correct answer");
                   } else {
                     message.reply("wrong answer");
@@ -59,9 +73,6 @@ module.exports = {
           }).catch();
         }).catch();
       }).catch();
-
-
-
     });
     return;
   }
