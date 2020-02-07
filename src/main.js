@@ -25,9 +25,6 @@ client.once('ready', () => {
         guild.members.tap(member => {
             if(!data[guild.id]['users'].hasOwnProperty(member.id)) data[guild.id]['users'][member.id] = {};
             if(!data[guild.id]['users'][member.id].hasOwnProperty('credits')) data[guild.id]['users'][member.id]['credits'] = 5000;
-            if(!data[guild.id]['users'][member.id].hasOwnProperty('coinflip')) data[guild.id]['users'][member.id]['coinflip'] = {};
-            if(!data[guild.id]['users'][member.id]['coinflip'].hasOwnProperty('amount')) data[guild.id]['users'][member.id]['coinflip']['amount'] = 0;
-            if(!data[guild.id]['users'][member.id]['coinflip'].hasOwnProperty('opponent')) data[guild.id]['users'][member.id]['coinflip']['opponent'] = '';
         });
     });
 
