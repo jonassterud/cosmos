@@ -32,7 +32,7 @@ module.exports = {
                 };
             });
 
-            // Execute bet:
+            // Execute 2 player bet:
             if(foundBet) {
                 data[message.guild.id]['users'][message.author.id]['credits'] += (won ? amount : -amount);
                 data[message.guild.id]['users'][member.user.id]['credits'] += (won ? -amount : amount);
