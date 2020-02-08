@@ -18,6 +18,6 @@ module.exports = {
                 }
             });
         });
-        if(!foundUser) return message.channel.send("Can't find " + user.username + ", <@" + message.author.id + ">!");
+        if(!foundUser) return message.channel.send("\:no_entry: Can't find *\"" + args[0] + "\"*, <@" + message.author.id + ">!");
 	}
 };
