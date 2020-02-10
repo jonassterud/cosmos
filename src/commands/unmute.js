@@ -18,6 +18,7 @@ module.exports = {
                 SEND_MESSAGES: true
             });
         });
+        
         return message.channel.send("\:mute: Unmuted <@" + member.user.id + ">" + (reason.length > 0 ? " for " + reason : "") + "!");
 	}
 };
