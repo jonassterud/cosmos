@@ -12,6 +12,11 @@
 * [Node.js](https://nodejs.org/en/)
 * [Discord.js](https://discord.js.org/#/) `npm install discord.js`
 * [Request](https://www.npmjs.com/package/request) `npm install request`
+* [YTDL - Core](https://www.npmjs.com/package/ytdl-core) `npm install ytdl-core`
+* [FFMPEG](https://www.npmjs.com/package/ffmpeg) `npm install ffmpeg`
+* [FFMPEG - Binaries](https://www.npmjs.com/package/ffmpeg-binaries) `npm install ffmpeg-binaries`
+* [Opusscript](https://www.npmjs.com/package/opusscript) `npm install opusscript`
+
 * *config.json*
 
 ### The *config.json* file
