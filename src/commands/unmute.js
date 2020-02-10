@@ -13,7 +13,11 @@ module.exports = {
         if(!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send("\:no_entry: You can't unmute that person, <@" + message.author.id + ">!");
 
         // Execute:
-        member.setMute(false, reason);
+        message.guild.channels.tap(channel => {
+            channel.overwritePermissions(member, {
+                SEND_MESSAGES: true
+            });
+        });
         return message.channel.send("\:mute: Unmuted <@" + member.user.id + ">" + (reason.length > 0 ? " for " + reason : "") + "!");
 	}
 };

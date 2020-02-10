@@ -13,7 +13,12 @@ module.exports = {
         if(!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send("\:no_entry: You can't mute that person, <@" + message.author.id + ">!");
 
         // Execute:
-        member.setMute(true, reason);
+        message.guild.channels.tap(channel => {
+            channel.overwritePermissions(member, {
+                SEND_MESSAGES: false
+            });
+        });
+        
         return message.channel.send("\:mute: Muted <@" + member.user.id + ">" + (reason.length > 0 ? " for " + reason : "") + "!");
 	}
 };
