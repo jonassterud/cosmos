@@ -1,6 +1,7 @@
 const ytdl = require('ytdl-core');
 let queue = [],
-    playing = false;
+    playing = false,
+    disp = "";
 
 module.exports = {
     name: 'music',
@@ -10,6 +11,41 @@ module.exports = {
     execute(message, args) {
         // Variables:
         const voice = message.member.voiceChannel;
+
+        //Check for skip
+        if (args[0] == "skip") {
+            if (disp != "") {
+                disp.end();
+                return message.channel.send("\:cd: Skipping song...")
+            } else {
+                return message.channel.send("No songs in queue " + message.author);
+            }
+        }
+        if (args[0] == "queue") {
+            if (!queue.length) return message.channel.send("No songs in queue " + message.author);
+            let embed = new Discord.RichEmbed()
+                .setTitle("Song queue \:musical_note:")
+                .setColor('#ff0000')
+                .setTimestamp(new Date());
+            const loop = async _ => {
+                for (let i = 0; i < queue.length; i++) {
+                    let songUrl = queue[i];
+                    await ytdl.getInfo(songUrl).then(info => {
+                        if (i == 0) {
+                            embed.addField("Current song:", " " + info.title);
+                        } else {
+                            embed.addField("Song number " + i + ":", " " + info.title);
+                        }
+                        if (i == queue.length - 1) {
+                            return message.channel.send(embed);
+                        }
+                    }).catch();
+                }
+            }
+            loop();
+
+            return;
+        }
 
         // Add to queue:
         //Make sure this is actually a youtube link
@@ -35,14 +71,16 @@ module.exports = {
                 voice.join().then(connection => {
                     // Variables:
 
-                    const stream = ytdl(queue[0], {
-                        quality: "lowest"
+                    let stream = ytdl(queue[0], {
+                        quality: "lowest",
+                        filter: "audioonly"
                     });
 
-                    const dispatcher = connection.playStream(stream, {
+                    let dispatcher = connection.playStream(stream, {
                         seek: 0,
                         volume: 1
                     });
+                    disp = dispatcher;
 
                     // Finished song event:
                     dispatcher.on('end', () => {
@@ -50,7 +88,7 @@ module.exports = {
                         play();
                     });
 
-                }).catch((e) => console.log("err"));
+                }).catch((e) => console.error(e));
 
             } else {
                 playing = false;
