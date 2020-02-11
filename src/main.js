@@ -41,12 +41,10 @@ client.once('ready', () => {
 // Message event
 client.on('message', message => {
     // Add to balance:
-    if (message.guild.id && message.author.id) { // Small fix for weird bug where this event would fire randomly
-        let data = JSON.parse(fs.readFileSync('./data.json'));
-        if (!data || !message || !message.guild.id || !message.author.id) return;
-        data[message.guild.id]['users'][message.author.id]['credits']++;
-        fs.writeFileSync('./data.json', JSON.stringify(data));
-    }
+    if (message.author.bot) return;
+    let data = JSON.parse(fs.readFileSync('./data.json'));
+    data[message.guild.id]['users'][message.author.id]['credits']++;
+    fs.writeFileSync('./data.json', JSON.stringify(data));
 
     // Split command and arguments:
     if (!message.content.startsWith(secret.prefix) || message.author.bot) return;
