@@ -1,7 +1,7 @@
 const ytdl = require('ytdl-core');
 let queue = [],
     playing = false,
-    disp = "";
+    connection = "";
 
 module.exports = {
     name: 'music',
@@ -11,11 +11,12 @@ module.exports = {
     execute(message, args) {
         // Variables:
         const voice = message.member.voiceChannel;
+        if (!voice) return message.channel.send("\:no_entry: Please join a voicechannel before excecuting the command");
 
         //Check for skip
         if (args[0] == "skip") {
-            if (disp != "") {
-                disp.end();
+            if (connection != "") {
+                connection.dispatcher.end();
                 return message.channel.send("\:cd: Skipping song...")
             } else {
                 return message.channel.send("No songs in queue " + message.author);
@@ -49,7 +50,7 @@ module.exports = {
 
         // Add to queue:
         //Make sure this is actually a youtube link
-        const re = /youtube.com\/watch\?v=[a-zA-Z\d\=\&]+$/g
+        const re = /youtube.com\/watch\?v=[a-zA-Z\d\=\&\-\_]+$/g
         let ytbUrl = args[0];
 
         if (!re.test(ytbUrl)) return message.channel.send("\:no_entry: Please enter a valid youtube url");
@@ -58,7 +59,16 @@ module.exports = {
         message.channel.send("\:ok_hand: The video was added to the queue, <@" + message.author.id + ">!");
 
         // Play:
-        if (!playing) play();
+        if (!playing) {
+            if (connection == "") {
+                voice.join().then(conn => {
+                    connection = conn;
+                    play();
+                }).catch();
+            } else {
+                play();
+            }
+        }
 
         function play() {
             if (queue.length) {
@@ -68,32 +78,32 @@ module.exports = {
                 ytdl.getInfo(queue[0]).then(info => message.channel.send("\:musical_note: Now playing: " + info.title)).catch();
 
                 // Play song:
-                voice.join().then(connection => {
-                    // Variables:
+                // Variables:
 
-                    let stream = ytdl(queue[0], {
-                        quality: "lowest",
-                        filter: "audioonly"
-                    });
+                let stream = ytdl(queue[0], {
+                    quality: "lowest",
+                    filter: "audioonly"
+                });
 
-                    let dispatcher = connection.playStream(stream, {
-                        seek: 0,
-                        volume: 1
-                    });
-                    disp = dispatcher;
+                let disp = connection.playStream(stream, {
+                    seek: 0,
+                    volume: 1
+                });
 
-                    // Finished song event:
-                    dispatcher.on('end', () => {
-                        queue.shift();
-                        play();
-                    });
+                // Finished song event:
+                disp.on('end', () => {
+                    queue.shift();
+                    play();
+                });
 
-                }).catch((e) => console.error(e));
+
 
             } else {
                 playing = false;
+                connection = "";
+                message.channel.send("\:frowning: Session over. No more songs in queue!");
                 voice.leave();
-                return message.channel.send("\:frowning: Session over. No more songs in queue!");
+                return;
             }
         }
     }
