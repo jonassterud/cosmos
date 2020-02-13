@@ -1,5 +1,3 @@
-const fs = require('fs'); // Node.js package - file system
-
 module.exports = {
 	name: 'send',
     description: '\:money_with_wings: Send money to another user!',

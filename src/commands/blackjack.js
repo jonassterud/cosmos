@@ -1,5 +1,3 @@
-const fs = require("fs");
-
 //Shuffle deck
 function shuffle(array) {
     let currentIndex = array.length,

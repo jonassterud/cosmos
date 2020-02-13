@@ -1,5 +1,3 @@
-const fs = require('fs'); // Node.js package - file system
-
 module.exports = {
 	name: 'balance',
     description: '\:moneybag: balance!',

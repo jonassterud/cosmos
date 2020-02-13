@@ -1,4 +1,3 @@
-const fs = require('fs'); // Node.js package - file system
 const secret = require('../config.json'); // Secret data
 let bets = [];
 

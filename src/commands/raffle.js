@@ -1,4 +1,3 @@
-const fs = require('fs');
 module.exports = {
     name: 'raffle',
     description: '\:tada: Create giveaways!',
