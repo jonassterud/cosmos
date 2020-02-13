@@ -1,3 +1,4 @@
+// Command
 module.exports = {
 	name: 'info',
     description: '\:mag: Get info about a user!',

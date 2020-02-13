@@ -2,7 +2,7 @@ module.exports = {
 	name: 'ban',
     description: '\:hammer: Ban a user!',
     args: true,
-    usage: '<user> <reason?>',
+    usage: '<user mention> <reason?>',
 	execute(message, args) {
         // Variables:
         const member = message.mentions.members.first();

@@ -1,11 +1,12 @@
 const secret = require('../config.json'); // Secret data
 const request = require('request'); // Node.js package - request webiste data
 
+// Command
 module.exports = {
 	name: 'image',
     description: '\:frame_photo: Search for an image!',
     args: true,
-    usage: '<search>',
+    usage: '<search query>',
 	execute(message, args) {
         request({
             url: 'https://pixabay.com/api/?key=' + secret.pixabay + '&q=' + args.join('+').toLowerCase() + '&image_type=photo',

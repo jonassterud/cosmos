@@ -1,8 +1,9 @@
+// Command
 module.exports = {
     name: 'raffle',
     description: '\:tada: Create giveaways!',
     args: true,
-    usage: 'hh:mm:ss item',
+    usage: '<hh:mm:ss> <item>',
     execute(message,args){
         const guild = message.guild.id;
         const auth = message.author.id;

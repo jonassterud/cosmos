@@ -1,11 +1,15 @@
+// Get libraries
 const secret = require('../config.json'); // Secret data
+
+// Global variables
 let bets = [];
 
+// Command
 module.exports = {
 	name: 'coinflip',
     description: '\:dollar: Make a coinflip bet!',
     args: true,
-    usage: '<amount> <user?>',
+    usage: '<credit amount> <user mention?>',
 	execute(message, args) {
         // Variables:
         const member = message.mentions.members.first();

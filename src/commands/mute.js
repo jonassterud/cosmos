@@ -1,8 +1,9 @@
+// Command
 module.exports = {
 	name: 'mute',
     description: '\:mute: Mute a user!',
     args: true,
-    usage: '<user> <reason?>',
+    usage: '<user mention> <reason?>',
 	execute(message, args) {
         // Variables:
         const member = message.mentions.members.first();

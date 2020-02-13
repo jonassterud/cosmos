@@ -1,13 +1,15 @@
-const ytdl = require('ytdl-core');
-let queue = [],
-    playing = false,
-    connection = "";
+// Get libraries
+const ytdl = require('ytdl-core'); // Node.js package - Downloads YouTube videos
 
+// Global variables
+let queue = [], playing = false, connection = "";
+
+// Command
 module.exports = {
     name: 'music',
     description: '\:musical_note: Listen to the audio from a YouTube video in your current voice channel!',
     args: true,
-    usage: '<url>',
+    usage: '<YouTube URL>',
     execute(message, args) {
         // Variables:
         const voice = message.member.voiceChannel;

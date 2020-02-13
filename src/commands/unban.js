@@ -1,3 +1,4 @@
+// Command
 module.exports = {
 	name: 'unban',
     description: '\:pensive: Unban a user!',

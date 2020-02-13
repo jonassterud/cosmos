@@ -1,10 +1,12 @@
+// Get libraries
 const secret = require('../config.json'); // Secret data
 
+// Command
 module.exports = {
 	name: 'help',
     description: '\:closed_book: Get help!',
     args: false,
-    usage: '<command?>',
+    usage: '<command name?>',
 	execute(message, args) {
         // Variables
         let embed = new Discord.RichEmbed();

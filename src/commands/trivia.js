@@ -14,6 +14,7 @@ function shuffle(array) {
     return array;
 }
 
+// Command
 module.exports = {
     name: 'trivia',
     description: '\:thinking: Answer trivia for a chance to win credits!',

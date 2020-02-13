@@ -1,8 +1,9 @@
+//Command
 module.exports = {
 	name: 'unmute',
     description: '\:loud_sound: Unmute a user!',
     args: true,
-    usage: '<user>',
+    usage: '<user mention>',
 	execute(message, args) {
         // Variables:
         const member = message.mentions.members.first();

@@ -33,9 +33,7 @@ client.once('ready', () => {
 
     // Other:
     console.log("Online!");
-    client.user.setActivity(secret.prefix + "help", {
-        type: "LISTENING"
-    });
+    client.user.setActivity(secret.prefix + "help", {type: "LISTENING"}); // Example: Listening to ?help
 });
 
 // Message event
