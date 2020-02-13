@@ -64,8 +64,10 @@ module.exports = {
     args: true,
     usage: '<credit amount>',
     execute(message, args) {
+        // Check for errors:
+        if(!/^[\d]+$/.test(args[0])) return message.channel.send("\:no_entry: Invalid input, <@" + message.author.id + ">!");   
         // Variables:
-        const bet = /^[\d]+$/.test(args[0]) ? args[0] : message.channel.send("\:no_entry: Invalid input, <@" + message.author.id + ">!");
+        const bet = args[0];
         const emos = ['👽', '👻'];
         let noWinner = true;
         let deck = new Array(52).fill(0).map((curr, ind) => curr = ind + 1);
