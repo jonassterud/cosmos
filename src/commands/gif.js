@@ -1,7 +1,3 @@
-// Get libraries
-const secret = require('../config.json'); // Secret data
-const request = require('request'); // Node.js package - request webiste data
-
 // Command
 module.exports = {
 	name: 'gif',

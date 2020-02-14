@@ -1,6 +1,3 @@
-// Get libraries
-const ytdl = require('ytdl-core'); // Node.js package - Downloads YouTube videos
-
 // Global variables
 let queue = [], playing = false, connection = "";
 

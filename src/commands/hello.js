@@ -1,3 +1,4 @@
+// Command
 module.exports = {
 	name: 'hello',
     description: '\:wave: Hello!',

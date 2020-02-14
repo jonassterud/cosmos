@@ -1,7 +1,9 @@
 // Get libraries
-const secret = require('./config.json'); // Secret data
+global.secret = require('./config.json'); // Secret data
 global.fs = require('fs'); // Node.js package - file system
 global.Discord = require('discord.js'); // Node.js package - Discord API
+global.request = require('request'); // Node.js package - request website data
+global.ytdl = require('ytdl-core'); // Node.js package - Downloads YouTube videos
 
 // Create bot
 global.client = new Discord.Client();

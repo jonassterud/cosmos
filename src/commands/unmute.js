@@ -1,4 +1,4 @@
-//Command
+// Command
 module.exports = {
 	name: 'unmute',
     description: '\:loud_sound: Unmute a user!',

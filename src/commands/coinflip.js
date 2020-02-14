@@ -1,6 +1,3 @@
-// Get libraries
-const secret = require('../config.json'); // Secret data
-
 // Global variables
 let bets = [];
 

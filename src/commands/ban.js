@@ -1,3 +1,4 @@
+// Command
 module.exports = {
 	name: 'ban',
     description: '\:hammer: Ban a user!',

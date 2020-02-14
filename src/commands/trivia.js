@@ -1,6 +1,3 @@
-// Get libraries
-const request = require('request'); // Node.js package - request webiste data
-
 // Randomize questions function
 function shuffle(array) {
     let currentIndex = array.length, tempVal, randomIndex;
