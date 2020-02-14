@@ -20,7 +20,8 @@ module.exports = {
             
             // Variables:
             let embed = new Discord.RichEmbed();
-            const gif = body.data[Math.floor(Math.random() * body.data.length)];
+            const topSearchLen = (body.data.length*0.25 > 50 ? 50 : body.data.length*0.25);
+            const gif = body.data[Math.floor(Math.random() * topSearchLen)];
             
             // Edit embed:
             embed.setColor('#ff0000');
