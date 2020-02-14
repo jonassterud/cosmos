@@ -10,7 +10,7 @@ module.exports = {
     usage: '<search query>',
 	execute(message, args) {
         request({
-            url: 'http://api.giphy.com/v1/gifs/search?api_key=' + secret.giphy + '&q=' + args.join('+').toLowerCase(),
+            url: 'http://api.giphy.com/v1/gifs/search?api_key=' + secret.giphy + '&q=' + args.join('+').toLowerCase() + '&limit=15',
             json: true
         },
         function(e, r, body) {
@@ -20,8 +20,7 @@ module.exports = {
             
             // Variables:
             let embed = new Discord.RichEmbed();
-            const topSearchLen = (body.data.length*0.25 > 50 ? 50 : body.data.length*0.25);
-            const gif = body.data[Math.floor(Math.random() * topSearchLen)];
+            const gif = body.data[Math.floor(Math.random() * body.data.length)];
             
             // Edit embed:
             embed.setColor('#ff0000');
