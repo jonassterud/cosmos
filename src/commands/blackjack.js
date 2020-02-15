@@ -49,7 +49,7 @@ function createEmbed(pl1Cards, pl2Cards, userUrl) {
     let pl2string = "";
     pl2Cards.forEach(card => pl2string += getCard(card) + "\n");
     let embed = new Discord.RichEmbed()
-        .setTitle("BlackJack! React with 👽 to hit, 👻 to stand")
+        .setTitle("BlackJack! React with 🏏 to hit, 🧍‍♂️ to stand.")
         .setThumbnail(userUrl)
         .setColor('#ff0000')
         .addField('Dealer:', pl1string)
@@ -68,7 +68,7 @@ module.exports = {
         if(!/^[\d]+$/.test(args[0])) return message.channel.send("\:no_entry: Invalid input, <@" + message.author.id + ">!");   
         // Variables:
         const bet = args[0];
-        const emos = ['👽', '👻'];
+        const emos = ['🏏', '🧍‍♂️'];
         let noWinner = true;
         let deck = new Array(52).fill(0).map((curr, ind) => curr = ind + 1);
         let data = JSON.parse(fs.readFileSync('./data.json'));
@@ -86,14 +86,14 @@ module.exports = {
         playerCards.push(deck.pop());
         playerCards.push(deck.pop());
 
-        while (getJackSum(dealerCards) < 17) {
+        while(getJackSum(dealerCards) < 17) {
             dealerCards.push(deck.pop());
         }
 
         let embed = createEmbed(dealerCards, playerCards, message.author.avatarUrl);
 
         message.channel.send(embed).then(msg => {
-            handleGame(msg)
+            shandleGame(msg)
         }).catch();
 
         function handleGame(mess) {
