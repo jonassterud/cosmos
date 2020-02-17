@@ -75,7 +75,7 @@ module.exports = {
                 ytdl.getInfo(queue[0]).then(info => message.channel.send("\:musical_note: Now playing: " + info.title)).catch();
 
                 // Play song:
-                let stream = ytdl(queue[0], {quality: "lowest", filter: "audioonly", highWaterMark: 1024 * 1024 * 10 /*10 Megabytes, default is 16kb*/});
+                let stream = ytdl(queue[0], {quality: "highest", filter: "audioonly", highWaterMark: 1024 * 1024 * 10 /*10 Megabytes, default is 16kb*/});
                 let disp = connection.playStream(stream, {seek: 0, volume: 1});
 
                 // Finished song event:
