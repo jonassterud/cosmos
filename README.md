@@ -16,10 +16,10 @@
 * [FFMPEG](https://www.npmjs.com/package/ffmpeg) `npm install ffmpeg`
 * [FFMPEG - Binaries](https://www.npmjs.com/package/ffmpeg-binaries) `npm install ffmpeg-binaries`
 * [Opusscript](https://www.npmjs.com/package/opusscript) `npm install opusscript`
-* [GoogleApis](https://www.npmjs.com/package/googleapis) `npm install googleapis`
+* [Google APIs](https://www.npmjs.com/package/googleapis) `npm install googleapis`
 * *config.json*
 
-`npm install discord.js request ytdl-core ffmpeg ffmpeg-binaries opusscript`
+`npm install discord.js request ytdl-core ffmpeg ffmpeg-binaries opusscript googleapis`
 
 ### The *config.json* file
 The *config.json* file holds secret information such as the the [Discord bot token](https://discordapp.com/developers/applications/), the [Pixabay API token](https://pixabay.com/no/service/about/api/) and the [API token for Giphy](https://developers.giphy.com/dashboard/). The *config.json* file should be inside the *src* folder, and it should look like this:
