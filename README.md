@@ -16,6 +16,7 @@
 * [FFMPEG](https://www.npmjs.com/package/ffmpeg) `npm install ffmpeg`
 * [FFMPEG - Binaries](https://www.npmjs.com/package/ffmpeg-binaries) `npm install ffmpeg-binaries`
 * [Opusscript](https://www.npmjs.com/package/opusscript) `npm install opusscript`
+* [GoogleApis](https://www.npmjs.com/package/googleapis) `npm install googleapis`
 * *config.json*
 
 `npm install discord.js request ytdl-core ffmpeg ffmpeg-binaries opusscript`
@@ -27,6 +28,7 @@ The *config.json* file holds secret information such as the the [Discord bot tok
     "prefix": "your prefix here",
     "token": "your Discord bot token here",
     "pixabay": "your Pixabay API token here",
-    "giphy": "your Giphy API token here"
+    "giphy": "your Giphy API token here",
+    "youtube": "your Youtube Data API v3 token here"
 }
 ```
