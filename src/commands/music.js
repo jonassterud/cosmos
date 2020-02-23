@@ -53,7 +53,6 @@ module.exports = {
             loop();
             return;
         }
-
         // Add to queue:
         const re = /youtube.com\/watch\?v=[a-zA-Z\d\=\&\-\_]+$/g
 
@@ -111,13 +110,15 @@ module.exports = {
                 });
                 let disp = connection.playStream(stream, {
                     seek: 0,
-                    volume: 1
+                    volume: 1,
                 });
+                disp.setBitrate('auto');
 
                 // Finished song event:
                 disp.on('end', () => {
                     queue.shift();
-                    play();
+                    playing = false;
+                    tryPlay();
                 });
             } else {
                 playing = false;
