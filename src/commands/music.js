@@ -69,8 +69,9 @@ module.exports = {
                 key: secret.youtube
             }).then((searchRequest) => {
                 const result = searchRequest.data.items[0];
-                queue.push('https://www.youtube.com/watch?v=' + result.id.videoId);
-                message.channel.send("\:ok_hand: The video was added to the queue, <@" + message.author.id + ">!");
+                const youtubeUrl = ('https://www.youtube.com/watch?v=' + result.id.videoId);
+                queue.push(youtubeUrl);
+                ytdl.getInfo(youtubeUrl).then(info => message.channel.send("\:ok_hand: Added: " + '"' + info.title + '"' + " to the queue!")).catch();
                 tryPlay();
             }).catch(e => console.error(e));
             return;
@@ -78,8 +79,7 @@ module.exports = {
 
         // Add to queue:
         queue.push(args[0]);
-        message.channel.send("\:ok_hand: The video was added to the queue, <@" + message.author.id + ">!");
-
+        ytdl.getInfo(args[0]).then(info => message.channel.send("\:ok_hand: Added: " + '"' + info.title + '"' + " to the queue!")).catch();
         // Play:
         function tryPlay() {
             if (!playing) {
