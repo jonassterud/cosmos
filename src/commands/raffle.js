@@ -37,7 +37,7 @@ module.exports = {
         embed.setTitle(message.author.username + " started a raffle!");
         embed.setThumbnail(message.author.avatarURL);
         embed.setColor('#ff0000');
-        embed.addField('Prize:', args.slice(1)+"\n React with a 💎 to enter the raffle");
+        embed.addField('Prize:', args.slice(1).join(" ")+"\n React with a 💎 to enter the raffle");
 
         message.channel.send(embed).then( message => {
             message.react("💎");
