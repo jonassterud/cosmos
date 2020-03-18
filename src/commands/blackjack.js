@@ -93,7 +93,7 @@ module.exports = {
         let embed = createEmbed(dealerCards, playerCards, message.author.avatarUrl);
 
         message.channel.send(embed).then(msg => {
-            shandleGame(msg)
+            handleGame(msg)
         }).catch();
 
         function handleGame(mess) {
