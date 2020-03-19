@@ -1,37 +1,30 @@
 // Global variables
-let queue = [],
-    playing = false,
-    connection = "";
-
-const {
-    google
-} = require('googleapis');
-
-const youtube = google.youtube({
-    version: 'v3',
-    auth: secret.youtube
-});
+let queue = [], playing = false, connection = "";
+const {google} = require('googleapis');
+const youtube = google.youtube({version: 'v3', auth: secret.youtube});
 
 // Command
 module.exports = {
     name: 'music',
     description: '\:musical_note: Listen to the audio from a YouTube video in your current voice channel!',
     args: true,
-    usage: '<YouTube URL or Query>',
+    usage: '<YouTube URL, \'skip\' or \'queue\'>',
     execute(message, args) {
         // Variables:
         const voice = message.member.voiceChannel;
+        
+        // Check for errors:
         if (!voice) return message.channel.send("\:no_entry: Please join a voicechannel before executing the command, <@" + message.author.id + ">!");
 
-        // Check argument:
+        // Check arguments:
         if (args[0] === 'skip') {
-            if (connection != "") {
+            if(connection != "") {
                 connection.dispatcher.end();
-                return message.channel.send("\:cd: Skipping song...")
-            } else {
-                return message.channel.send("No songs in queue " + message.author);
+                return message.channel.send("\:cd: Skipping song...");
             }
-        } else if (args[0] === 'queue') {
+            return message.channel.send("No songs in queue " + message.author);
+        }
+        if(args[0] === 'queue') {
             if (!queue.length) return message.channel.send("No songs in queue " + message.author);
 
             let embed = new Discord.RichEmbed()
@@ -46,17 +39,18 @@ module.exports = {
                         if (i == 0) embed.addField("Current song:", " " + info.title);
                         else embed.addField("Song number " + i + ":", " " + info.title);
                         if (i == queue.length - 1) return message.channel.send(embed);
-                    }).catch();
+                    }).catch(e => {
+                        console.log("Error getting song info.\nERROR:\n" + e);
+                    });
                 }
             }
 
-            loop();
-            return;
+            return loop();
         }
-        // Add to queue:
-        const re = /youtube.com\/watch\?v=[a-zA-Z\d\=\&\-\_]+$/g
 
         // Check for errors:
+        const re = /youtube.com\/watch\?v=[a-zA-Z\d\=\&\-\_]+$/g
+
         if (!re.test(args[0])) {
             const query = args.join(" ");
             youtube.search.list({
@@ -79,6 +73,7 @@ module.exports = {
         // Add to queue:
         queue.push(args[0]);
         ytdl.getInfo(args[0]).then(info => message.channel.send("\:ok_hand: Added: " + '"' + info.title + '"' + " to the queue!")).catch();
+        
         // Play:
         function tryPlay() {
             if (!playing) {
