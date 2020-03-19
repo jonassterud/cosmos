@@ -6,7 +6,7 @@ module.exports = {
     name: 'bettermusic',
     description: '\:musical_note: Listen to the audio from a YouTube video in your current voice channel!',
     args: true,
-    usage: '<YouTube URL, \'skip\' or \'queue\'>',
+    usage: '<YouTube URL, \'skip\', \'queue\', \'play\' or \'pause\'>',
     execute(message, args) {
         // Variables:
         voice = message.member.voiceChannel;
@@ -24,60 +24,83 @@ module.exports = {
             return message.channel.send(embed);
         }
         
-        if(args[0] === "skip") {
+        else if(args[0] === "skip") {
             currentSong++;
             message.channel.send("\:cd: Skipping to the next song from the queue..");
             return this.execute(message, ["play"]);
         }
+        
+        else if(args[0] === "pause") {
+            if(typeof connection == 'object' && !connection.dispatcher.paused) {
+                message.channel.send("\:play_pause: Paused the music, <@" + message.author.id + ">!");
+                return connection.dispatcher.pause();
+            } else {
+                return message.channel.send("\:question: The music isn't playing yet, <@" + message.author.id + ">!");
+            }
+        }
 
-        if(args[0] === "play") {
-            // Reset previous:
-            connection = {}, stream = {};
-
-            // Check if song has ended:
+        else if(args[0] === "play") {
+            // Check if queue has ended:
             if(currentSong >= queue.length) {
                 voice.leave();
                 return message.channel.send("\:frowning: Session over. No more songs in queue!");
             }
 
-            // Create stream:
-            stream = ytdl(queue[currentSong].link, {
-                filter: 'audioonly',
-                quality: 'lowest',
-                liveBuffer: 60000,
-                highWaterMark: 1024 * 1024 * 10
-            });
+            // Check if song is paused:
+            else if(typeof connection == 'object' && connection.dispatcher.paused) {
+                message.channel.send("\:play_pause: Resumed the music, <@" + message.author.id + ">!");
+                return connection.dispatcher.resume();
+            }
 
-            setTimeout(() => {
-                voice.join().then(e => {
-                    connection = e;
+            // Play song:
+            else {
+                // Reset previous:
+                connection = {}, stream = {};
 
-                    // Start stream:
-                    dispatcher = e.playStream(stream);
-                    dispatcher.setBitrate('auto');
-
-                    // Events:
-                    dispatcher.on('end', () => {
-                        currentSong++;
-                        this.execute(message, ["play"]);
-                    });
+                // Create stream:
+                stream = ytdl(queue[currentSong].link, {
+                    filter: 'audioonly',
+                    quality: 'lowest',
+                    liveBuffer: 60000,
+                    highWaterMark: 1024 * 1024 * 10
                 });
-                
-                return message.channel.send("\:musical_note: Now playing: " + queue[currentSong].title);
-            }, 2500);
+
+                setTimeout(() => {
+                    voice.join().then(e => {
+                        connection = e;
+
+                        // Start stream:
+                        dispatcher = e.playStream(stream);
+                        dispatcher.setBitrate('auto');
+
+                        // Events:
+                        dispatcher.on('end', () => {
+                            return this.execute(message, ["skip"]);
+                        });
+                    });
+        
+                    return message.channel.send("\:musical_note: Now playing: " + queue[currentSong].title);
+                }, 2500);
+            }
         }
 
-        // Add to queue from link:
-        const validLink = /^https:\/\/www\.youtube\.com\/((playlist\?list=)|(watch\?v=)).*/m;
-        if(validLink.test(args[0])) {
-            ytdl.getBasicInfo(args[0]).then(e => {
-                queue.push({
-                    link: args[0], 
-                    title: e.title
+        else {
+            // Add to queue from link:
+            const validLink = /^https:\/\/www\.youtube\.com\/((playlist\?list=)|(watch\?v=)).*/m;
+            if(validLink.test(args[0])) {
+                ytdl.getBasicInfo(args[0]).then(e => {
+                    queue.push({
+                        link: args[0], 
+                        title: e.title
+                    });
+
+                    if(typeof connection != 'object' || connection.status != 0) {
+                        return this.execute(message, ["play"]);
+                    } else {
+                        return message.channel.send("\:ok_hand: Added song(s) to the queue, <@" + message.author.id + ">!");
+                    }
                 });
-                
-                return message.channel.send("\:ok_hand: Added song(s) to the queue, <@" + message.author.id + ">!");
-            });
+            }
         }
     }
 };
