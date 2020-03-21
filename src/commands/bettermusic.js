@@ -1,5 +1,7 @@
 // Global variables
-let queue = [], currentSong = 0;
+queue = [];
+currentSong = 0;
+connection = {};
 
 // Command
 module.exports = {
@@ -25,42 +27,42 @@ module.exports = {
         }
         
         else if(args[0] === "skip") {
+            voice.leave();
+            connection.disconnect();
             currentSong++;
-            message.channel.send("\:cd: Skipping to the next song from the queue..");
             return this.execute(message, ["play"]);
         }
         
         else if(args[0] === "pause") {
-            if(typeof connection == 'object' && !connection.dispatcher.paused) {
-                message.channel.send("\:play_pause: Paused the music, <@" + message.author.id + ">!");
-                return connection.dispatcher.pause();
-            } else {
-                return message.channel.send("\:question: The music isn't playing yet, <@" + message.author.id + ">!");
+            if(connection.hasOwnProperty('dispatcher')) {
+                if(connection.dispatcher.paused) {
+                    connection.dispatcher.resume();
+                    return message.channel.send("\:play_pause: Unpaused the music, <@" + message.author.id + ">!");
+                } else {
+                    connection.dispatcher.pause();
+                    return message.channel.send("\:play_pause: Paused the music, <@" + message.author.id + ">!");
+                }
             }
         }
 
         else if(args[0] === "play") {
             // Check if queue has ended:
             if(currentSong >= queue.length) {
-                voice.leave();
-                return message.channel.send("\:frowning: Session over. No more songs in queue!");
+                queue = [], currentSong = 0;
+                return message.channel.send("\:frowning: Session over!");
             }
 
             // Check if song is paused:
-            else if(typeof connection == 'object' && connection.dispatcher.paused) {
-                message.channel.send("\:play_pause: Resumed the music, <@" + message.author.id + ">!");
-                return connection.dispatcher.resume();
+            else if(connection.hasOwnProperty('dispatcher') && connection.dispatcher.paused) {
+                return this.execute(message, ['pause']);
             }
 
             // Play song:
             else {
-                // Reset previous:
-                connection = {}, stream = {};
-
                 // Create stream:
                 stream = ytdl(queue[currentSong].link, {
                     filter: 'audioonly',
-                    quality: 'lowest',
+                    // quality: 'lowest',
                     liveBuffer: 60000,
                     highWaterMark: 1024 * 1024 * 10
                 });
@@ -73,14 +75,12 @@ module.exports = {
                         dispatcher = e.playStream(stream);
                         dispatcher.setBitrate('auto');
 
-                        // Events:
-                        dispatcher.on('end', () => {
-                            return this.execute(message, ["skip"]);
-                        });
+                        // Events
+                        connection.dispatcher.on('end', () => this.execute(message, ['skip']));
                     });
         
-                    return message.channel.send("\:musical_note: Now playing: " + queue[currentSong].title);
-                }, 2500);
+                    return message.channel.send("\:musical_note: Now playing: \`" + queue[currentSong].title + "\`");
+                }, 500);
             }
         }
 
@@ -94,11 +94,8 @@ module.exports = {
                         title: e.title
                     });
 
-                    if(typeof connection != 'object' || connection.status != 0) {
-                        return this.execute(message, ["play"]);
-                    } else {
-                        return message.channel.send("\:ok_hand: Added song(s) to the queue, <@" + message.author.id + ">!");
-                    }
+                    message.delete();
+                    return message.channel.send("\:ok_hand: Added song(s) to the queue, <@" + message.author.id + ">!");
                 });
             }
         }
