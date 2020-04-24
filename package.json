@@ -18,10 +18,9 @@
   "homepage": "https://github.com/jonassterud/Cosmos#readme",
   "dependencies": {
     "discord.js": "^11.5.1",
-    "ffmpeg": "0.0.4",
     "googleapis": "^47.0.0",
     "opusscript": "0.0.7",
     "request": "^2.88.2",
-    "ytdl-core": "^1.0.9"
+    "ytdl-core": "^2.1.1"
   }
 }
