@@ -56,7 +56,9 @@ module.exports = {
                 if(!queue[message.guild.id]) return message.channel.send("\:no_entry: There is nothing to reset, <@" + message.author.id + ">!");
                 
                 // Reset:
-                delete queue[message.guild.id];
+                
+                queue[message.guild.id].urls = [];
+                queue[message.guild.id].dispatcher.end();
                 message.channel.send("\:firecracker: Cleared queue!");
                 break;
             }
@@ -87,7 +89,7 @@ module.exports = {
                         await ytdl.getBasicInfo(queue[message.guild.id].urls[i], (err, data) => { // s
                             // Fill embed:
                             const length = (parseInt(data.length_seconds) / 60).toFixed(2) + " minutes";
-                            embed.addField((!i ? "Up next:" : "-"), "Title: *" + data.title + "*\nDuration: *" + length + "*");
+                            embed.addField((!i ? "Currently playing:" : i + "."), "Title: *" + data.title + "*\nDuration: *" + length + "*");
                             
                             // Show remaining songs:
                             const remaining = queue[message.guild.id].urls.length - maxSize;
@@ -162,7 +164,7 @@ module.exports = {
                 queue[message.guild.id].playing = true;
 
                 // Download song:
-                queue[message.guild.id].stream = ytdl(queue[message.guild.id].urls.shift(), {
+                queue[message.guild.id].stream = ytdl(queue[message.guild.id].urls[0], {
                     quality: "highestaudio",
                     filter: "audioonly",
                     highWaterMark: 1024 * 1024 * 30 // 30mb
@@ -179,6 +181,7 @@ module.exports = {
     
                 // End event:
                 queue[message.guild.id].dispatcher.on('end', () => {
+                    queue[message.guild.id].urls.shift();
                     if(queue[message.guild.id].urls.length) {
                         message.channel.send("\:ok_hand: Playing next song from queue..");
                         play();
