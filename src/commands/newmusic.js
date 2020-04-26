@@ -8,7 +8,7 @@ module.exports = {
     name: 'newmusic',
     description: '\:musical_note: Listen to the audio from a YouTube video in your current voice channel!',
     args: true,
-    usage: '<YouTube video or playlist | skip | queue | pause | resume>',
+    usage: '<YouTube video or playlist | skip | queue | pause | resume | reset>',
     execute(message, args) {
         // Variables:
         const voice = message.member.voiceChannel;
@@ -20,14 +20,14 @@ module.exports = {
         switch(args[0].toLowerCase()) {
             case 'pause': {
                 if(!queue[message.guild.id].dispatcher.paused) {
-                    message.channel.send("Paused song, <@" + message.author.id + ">!");
+                    message.channel.send("\:pause_button: Paused song, <@" + message.author.id + ">!");
                     queue[message.guild.id].dispatcher.pause(true);
                 }
                 break;
             }
             case 'resume': {
                 if(queue[message.guild.id].dispatcher.paused) {
-                    message.channel.send("Resumed song, <@" + message.author.id + ">!");
+                    message.channel.send("\:arrow_forward: Resumed song, <@" + message.author.id + ">!");
                     queue[message.guild.id].dispatcher.resume();
                 }
                 break;
@@ -44,20 +44,26 @@ module.exports = {
                     .setTimestamp(new Date());
 
                 // Loop trough songs:
-                const maxSize = 10;
-                for(let i=0; i<queue[message.guild.id].urls.length && i<maxSize; i++) {
-                    ytdl.getBasicInfo(queue[message.guild.id].urls[i], (err, data) => {
-                        // Fill embed:
-                        const length = (parseInt(data.length_seconds) / 60).toFixed(2) + " minutes";
-                        embed.addField((i + 1) + '.', "Title: *" + data.title + "*\nDuration: *" + length + "*");
-
-                        // Send embed if ready:
-                        if(i >= maxSize-1) embed.addField("...", "and more!");
-                        if(i >= queue[message.guild.id].urls.length - 1 || i >= maxSize-1) message.channel.send(embed);
-                    });
-                }
+                const maxSize = 3;
+                (async function addItems() {
+                    for(let i=0; i<queue[message.guild.id].urls.length && i<maxSize; i++) {
+                        await ytdl.getBasicInfo(queue[message.guild.id].urls[i], (err, data) => { // s
+                            // Fill embed:
+                            const length = (parseInt(data.length_seconds) / 60).toFixed(2) + " minutes";
+                            embed.addField((i+1) + ".", "Title: *" + data.title + "*\nDuration: *" + length + "*");
+                            
+                            // Show remaining songs:
+                            const remaining = queue[message.guild.id].urls.length - maxSize;
+                            if(i >= maxSize-1) embed.addField("...", "and " + remaining + " more!");
+                        });
+                    }
+                })().then(() => message.channel.send(embed));
                 break;
             }
+            case 'reset':
+                delete queue[message.guild.id];
+                message.channel.send("\:firecracker: Cleared queue!");
+                break;
             default: {
                 // Create queue:
                 if(!queue[message.guild.id]) {
@@ -133,3 +139,12 @@ module.exports = {
         }
     }
 };
+
+/*
+
+Alternatives?
+
+https://github.com/TimeForANinja/node-ytsr
+https://github.com/TimeForANinja/node-ytpl
+
+*/
