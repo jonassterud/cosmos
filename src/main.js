@@ -42,7 +42,6 @@ client.once('ready', () => {
 
 // Message event
 client.on('message', message => {
-    // Add to balance:
     // The github bot is posting messages, the github bot is not registered in data.json => crash
     if (message.author.bot) return;
     let data = JSON.parse(fs.readFileSync('./data.json'));
