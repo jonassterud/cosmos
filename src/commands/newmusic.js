@@ -19,24 +19,37 @@ module.exports = {
         // Check argument:
         switch(args[0].toLowerCase()) {
             case 'pause': {
-                if(!queue[message.guild.id].dispatcher.paused) {
-                    message.channel.send("\:pause_button: Paused song, <@" + message.author.id + ">!");
-                    queue[message.guild.id].dispatcher.pause(true);
-                }
+                // Guards:
+                if(!queue[message.guild.id] || !queue[message.guild.id].dispatcher) return message.channel.send("\:no_entry: I'm not playing anything yet, <@" + message.author.id + ">!");
+                if(queue[message.guild.id].dispatcher.paused) return message.channel.send("\:question: I'm already paused, <@" + message.author.id + ">!");
+
+                // Pause:
+                message.channel.send("\:pause_button: Paused song, <@" + message.author.id + ">!");
+                queue[message.guild.id].dispatcher.pause(true);
                 break;
             }
             case 'resume': {
-                if(queue[message.guild.id].dispatcher.paused) {
-                    message.channel.send("\:arrow_forward: Resumed song, <@" + message.author.id + ">!");
-                    queue[message.guild.id].dispatcher.resume();
-                }
+                // Guards:
+                if(!queue[message.guild.id] || !queue[message.guild.id].dispatcher) return message.channel.send("\:no_entry: I'm not playing anything yet, <@" + message.author.id + ">!");
+                if(!queue[message.guild.id].dispatcher.paused) return message.channel.send("\:question: I'm not paused, <@" + message.author.id + ">!");
+
+                // Resume:
+                message.channel.send("\:arrow_forward: Resumed song, <@" + message.author.id + ">!");
+                queue[message.guild.id].dispatcher.resume();
                 break;
             }
             case 'skip': {
+                // Guards:
+                if(!queue[message.guild.id] || !queue[message.guild.id].connection) return message.channel.send("\:no_entry: I'm not playing anything yet, <@" + message.author.id + ">!");
+
+                // Call end event:
                 queue[message.guild.id].dispatcher.end();
                 break;
             }
             case 'queue': {
+                // Guards:
+                if(!queue[message.guild.id] || !queue[message.guild.id].urls) return message.channel.send("\:no_entry: Queue is empty, <@" + message.author.id + ">!");
+
                 // Create embed:
                 let embed = new Discord.RichEmbed()
                     .setTitle("Song queue \:musical_note:")
@@ -61,6 +74,10 @@ module.exports = {
                 break;
             }
             case 'reset':
+                // Guards:
+                if(!queue[message.guild.id]) return message.channel.send("\:no_entry: There is nothing to reset, <@" + message.author.id + ">!");
+                
+                // Reset:
                 delete queue[message.guild.id];
                 message.channel.send("\:firecracker: Cleared queue!");
                 break;
@@ -71,12 +88,16 @@ module.exports = {
                         urls: [], 
                         playing: false, 
                         stream: undefined, 
-                        dispatcher: undefined
+                        dispatcher: undefined,
+                        connection: undefined
                     };
                 }
 
-                // Check if URL is playlist:
-                if(/list=([^&]+)/.test(args[0])) {
+                // Extract data from URL:
+                const regexResult = /www\.youtube\.com\/(?:watch\?v=([^&]+)|playlist\?)(?:&*list=([^&]+))*/.exec(args[0]);
+
+                // Add to queue based on URL type:
+                if(regexResult[2]) { // Playlist
                     (function getItems(nextPageToken='') {
                         youtube.playlistItems.list({
                             playlistId: args[0].match(/list=([^&]+)/)[1],
@@ -90,9 +111,10 @@ module.exports = {
                             if(response.data.nextPageToken) getItems(response.data.nextPageToken);
                         });
                     })();
-                } else {
-                    // Add to queue:
+                } else if(regexResult[1] && !regexResult[2]) { // Video
                     queue[message.guild.id].urls.push(args[0]);
+                } else { // Error
+                    return message.channel.send("\:no_entry: Invalid URL, <@" + message.author.id + ">!");
                 }
                 
                 // Play:
@@ -106,7 +128,8 @@ module.exports = {
         function play() {
             // Join channel:
             voice.join().then(connection => {
-                // Force state:
+                // Update queue variables:
+                queue[message.guild.id].connection = connection;
                 queue[message.guild.id].playing = true;
 
                 // Download song:
@@ -133,18 +156,10 @@ module.exports = {
                     } else {
                         voice.leave();
                         connection.disconnect();
+                        delete queue[message.guild.id];
                     }
                 });
             });
         }
     }
 };
-
-/*
-
-Alternatives?
-
-https://github.com/TimeForANinja/node-ytsr
-https://github.com/TimeForANinja/node-ytpl
-
-*/
