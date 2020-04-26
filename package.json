@@ -4,7 +4,8 @@
   "description": "![Image](https://i.ibb.co/dLp1FSX/Untitled.png)",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cd src && node main.js"
   },
   "repository": {
     "type": "git",
