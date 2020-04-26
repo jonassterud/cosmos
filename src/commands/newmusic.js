@@ -124,10 +124,10 @@ module.exports = {
                             if(response.data.nextPageToken) getItems(response.data.nextPageToken);
                         });
                     })();
-                    message.channel.send("\:ok_hand: Added songs from the playlist to the queue, <@" + message.channel.id + ">!");
+                    message.channel.send("\:ok_hand: Added songs from the playlist to the queue, <@" + message.author.id + ">!");
                 } else if(regexResult[1] && !regexResult[2]) { // Video
                     queue[message.guild.id].urls.push(args[0]);
-                    message.channel.send("\:ok_hand: Added song to the queue, <@" + message.channel.id + ">!");
+                    message.channel.send("\:ok_hand: Added song to the queue, <@" + message.author.id + ">!");
                 }
                 
                 // Play:
