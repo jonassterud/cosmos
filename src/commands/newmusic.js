@@ -1,7 +1,5 @@
 // Global variables
 let queue = {};
-const {google} = require('googleapis'); // Make global to entire project?
-const youtube = google.youtube({version: 'v3', auth: secret.youtube}); // Make global to entire project?
 
 // Command
 module.exports = {
@@ -46,6 +44,15 @@ module.exports = {
                 queue[message.guild.id].dispatcher.end();
                 break;
             }
+            case 'reset': {
+                // Guards:
+                if(!queue[message.guild.id]) return message.channel.send("\:no_entry: There is nothing to reset, <@" + message.author.id + ">!");
+                
+                // Reset:
+                delete queue[message.guild.id];
+                message.channel.send("\:firecracker: Cleared queue!");
+                break;
+            } 
             case 'queue': {
                 // Guards:
                 if(!queue[message.guild.id] || !queue[message.guild.id].urls) return message.channel.send("\:no_entry: Queue is empty, <@" + message.author.id + ">!");
@@ -73,14 +80,6 @@ module.exports = {
                 })().then(() => message.channel.send(embed));
                 break;
             }
-            case 'reset':
-                // Guards:
-                if(!queue[message.guild.id]) return message.channel.send("\:no_entry: There is nothing to reset, <@" + message.author.id + ">!");
-                
-                // Reset:
-                delete queue[message.guild.id];
-                message.channel.send("\:firecracker: Cleared queue!");
-                break;
             default: {
                 // Create queue:
                 if(!queue[message.guild.id]) {
@@ -97,7 +96,21 @@ module.exports = {
                 const regexResult = /www\.youtube\.com\/(?:watch\?v=([^&]+)|playlist\?)(?:&*list=([^&]+))*/.exec(args[0]);
 
                 // Add to queue based on URL type:
-                if(regexResult[2]) { // Playlist
+                if(!regexResult) { // Search
+                    youtube.search.list({
+                        part: 'snippet',
+                        type: 'video',
+                        q: args.join(" "),
+                        key: secret.youtube
+                    }).then(response => {
+                        const url = 'https://www.youtube.com/watch?v=' + response.data.items[0].id.videoId;
+                        queue[message.guild.id].urls.push(url);
+                        ytdl.getBasicInfo(url).then(data => {
+                            message.channel.send("\:ok_hand: Added: " + '"*' + data.title + '*"' + " based on your search query, <@" + message.author.id + ">!");
+                        });
+                    });
+                }
+                else if(regexResult[2]) { // Playlist
                     (function getItems(nextPageToken='') {
                         youtube.playlistItems.list({
                             playlistId: args[0].match(/list=([^&]+)/)[1],
@@ -111,15 +124,14 @@ module.exports = {
                             if(response.data.nextPageToken) getItems(response.data.nextPageToken);
                         });
                     })();
+                    message.channel.send("\:ok_hand: Added songs from the playlist to the queue, <@" + message.channel.id + ">!");
                 } else if(regexResult[1] && !regexResult[2]) { // Video
                     queue[message.guild.id].urls.push(args[0]);
-                } else { // Error
-                    return message.channel.send("\:no_entry: Invalid URL, <@" + message.author.id + ">!");
+                    message.channel.send("\:ok_hand: Added song to the queue, <@" + message.channel.id + ">!");
                 }
                 
                 // Play:
                 if(!queue[message.guild.id].playing) play();
-                else message.channel.send("\:ok_hand: Added song(s) to queue..");
                 break;
             }
         }

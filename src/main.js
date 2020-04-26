@@ -4,6 +4,8 @@ global.fs = require('fs'); // Node.js package - file system
 global.Discord = require('discord.js'); // Node.js package - Discord API
 global.request = require('request'); // Node.js package - request website data
 global.ytdl = require('ytdl-core'); // Node.js package - Downloads YouTube videos
+global.google = require('googleapis').google; // Google API
+global.youtube = google.youtube({version: 'v3', auth: secret.youtube}); // Youtube API
 
 // Create bot
 global.client = new Discord.Client();
