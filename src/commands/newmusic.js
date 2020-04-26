@@ -6,7 +6,7 @@ module.exports = {
     name: 'newmusic',
     description: '\:musical_note: Listen to the audio from a YouTube video in your current voice channel!',
     args: true,
-    usage: '<YouTube video or playlist | skip [amount] | queue | pause | resume | reset>',
+    usage: '<YouTube video, playlist or query | skip [amount] | queue | pause | resume | reset>',
     execute(message, args) {
         // Variables:
         const voice = message.member.voiceChannel;
@@ -40,15 +40,17 @@ module.exports = {
                 // Guards:
                 if(!queue[message.guild.id] || !queue[message.guild.id].connection) return message.channel.send("\:no_entry: I'm not playing anything yet, <@" + message.author.id + ">!");
 
-                // Call end event:
+                // Skip:
                 if(args[1] && /^\d+$/m.test(args[1])) {                
                     if(parseInt(args[1]) <= queue[message.guild.id].urls.length) {
-                        queue[message.guild.id].urls.splice(0, parseInt(args[1]));
+                        queue[message.guild.id].urls.splice(parseInt(args[1]) - 1);
+                        queue[message.guild.id].dispatcher.end();
                     } else {
                         message.channel.send("\:no_entry: Number is out of range, <@" + message.author.id + ">!");
                     }
+                } else {
+                    queue[message.guild.id].dispatcher.end();
                 }
-                queue[message.guild.id].dispatcher.end();
                 break;
             }
             case 'reset': {
@@ -56,7 +58,6 @@ module.exports = {
                 if(!queue[message.guild.id]) return message.channel.send("\:no_entry: There is nothing to reset, <@" + message.author.id + ">!");
                 
                 // Reset:
-                
                 queue[message.guild.id].urls = [];
                 queue[message.guild.id].dispatcher.end();
                 message.channel.send("\:firecracker: Cleared queue!");
@@ -88,8 +89,8 @@ module.exports = {
                     for(let i=0; i<queue[message.guild.id].urls.length && i<maxSize; i++) {
                         await ytdl.getBasicInfo(queue[message.guild.id].urls[i], (err, data) => { // s
                             // Fill embed:
-                            const length = (parseInt(data.length_seconds) / 60).toFixed(2) + " minutes";
-                            embed.addField((!i ? "Currently playing:" : i + "."), "Title: *" + data.title + "*\nDuration: *" + length + "*");
+                            const length = parseInt(data.length_seconds);
+                            embed.addField((!i ? "Currently playing:" : i + "."), "Title: *" + data.title + "*\nDuration: *" + Math.floor(length / 60) + " minutes and" + length % 60 + " seconds" + "*");
                             
                             // Show remaining songs:
                             const remaining = queue[message.guild.id].urls.length - maxSize;
@@ -189,6 +190,7 @@ module.exports = {
                         voice.leave();
                         connection.disconnect();
                         delete queue[message.guild.id];
+                        message.channel.send("\:weary: Session over!");
                     }
                 });
             });
