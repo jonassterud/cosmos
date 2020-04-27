@@ -121,7 +121,7 @@ module.exports = {
                         part: 'snippet',
                         type: 'video',
                         q: args.join(" "),
-                        key: secret.youtube
+                        key: process.env.YOUTUBE
                     }).then(response => {
                         const url = 'https://www.youtube.com/watch?v=' + response.data.items[0].id.videoId;
                         queue[message.guild.id].urls.push(url);

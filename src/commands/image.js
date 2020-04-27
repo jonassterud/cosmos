@@ -6,7 +6,7 @@ module.exports = {
     usage: '<search query>',
 	execute(message, args) {
         request({
-            url: 'https://pixabay.com/api/?key=' + secret.pixabay + '&q=' + args.join('+').toLowerCase() + '&image_type=photo',
+            url: 'https://pixabay.com/api/?key=' + process.env.PIXABAY + '&q=' + args.join('+').toLowerCase() + '&image_type=photo',
             json: true
         },
         function(e, r, body) {

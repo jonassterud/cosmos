@@ -6,7 +6,7 @@ module.exports = {
     usage: '<search query>',
 	execute(message, args) {
         request({
-            url: 'http://api.giphy.com/v1/gifs/search?api_key=' + secret.giphy + '&q=' + args.join('+').toLowerCase() + '&limit=15',
+            url: 'http://api.giphy.com/v1/gifs/search?api_key=' + process.env.GIPHY + '&q=' + args.join('+').toLowerCase() + '&limit=15',
             json: true
         },
         function(e, r, body) {

@@ -1,6 +1,5 @@
 module.exports = async (client, message) => {
-    // The github bot is posting messages, the github bot is not registered in data.json => crash
-    if (message.author.bot) return;
+    if(message.author.bot) return;
     let data = JSON.parse(fs.readFileSync('./data.json'));
     data[message.guild.id]['users'][message.author.id]['credits']++;
     fs.writeFileSync('./data.json', JSON.stringify(data));
