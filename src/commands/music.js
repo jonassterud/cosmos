@@ -90,14 +90,15 @@ module.exports = {
                         await ytdl.getBasicInfo(queue[message.guild.id].urls[i], (err, data) => { // s
                             // Fill embed:
                             const length = parseInt(data.length_seconds);
-                            embed.addField((!i ? "Currently playing:" : i + "."), "Title: *" + data.title + "*\nDuration: *" + Math.floor(length / 60) + " minutes and" + length % 60 + " seconds" + "*");
-                            
-                            // Show remaining songs:
-                            const remaining = queue[message.guild.id].urls.length - maxSize;
-                            if(i >= maxSize) embed.addField("...", "and " + remaining + " more!");
+                            embed.addField((!i ? "Currently playing:" : i + "."), "Title: *" + data.title + "*\nDuration: *" + Math.floor(length / 60) + " minutes and " + length % 60 + " seconds" + "*");
                         });
                     }
-                })().then(() => message.channel.send(embed));
+                })().then(() => {
+                    // Show remaining songs:
+                    const remaining = queue[message.guild.id].urls.length - maxSize;
+                    if(remaining) embed.addField("...", "and " + remaining + " more!");
+                    message.channel.send(embed);
+                });
                 break;
             }
             default: {
@@ -145,7 +146,7 @@ module.exports = {
                         });
                     })();
                     message.channel.send("\:ok_hand: Added songs from the playlist to the queue, <@" + message.author.id + ">!");
-                } else if(regexResult[1] && !regexResult[2]) { // Video
+                } else if(regexResult[1] && !regexResult[2]) { // Song
                     queue[message.guild.id].urls.push(args[0]);
                     message.channel.send("\:ok_hand: Added song to the queue, <@" + message.author.id + ">!");
                 }
