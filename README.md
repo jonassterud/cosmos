@@ -19,8 +19,8 @@ Secrets are stored in a *.env* file. It holds holds secret information such as t
 }
 ```
 
-## The *config.json* file
-The *config.json* file holds configuration data, like the bot prefix. The *config.json* file should be inside the *src* folder, and it should look like this:
+## Configuration
+Configuration data is stored in the *config.json* file. The *config.json* file should be inside the *src* folder, and it should look like this:
 ```
 {
     "prefix": "Your prefix here",
