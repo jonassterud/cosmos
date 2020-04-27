@@ -6,7 +6,7 @@ module.exports = {
     name: 'music',
     description: '\:musical_note: Listen to the audio from a YouTube video in your current voice channel!',
     args: true,
-    usage: '<YouTube video, playlist or query | skip [amount] | queue | pause | resume | reset>',
+    usage: '<YouTube video, playlist or query | skip [amount] | queue | pause | resume | wrongsong | reset>',
     execute(message, args) {
         // Variables:
         const voice = message.member.voiceChannel;
@@ -68,8 +68,12 @@ module.exports = {
                 if(!queue[message.guild.id] || !queue[message.guild.id].urls) return message.channel.send("\:no_entry: Queue is empty, <@" + message.author.id + ">!");
 
                 // Remove last song:
-                ytdl.getBasicInfo(queue[message.guild.id].urls.pop()).then(data => {
-                    message.channel.send("\:open_mouth: Removed " + '"*' + data.title + '*"' + " from the queue, <@" + message.author.id + ">!");
+                ytdl.getBasicInfo(queue[message.guild.id].urls.pop(), (err, data) => {
+                    if(err) {
+                        message.channel.send("\:open_mouth: Removed last song from queue, <@" + message.author.id + ">!");
+                    } else {
+                        message.channel.send("\:open_mouth: Removed " + '"*' + data.title + '*"' + " from the queue, <@" + message.author.id + ">!");
+                    }
                 });
                 break;
             }
@@ -87,10 +91,13 @@ module.exports = {
                 const maxSize = 3;
                 (async function addItems() {
                     for(let i=0; i<queue[message.guild.id].urls.length && i<maxSize; i++) {
-                        await ytdl.getBasicInfo(queue[message.guild.id].urls[i], (err, data) => { // s
-                            // Fill embed:
-                            const length = parseInt(data.length_seconds);
-                            embed.addField((!i ? "Currently playing:" : i + "."), "Title: *" + data.title + "*\nDuration: *" + Math.floor(length / 60) + " minutes and " + length % 60 + " seconds" + "*");
+                        await ytdl.getBasicInfo(queue[message.guild.id].urls[i], (err, data) => {
+                            if(err) {
+                                embed.addField((!i ? "Currently playing" : i + "."), "Title: *Unknown*\nDuration: *Unknown*");
+                            } else {
+                                const length = parseInt(data.length_seconds);
+                                embed.addField((!i ? "Currently playing:" : i + "."), "Title: *" + data.title + "*\nDuration: *" + Math.floor(length / 60) + " minutes and " + length % 60 + " seconds" + "*");
+                            }
                         });
                     }
                 })().then(() => {
@@ -124,10 +131,19 @@ module.exports = {
                         q: args.join(" "),
                         key: process.env.YOUTUBE
                     }).then(response => {
+                        // Guards:
+                        if(!response.data.items.length) return message.channel.send("\:thinking: No songs were found, <@" + message.author.id + ">!");
+
+                        // Add to queue:
                         const url = 'https://www.youtube.com/watch?v=' + response.data.items[0].id.videoId;
                         queue[message.guild.id].urls.push(url);
-                        ytdl.getBasicInfo(url).then(data => {
-                            message.channel.send("\:ok_hand: Added " + '"*' + data.title + '*"' + " based on your search query, <@" + message.author.id + ">!");
+                        if(!queue[message.guild.id].playing) play();
+                        ytdl.getBasicInfo(url, (err, data) => {
+                            if(err) {
+                                message.channel.send("\:ok_hand: Added song based on your search query, <@" + message.author.id + ">!");
+                            } else {
+                                message.channel.send("\:ok_hand: Added " + '"*' + data.title + '*"' + " based on your search query, <@" + message.author.id + ">!");
+                            }
                         });
                     });
                 }
@@ -139,20 +155,26 @@ module.exports = {
                             maxResults: 50,
                             pageToken: nextPageToken
                         }).then(response => {
+                            // Add videos from current page:
                             response.data.items.forEach(item => {
                                 queue[message.guild.id].urls.push("www.youtube.com/watch?v=" + item.snippet.resourceId.videoId);
                             });
-                            if(response.data.nextPageToken) getItems(response.data.nextPageToken);
+                            
+                            // Get items from next page:
+                            if(response.data.nextPageToken) return getItems(response.data.nextPageToken);
+
+                            // Play:
+                            if(!queue[message.guild.id].playing) play();
+                            message.channel.send("\:ok_hand: Added songs from the playlist to the queue, <@" + message.author.id + ">!");
+                        }).catch(() => {
+                            return message.channel.send("\:thinking: Something went wrong, <@" + message.author.id + ">!");
                         });
                     })();
-                    message.channel.send("\:ok_hand: Added songs from the playlist to the queue, <@" + message.author.id + ">!");
                 } else if(regexResult[1] && !regexResult[2]) { // Song
                     queue[message.guild.id].urls.push(args[0]);
+                    if(!queue[message.guild.id].playing) play();
                     message.channel.send("\:ok_hand: Added song to the queue, <@" + message.author.id + ">!");
-                }
-                
-                // Play:
-                if(!queue[message.guild.id].playing) play();
+                }    
                 break;
             }
         }
