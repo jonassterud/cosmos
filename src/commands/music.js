@@ -9,10 +9,10 @@ module.exports = {
     usage: '<YouTube video, playlist or query | skip [amount] | queue | pause | resume | wrongsong | reset>',
     execute(message, args) {
         // Variables:
-        const voice = message.member.voiceChannel;
+        const voice = message.member.voice.channel;
 
         // Check voice:
-        if (!voice) return message.channel.send("\:no_entry: Please join a voicechannel before executing the command, <@" + message.author.id + ">!");
+        if(!voice) return message.channel.send("\:no_entry: Please join a voicechannel before executing the command, <@" + message.author.id + ">!");
 
         // Check argument:
         switch(args[0].toLowerCase()) {
@@ -41,9 +41,9 @@ module.exports = {
                 if(!queue[message.guild.id] || !queue[message.guild.id].connection) return message.channel.send("\:no_entry: I'm not playing anything yet, <@" + message.author.id + ">!");
 
                 // Skip:
-                if(args[1] && /^\d+$/m.test(args[1])) {                
-                    if(parseInt(args[1]) <= queue[message.guild.id].urls.length) {
-                        queue[message.guild.id].urls.splice(parseInt(args[1]) - 1);
+                if(args[1] && /^\d+$/m.test(args[1])) {
+                    if(parseInt(args[1]) <= queue[message.guild.id].urls.length && args[1] > 0) {
+                        queue[message.guild.id].urls.splice(0, parseInt(args[1]) - 1);
                         queue[message.guild.id].dispatcher.end();
                     } else {
                         message.channel.send("\:no_entry: Number is out of range, <@" + message.author.id + ">!");
@@ -60,7 +60,6 @@ module.exports = {
                 // Reset:
                 queue[message.guild.id].urls = [];
                 queue[message.guild.id].dispatcher.end();
-                message.channel.send("\:firecracker: Cleared queue!");
                 break;
             }
             case 'wrongsong': {
@@ -82,7 +81,7 @@ module.exports = {
                 if(!queue[message.guild.id] || !queue[message.guild.id].urls) return message.channel.send("\:no_entry: Queue is empty, <@" + message.author.id + ">!");
 
                 // Create embed:
-                let embed = new Discord.RichEmbed()
+                let embed = new Discord.MessageEmbed()
                     .setTitle("Song queue \:musical_note:")
                     .setColor('#ff0000')
                     .setTimestamp(new Date());
@@ -103,7 +102,7 @@ module.exports = {
                 })().then(() => {
                     // Show remaining songs:
                     const remaining = queue[message.guild.id].urls.length - maxSize;
-                    if(remaining) embed.addField("...", "and " + remaining + " more!");
+                    if(remaining > 0) embed.addField("...", "and " + remaining + " more!");
                     message.channel.send(embed);
                 });
                 break;
@@ -195,7 +194,7 @@ module.exports = {
                 });
     
                 // Play stream:
-                queue[message.guild.id].dispatcher = connection.playStream(queue[message.guild.id].stream, {
+                queue[message.guild.id].dispatcher = connection.play(queue[message.guild.id].stream, {
                     highWaterMark: 1,
                     bitrate: 'auto'
                 });
@@ -203,8 +202,8 @@ module.exports = {
                 // Set volume:
                 queue[message.guild.id].dispatcher.setVolumeDecibels(-16);
     
-                // End event:
-                queue[message.guild.id].dispatcher.on('end', () => {
+                // Finish event:
+                queue[message.guild.id].dispatcher.on('finish', () => {
                     queue[message.guild.id].urls.shift();
                     if(queue[message.guild.id].urls.length) {
                         message.channel.send("\:ok_hand: Playing next song from queue..");

@@ -46,7 +46,7 @@ module.exports = {
             });
 
             // Create embed:
-            let embed = new Discord.RichEmbed()
+            let embed = new Discord.MessageEmbed()
                 .setTitle("Trivia! Respond by reacting to the correct answer")
                 .setThumbnail(message.author.avatarURL)
                 .setColor('#ff0000')

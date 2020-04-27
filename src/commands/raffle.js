@@ -4,7 +4,9 @@ module.exports = {
     description: '\:tada: Create giveaways!',
     args: true,
     usage: '<hh:mm:ss> <item>',
-    execute(message,args){
+    execute(message, args) {
+        message.channel.send("Under construction..");
+        /*
         const guild = message.guild.id;
         const auth = message.author.id;
         const re = /^(\d\d:\d\d:\d\d)$/;
@@ -33,7 +35,7 @@ module.exports = {
         data[guild]['users'][auth]['credits'] -= parseFloat(args[1]);
         fs.writeFileSync('./data.json', JSON.stringify(data));
         const filter = reaction => { return ['💎'].includes(reaction.emoji.name); }
-        let embed = new Discord.RichEmbed();
+        let embed = new Discord.MessageEmbed();
         embed.setTitle(message.author.username + " started a raffle!");
         embed.setThumbnail(message.author.avatarURL);
         embed.setColor('#ff0000');
@@ -68,5 +70,6 @@ module.exports = {
                 }).catch();
             }).catch();
         }).catch();
+        */
     }
 };

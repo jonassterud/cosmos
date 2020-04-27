@@ -48,7 +48,7 @@ function createEmbed(pl1Cards, pl2Cards, userUrl) {
     let pl1string = getCard(pl1Cards[0]) + " \n *hidden*";
     let pl2string = "";
     pl2Cards.forEach(card => pl2string += getCard(card) + "\n");
-    let embed = new Discord.RichEmbed()
+    let embed = new Discord.MessageEmbed()
         .setTitle("BlackJack! React with 🏏 to hit, 🧍‍♂️ to stand.")
         .setThumbnail(userUrl)
         .setColor('#ff0000')
@@ -142,7 +142,7 @@ module.exports = {
 
                     }).catch((e) => {
                         noWinner = false;
-                        return message.channel.send("\:noentry: Didn't join in time, <@" + message.author.id + ">");
+                        return message.channel.send("\:no_entry: Didn't join in time, <@" + message.author.id + ">");
                     });
                 }).catch()
             }).catch()

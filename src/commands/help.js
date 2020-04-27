@@ -6,7 +6,7 @@ module.exports = {
     usage: '<command name?>',
 	execute(message, args) {
         // Variables
-        let embed = new Discord.RichEmbed();
+        let embed = new Discord.MessageEmbed();
 
         // Execute:
         if(args.length) {
@@ -23,9 +23,9 @@ module.exports = {
         } else {
             // Edit embed:
             embed.setTitle('\:closed_book: Command list');
-            client.commands.tap(command => {
+            client.commands.each(command => {
                 embed.addField(secret.prefix + command.name + ' ' + (command.usage ? command.usage : ''), command.description);
-            });  
+            });
         }
         
         // Send embed:

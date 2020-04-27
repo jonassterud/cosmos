@@ -2,10 +2,10 @@
     "name": "cosmos",
     "version": "1.0.0",
     "description": "![Image](https://i.ibb.co/dLp1FSX/Untitled.png)",
-    "main": "main.js",
+    "main": "src/main.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "cd src && node main.js"
+        "start": "node ."
     },
     "repository": {
         "type": "git",
@@ -18,13 +18,13 @@
     },
     "homepage": "https://github.com/jonassterud/Cosmos#readme",
     "dependencies": {
+        "@discordjs/opus": "^0.2.1",
         "axios": "^0.19.2",
         "chalk": "^4.0.0",
-        "discord.js": "^11.5.1",
+        "discord.js": "^12.2.0",
         "dotenv": "^8.2.0",
         "googleapis": "^47.0.0",
         "moment": "^2.24.0",
-        "opusscript": "0.0.7",
         "request": "^2.88.2",
         "ytdl-core": "^2.1.1"
     }

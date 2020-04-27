@@ -15,7 +15,7 @@ module.exports = {
             if(!body.hits.length) return message.channel.send("\:no_entry: No images were found, <@" + message.author.id + ">!");
             
             // Variables:
-            let embed = new Discord.RichEmbed();
+            let embed = new Discord.MessageEmbed();
             const topSearchLen = (body.hits.length * 0.25 > 50 ? 50 : Math.round(body.hits.length * 0.25));
             const image = body.hits[Math.floor(Math.random() * topSearchLen)];
             

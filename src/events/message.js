@@ -5,14 +5,14 @@ module.exports = async (client, message) => {
     fs.writeFileSync('./data.json', JSON.stringify(data));
 
     // Split command and arguments:
-    if (!message.content.startsWith(secret.prefix) || message.author.bot) return;
+    if(!message.content.startsWith(secret.prefix) || message.author.bot) return;
     const args = message.content.slice(secret.prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
-    if (!client.commands.has(commandName)) return;
+    if(!client.commands.has(commandName)) return;
 
     // Retrieve command:
     const command = client.commands.get(commandName);
-    if (command.args && !args.length) {
+    if(command.args && !args.length) {
         let reply = "Missing arguments!";
         if (command.usage) reply += "\nFormat: `" + secret.prefix + command.name + " " + command.usage + "`";
         message.channel.send(reply);

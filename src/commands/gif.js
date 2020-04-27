@@ -15,7 +15,7 @@ module.exports = {
             if(!body.data.length) return message.channel.send("\:no_entry: No GIFs were found, <@" + message.author.id + ">!");
             
             // Variables:
-            let embed = new Discord.RichEmbed();
+            let embed = new Discord.MessageEmbed();
             const gif = body.data[Math.floor(Math.random() * body.data.length)];
             
             // Edit embed:

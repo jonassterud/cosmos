@@ -5,6 +5,8 @@ module.exports = {
     args: true,
     usage: '<username>',
 	execute(message, args) {
+        message.channel.send("Under construction..");
+        /*
         // Check for errors:
         if(!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send("\:no_entry: You can't unban that person, <@" + message.author.id + ">!");
 
@@ -20,5 +22,6 @@ module.exports = {
             });
         });
         if(!foundUser) return message.channel.send("\:no_entry: Can't find *\"" + args.join(" ") + "\"*, <@" + message.author.id + ">!");
+        */
 	}
 };
