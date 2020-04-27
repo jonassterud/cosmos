@@ -1,12 +1,12 @@
 // Command
 module.exports = {
-    name: 'raffle',
-    description: '\:tada: Create giveaways!',
-    args: true,
-    usage: '<hh:mm:ss> <item>',
-    execute(message, args) {
-        message.channel.send("Under construction..");
-        /*
+  name: 'raffle',
+  description: '\:tada: Create giveaways!',
+  args: true,
+  usage: '<hh:mm:ss> <item>',
+  execute (message, args) {
+    message.channel.send('Under construction..')
+    /*
         const guild = message.guild.id;
         const auth = message.author.id;
         const re = /^(\d\d:\d\d:\d\d)$/;
@@ -17,7 +17,7 @@ module.exports = {
         const decideType = /^(\d)+/;
         let data = JSON.parse(fs.readFileSync('./data.json'));
         let testString = "";
-        
+
         args.slice(1).forEach(inner => testString += inner);
         creditGiveaway = decideType.test(testString);
         if(creditGiveaway && Number(args[1]) > data[message.guild.id]['users'][message.author.id]['credits']) {
@@ -52,12 +52,12 @@ module.exports = {
                     keyVals.push(key);
                 }
 
-                if(keyVals.length < 1){ 
+                if(keyVals.length < 1){
                     data[guild]['users'][auth]['credits'] += parseFloat(args[1]);
                     fs.writeFileSync('./data.json', JSON.stringify(data));
                     return message.channel.send("Nobody joined the raffle in time")
                 };
-            
+
                 let winner = keyVals[Math.floor(Math.random() * (keyVals.length))];
                 client.fetchUser(winner).then(nm => {
                     console.log(keyVals);
@@ -71,5 +71,5 @@ module.exports = {
             }).catch();
         }).catch();
         */
-    }
-};
+  }
+}

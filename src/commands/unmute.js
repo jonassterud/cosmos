@@ -1,12 +1,12 @@
 // Command
 module.exports = {
-	name: 'unmute',
-    description: '\:loud_sound: Unmute a user!',
-    args: true,
-    usage: '<user mention>',
-	execute(message, args) {
-        message.channel.send("Under construction..");
-        /*
+  name: 'unmute',
+  description: '\:loud_sound: Unmute a user!',
+  args: true,
+  usage: '<user mention>',
+  execute (message, args) {
+    message.channel.send('Under construction..')
+    /*
         // Variables:
         const member = message.mentions.members.first();
         const reason = args.splice(1).join(' ');
@@ -17,8 +17,8 @@ module.exports = {
 
         // Execute:
         //...
-        
+
         return message.channel.send("\:mute: Unmuted <@" + member.user.id + ">" + (reason.length > 0 ? " for " + reason : "") + "!");
         */
-    }
-};
+  }
+}

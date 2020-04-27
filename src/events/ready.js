@@ -1,8 +1,8 @@
 module.exports = async (client) => {
-    // Create data:
-    if (!fs.existsSync('./data.json')) fs.writeFileSync('./data.json', '{}');
-    let data = JSON.parse(fs.readFileSync('./data.json'));
-    /* Replace this with a createprofile-like command for each user
+  // Create data:
+  if (!fs.existsSync('./data.json')) fs.writeFileSync('./data.json', '{}')
+  const data = JSON.parse(fs.readFileSync('./data.json'))
+  /* Replace this with a createprofile-like command for each user
     client.guilds.cache.tap(guild => {
         if (!data.hasOwnProperty(guild.id)) data[guild.id] = {};
         if (!data[guild.id].hasOwnProperty('users')) data[guild.id]['users'] = {};
@@ -13,10 +13,10 @@ module.exports = async (client) => {
     });
     */
 
-    // Write data:
-    fs.writeFileSync('./data.json', JSON.stringify(data));
+  // Write data:
+  fs.writeFileSync('./data.json', JSON.stringify(data))
 
-    // Other:
-    client.logger.ready("Online!");
-    client.user.setActivity(secret.prefix + "help", {type: "LISTENING"}); // Example: Listening to ?help
+  // Other:
+  client.logger.ready('Online!')
+  client.user.setActivity(secret.prefix + 'help', { type: 'LISTENING' }) // Example: Listening to ?help
 }
