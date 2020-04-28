@@ -2,7 +2,7 @@
     "name": "cosmos",
     "version": "1.0.0",
     "description": "![Image](https://i.ibb.co/dLp1FSX/Untitled.png)",
-    "main": "src/main.js",
+    "main": "src/index.js",
     "scripts": {
         "dev:server": "nodemon -q .",
         "dev:lint": "eslint . --fix"
@@ -12,7 +12,7 @@
         "url": "git+https://github.com/jonassterud/Cosmos.git"
     },
     "author": "",
-    "license": "ISC",
+    "license": "SEE LICENSE IN LICENSE",
     "bugs": {
         "url": "https://github.com/jonassterud/Cosmos/issues"
     },

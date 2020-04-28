@@ -1,11 +1,11 @@
 // Command
 module.exports = {
-  name: 'raffle',
-  description: '\:tada: Create giveaways!',
-  args: true,
-  usage: '<hh:mm:ss> <item>',
-  execute (message, args) {
-    message.channel.send('Under construction..')
+    name: 'raffle',
+    description: '\:tada: Create giveaways!',
+    args: true,
+    usage: '<hh:mm:ss> <item>',
+    execute (message, args) {
+        message.channel.send('Under construction..');
     /*
         const guild = message.guild.id;
         const auth = message.author.id;
@@ -71,5 +71,5 @@ module.exports = {
             }).catch();
         }).catch();
         */
-  }
-}
+    }
+};

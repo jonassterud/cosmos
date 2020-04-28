@@ -1,12 +1,12 @@
 // Command
 module.exports = {
-  name: 'mute',
-  description: '\:mute: Mute a user!',
-  args: true,
-  usage: '<user mention> <reason?>',
-  execute (message, args) {
-    message.channel.send('Under construction..')
-    /*
+    name: 'mute',
+    description: '\:mute: Mute a user!',
+    args: true,
+    usage: '<user mention> <reason?>',
+    execute (message, args) {
+        message.channel.send('Under construction..');
+        /*
         // Variables:
         const member = message.mentions.members.first();
         const reason = args.splice(1).join(' ');
@@ -20,5 +20,5 @@ module.exports = {
 
         message.channel.send("\:mute: Muted <@" + member.user.id + ">" + (reason.length > 0 ? " for " + reason : "") + "!");
         */
-  }
-}
+    }
+};
