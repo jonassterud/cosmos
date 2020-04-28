@@ -34,7 +34,7 @@
         "no-undef": 0,
         "arrow-parens": ["error", "as-needed"],
         "prefer-arrow-callback": ["error", {
-            "allowedNamedFunctions": true
+            "allowNamedFunctions": true
         }],
         "comma-spacing": ["error", {
             "before": false,

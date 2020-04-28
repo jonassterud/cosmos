@@ -9,7 +9,7 @@ module.exports = {
             url: 'https://pixabay.com/api/?key=' + process.env.PIXABAY + '&q=' + args.join('+').toLowerCase() + '&image_type=photo',
             json: true
         },
-        function (e, r, body) {
+        (e, r, body) => {
             // Check for errors:
             if(e) return message.channel.send("\:no_entry: Wasn't able to retrieve any images, <@" + message.author.id + '>!');
             if(!body.hits.length) return message.channel.send('\:no_entry: No images were found, <@' + message.author.id + '>!');

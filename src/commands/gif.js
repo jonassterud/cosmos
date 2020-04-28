@@ -9,7 +9,7 @@ module.exports = {
             url: 'http://api.giphy.com/v1/gifs/search?api_key=' + process.env.GIPHY + '&q=' + args.join('+').toLowerCase() + '&limit=15',
             json: true
         },
-        function (e, r, body) {
+        (e, r, body) => {
             // Check for errors:
             if(e) return message.channel.send("\:no_entry: Wasn't able to retrieve any GIFs, <@" + message.author.id + '>!');
             if(!body.data.length) return message.channel.send('\:no_entry: No GIFs were found, <@' + message.author.id + '>!');

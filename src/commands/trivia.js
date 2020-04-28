@@ -21,7 +21,7 @@ module.exports = {
         request({
             url: 'https://opentdb.com/api.php?amount=1&difficulty=medium&type=multiple',
             json: true
-        }, function (e, r, body) {
+        }, (e, r, body) => {
             // Check for errors:
             if(e) return message.channel.send("\:no_entry: Wasn't able to retrieve any questions, <@" + message.author.id + '>!');
             if(!body.results.length) return message.channel.send('\:no_entry: No questions were found, <@' + message.author.id + '>!');
