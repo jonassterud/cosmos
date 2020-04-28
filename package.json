@@ -4,8 +4,8 @@
     "description": "![Image](https://i.ibb.co/dLp1FSX/Untitled.png)",
     "main": "src/main.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node ."
+        "dev:server": "nodemon -q .",
+        "dev:lint": "eslint . --fix"
     },
     "repository": {
         "type": "git",
@@ -25,7 +25,16 @@
         "dotenv": "^8.2.0",
         "googleapis": "^47.0.0",
         "moment": "^2.24.0",
+        "nodemon": "^2.0.3",
         "request": "^2.88.2",
         "ytdl-core": "^2.1.1"
+    },
+    "devDependencies": {
+        "eslint": "^6.8.0",
+        "eslint-config-standard": "^14.1.1",
+        "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^4.2.1",
+        "eslint-plugin-standard": "^4.0.1"
     }
 }
