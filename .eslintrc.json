@@ -27,6 +27,7 @@
         "comma-dangle": ["error", "never"],
         "no-dupe-else-if": "error",
         "no-duplicate-case": "error",
+        "no-unused-vars": "warn",
         "no-unreachable": "error",
         "use-isnan": "error",
         "space-before-blocks": "error",
