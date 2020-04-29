@@ -3,7 +3,7 @@ module.exports = {
     name: 'kick',
     description: '\:pick: Kick a user!',
     args: true,
-    usage: '<user mention> <reason?>',
+    usage: '<user> (reason?)',
     execute (message, args) {
     // Variables:
         const member = message.mentions.members.first();

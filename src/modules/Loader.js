@@ -1,5 +1,5 @@
 // Packages:
-const { promisify } = require('util');
+const {promisify} = require('util');
 const readdir = promisify(require('fs').readdir);
 
 // Load modules into client:

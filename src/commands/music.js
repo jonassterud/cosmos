@@ -4,9 +4,9 @@ const queue = {};
 // Command
 module.exports = {
     name: 'music',
-    description: '\:musical_note: Listen to the audio from a YouTube video in your current voice channel!',
+    description: '\:musical_note: Listen to music from a YouTube video trough a voice channel!',
     args: true,
-    usage: '<YouTube video, playlist or query | skip [amount] | queue | pause | resume | wrongsong | reset>',
+    usage: '<URL | query | skip (amount?) | queue | pause | resume | wrongsong | reset>',
     execute (message, args) {
         // Variables:
         const voice = message.member.voice.channel;

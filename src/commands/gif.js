@@ -3,7 +3,7 @@ module.exports = {
     name: 'gif',
     description: '\:frame_photo: Search for a GIF!',
     args: true,
-    usage: '<search query>',
+    usage: '<query>',
     execute (message, args) {
         request({
             url: 'http://api.giphy.com/v1/gifs/search?api_key=' + process.env.GIPHY + '&q=' + args.join('+').toLowerCase() + '&limit=15',

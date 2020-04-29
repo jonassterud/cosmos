@@ -1,9 +1,9 @@
 // Command
 module.exports = {
     name: 'send',
-    description: '\:money_with_wings: Send money to another user!',
+    description: '\:money_with_wings: Send credits to another user!',
     args: true,
-    usage: '<credit amount> <user mention>',
+    usage: '<credit amount> <user>',
     execute (message, args) {
         // Variables:
         const member = message.mentions.members.first();

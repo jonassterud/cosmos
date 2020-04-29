@@ -3,7 +3,7 @@ module.exports = {
     name: 'unban',
     description: '\:pensive: Unban a user!',
     args: true,
-    usage: '<username>',
+    usage: '<username + tag | user id>',
     execute (message, args) {
         // Guards:
         if(!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send("\:no_entry: You can't unban that person, <@" + message.author.id + ">!");

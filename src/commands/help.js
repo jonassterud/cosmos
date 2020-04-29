@@ -1,11 +1,11 @@
 // Command
 module.exports = {
     name: 'help',
-    description: '\:closed_book: Get help!',
+    description: '\:closed_book: See all available commands or get help on a specific command!',
     args: false,
-    usage: '<command name?>',
+    usage: '(command?)',
     execute (message, args) {
-    // Variables
+        // Variables
         const embed = new Discord.MessageEmbed();
 
         // Execute:
@@ -13,7 +13,7 @@ module.exports = {
             // Get command:
             const command = client.commands.get(args[0].toLowerCase());
 
-            // Check for errors:
+            // Guards:
             if(!command) return message.channel.send("\:no_entry: Command wasn't found, <@" + message.author.id + '>!');
 
             // Edit embed:

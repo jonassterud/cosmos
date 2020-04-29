@@ -3,7 +3,7 @@ module.exports = {
     name: 'image',
     description: '\:frame_photo: Search for an image!',
     args: true,
-    usage: '<search query>',
+    usage: '<query>',
     execute (message, args) {
         request({
             url: 'https://pixabay.com/api/?key=' + process.env.PIXABAY + '&q=' + args.join('+').toLowerCase() + '&image_type=photo',

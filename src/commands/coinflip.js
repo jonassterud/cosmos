@@ -4,9 +4,9 @@ const bets = [];
 // Command
 module.exports = {
     name: 'coinflip',
-    description: '\:dollar: Make a coinflip bet!',
+    description: '\:dollar: Make a coinflip bet with the bot or against another user!',
     args: true,
-    usage: '<credit amount> <user mention?>',
+    usage: '<credit amount> (user?)',
     execute (message, args) {
     // Variables:
         const member = message.mentions.members.first();

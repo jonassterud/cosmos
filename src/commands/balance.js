@@ -1,9 +1,9 @@
 // Command
 module.exports = {
     name: 'balance',
-    description: '\:moneybag: balance!',
+    description: '\:moneybag: Check the credit balance of yourself or another user!',
     args: false,
-    usage: '<user mention?>',
+    usage: '(user?)',
     execute (message) {
         // Variables:
         const user = ((message.mentions.users.first() === undefined) ? message.author : message.mentions.users.first());

@@ -3,7 +3,7 @@ module.exports = {
     name: 'info',
     description: '\:mag: Get info about a user!',
     args: true,
-    usage: '<user mention>',
+    usage: '<user>',
     execute (message) {
     // Variables:
         const member = message.mentions.members.first();
