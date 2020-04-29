@@ -19,5 +19,5 @@ module.exports = async client => {
 
     // Other:
     client.logger.ready('Online!');
-    client.user.setActivity(secret.prefix + 'help', { type: 'LISTENING' }); // Example: Listening to ?help
+    client.user.setActivity(config.prefix + 'help', { type: 'LISTENING' }); // Example: Listening to ?help
 };

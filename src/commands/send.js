@@ -10,7 +10,7 @@ module.exports = {
         const amount = parseFloat(args[0]);
         const data = JSON.parse(fs.readFileSync('./data.json'));
 
-        // Check for errors:
+        // Guards:
         if(isNaN(amount)) return message.channel.send('\:no_entry: You need to specify the amount of credits you want to bet, <@' + message.author.id + '>!');
         if(amount < 0) return message.channel.send("\:no_entry: Can't bet a negative amount of credits, <@" + message.author.id + '>!');
         if(amount > data[message.guild.id].users[message.author.id].credits) return message.channel.send("\:moneybag: You don't have enough credits, <@" + message.author.id + '>!');

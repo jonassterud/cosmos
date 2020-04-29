@@ -1,6 +1,6 @@
 // Get libraries
 require('dotenv').config();
-global.secret = require('./config.json'); // Secret data
+global.config = require('./config.json'); // Secret data
 global.fs = require('fs'); // Node.js package - file system
 global.Discord = require('discord.js'); // Node.js package - Discord API
 global.request = require('request'); // Node.js package - request website data

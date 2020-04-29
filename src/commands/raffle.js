@@ -1,21 +1,23 @@
 // Command
 module.exports = {
     name: 'raffle',
-    description: '\:tada: Create giveaways!',
+    description: '\:tada: Create giveaways! (The creator of the giveaway will not be able to participate).',
     args: true,
     usage: '<hh:mm:ss> <item>',
     execute (message, args) {
         // Guards:
-        if(!/^\d\d:\d\d:\d\d$/m.test(args[0]) || args.length <= 1) return;
-        if(!args[1]) return;
+        if(!/^\d\d:\d\d:\d\d$/m.test(args[0])) return message.channel.send('\:no_entry: Something went wrong. Type `' + config.prefix + 'help ' + this.name + '`<@' + message.author.id + '>!');
+        if(!args[1]) return message.channel.send('\:no_entry: You need to specify what item you are giving away, <@' + message.author.id + '>!');
 
-        // Create raffle:
+        // Variables:
         const timeArray = args[0].split(':');
         let timeText = ''; // Format text nicely: plural numbers, comma/and, etc. -> bad solution?
-        if(parseInt(timeArray[0])) timeText += parseInt(timeArray[0]) + (parseInt(timeArray[0]) > 1 ? ' hours' : ' hour') + (!parseInt(timeArray[2]) ? (!parseInt(timeArray[1]) ? '.' : ' and ') : ', ');
-        if(parseInt(timeArray[1])) timeText += parseInt(timeArray[1]) + (parseInt(timeArray[1]) > 1 ? ' minutes' : ' minute') + (!parseInt(timeArray[2]) ? '.' : ' and ');
-        if(parseInt(timeArray[2])) timeText += parseInt(timeArray[2]) + (parseInt(timeArray[2]) > 1 ? ' seconds.' : ' second.');
+        if(parseInt(timeArray[0])) timeText += parseInt(timeArray[0]) + ' hour' + (parseInt(timeArray[0]) > 1 ? 's' : '') + (!parseInt(timeArray[2]) ? (!parseInt(timeArray[1]) ? '.' : ' and ') : ', ');
+        if(parseInt(timeArray[1])) timeText += parseInt(timeArray[1]) + ' minute' + (parseInt(timeArray[1]) > 1 ? 's' : '') + (!parseInt(timeArray[2]) ? '.' : ' and ');
+        if(parseInt(timeArray[2])) timeText += parseInt(timeArray[2]) + ' second' + (parseInt(timeArray[2]) > 1 ? 's.' : '.');
         const item = args.splice(1).join(' ');
+
+        // Create embed:
         const entryEmbed = new Discord.MessageEmbed()
             .setTitle('\:tada: Raffle - ' + item)
             .setDescription(
@@ -27,6 +29,7 @@ module.exports = {
             .setColor('#ff0000')
             .setTimestamp(new Date());
 
+        // Send embed and wait for reactions:
         message.channel.send(entryEmbed).then(e => {
             // Create collector:
             const filter = (_, user) => user.id != message.author.id;
@@ -34,12 +37,13 @@ module.exports = {
             const collector = e.createReactionCollector(filter, {time: waitTime});
             let contestants = [];
 
-            // Collector events:
+            // On reaction:
             collector.on('collect', (_, user) => {
                 const id = user.id;
                 if(!contestants.includes(id)) contestants.push(id);
             });
 
+            // On raffle end:
             collector.on('end', () => {
                 const winner = contestants[Math.floor(Math.random() * contestants.length)];
                 const endEmbed = new Discord.MessageEmbed()
@@ -48,7 +52,7 @@ module.exports = {
                     .setColor('#ff0000')
                     .setTimestamp(new Date());
 
-                message.channel.send(endEmbed);
+                return message.channel.send(endEmbed);
             });
         });
     }

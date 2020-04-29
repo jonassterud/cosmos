@@ -10,7 +10,6 @@ module.exports = {
 
         // Execute:
         if(args.length) {
-            // Get command:
             const command = client.commands.get(args[0].toLowerCase());
 
             // Guards:
@@ -19,12 +18,12 @@ module.exports = {
             // Edit embed:
             embed.setTitle(command.name);
             embed.addField('Description', command.description);
-            embed.addField('Format', '`' + secret.prefix + command.name + (command.usage ? ' ' + command.usage : '') + '`');
+            embed.addField('Format', '`' + config.prefix + command.name + (command.usage ? ' ' + command.usage : '') + '`');
         } else {
             // Edit embed:
             embed.setTitle('\:closed_book: Command list');
             client.commands.each(command => {
-                embed.addField(secret.prefix + command.name + ' ' + (command.usage ? command.usage : ''), command.description);
+                embed.addField(config.prefix + command.name + ' ' + (command.usage ? command.usage : ''), command.description);
             });
         }
 

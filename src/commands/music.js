@@ -11,13 +11,13 @@ module.exports = {
         // Variables:
         const voice = message.member.voice.channel;
 
-        // Check voice:
+        // Guard:
         if(!voice) return message.channel.send('\:no_entry: Please join a voicechannel before executing the command, <@' + message.author.id + '>!');
 
         // Check argument:
         switch(args[0].toLowerCase()) {
             case 'pause': {
-            // Guards:
+                // Guards:
                 if(!queue[message.guild.id] || !queue[message.guild.id].dispatcher) return message.channel.send("\:no_entry: I'm not playing anything yet, <@" + message.author.id + '>!');
                 if(queue[message.guild.id].dispatcher.paused) return message.channel.send("\:question: I'm already paused, <@" + message.author.id + '>!');
 
@@ -27,7 +27,7 @@ module.exports = {
                 break;
             }
             case 'resume': {
-            // Guards:
+                // Guards:
                 if(!queue[message.guild.id] || !queue[message.guild.id].dispatcher) return message.channel.send("\:no_entry: I'm not playing anything yet, <@" + message.author.id + '>!');
                 if(!queue[message.guild.id].dispatcher.paused) return message.channel.send("\:question: I'm not paused, <@" + message.author.id + '>!');
 
@@ -37,7 +37,7 @@ module.exports = {
                 break;
             }
             case 'skip': {
-            // Guards:
+                // Guard:
                 if(!queue[message.guild.id] || !queue[message.guild.id].connection) return message.channel.send("\:no_entry: I'm not playing anything yet, <@" + message.author.id + '>!');
 
                 // Skip:
@@ -54,7 +54,7 @@ module.exports = {
                 break;
             }
             case 'reset': {
-            // Guards:
+                // Guard:
                 if(!queue[message.guild.id]) return message.channel.send('\:no_entry: There is nothing to reset, <@' + message.author.id + '>!');
 
                 // Reset:
@@ -63,7 +63,7 @@ module.exports = {
                 break;
             }
             case 'wrongsong': {
-            // Guards:
+                // Guard:
                 if(!queue[message.guild.id] || !queue[message.guild.id].urls) return message.channel.send('\:no_entry: Queue is empty, <@' + message.author.id + '>!');
 
                 // Remove last song:
@@ -77,7 +77,7 @@ module.exports = {
                 break;
             }
             case 'queue': {
-            // Guards:
+                // Guard:
                 if(!queue[message.guild.id] || !queue[message.guild.id].urls) return message.channel.send('\:no_entry: Queue is empty, <@' + message.author.id + '>!');
 
                 // Create embed:
@@ -100,7 +100,7 @@ module.exports = {
                         });
                     }
                 })().then(() => {
-                // Show remaining songs:
+                    // Show remaining songs:
                     const remaining = queue[message.guild.id].urls.length - maxSize;
                     if(remaining > 0) embed.addField('...', 'and ' + remaining + ' more!');
                     message.channel.send(embed);
@@ -108,7 +108,7 @@ module.exports = {
                 break;
             }
             default: {
-            // Create queue:
+                // Create queue:
                 if(!queue[message.guild.id]) {
                     queue[message.guild.id] = {
                         urls: [],
@@ -130,7 +130,7 @@ module.exports = {
                         q: args.join(' '),
                         key: process.env.YOUTUBE
                     }).then(response => {
-                    // Guards:
+                        // Guard:
                         if(!response.data.items.length) return message.channel.send('\:thinking: No songs were found, <@' + message.author.id + '>!');
 
                         // Add to queue:
@@ -153,7 +153,7 @@ module.exports = {
                             maxResults: 50,
                             pageToken: nextPageToken
                         }).then(response => {
-                        // Add videos from current page:
+                            // Add videos from current page:
                             response.data.items.forEach(item => {
                                 queue[message.guild.id].urls.push('www.youtube.com/watch?v=' + item.snippet.resourceId.videoId);
                             });

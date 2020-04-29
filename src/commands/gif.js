@@ -10,7 +10,7 @@ module.exports = {
             json: true
         },
         (e, r, body) => {
-            // Check for errors:
+            // Guards:
             if(e) return message.channel.send("\:no_entry: Wasn't able to retrieve any GIFs, <@" + message.author.id + '>!');
             if(!body.data.length) return message.channel.send('\:no_entry: No GIFs were found, <@' + message.author.id + '>!');
 

@@ -6,8 +6,8 @@ module.exports = async (client, message) => {
     */
 
     // Split command and arguments:
-    if(!message.content.startsWith(secret.prefix) || message.author.bot) return;
-    const args = message.content.slice(secret.prefix.length).split(/ +/);
+    if(!message.content.startsWith(config.prefix) || message.author.bot) return;
+    const args = message.content.slice(config.prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();
     if(!client.commands.has(commandName)) return;
 
@@ -15,7 +15,7 @@ module.exports = async (client, message) => {
     const command = client.commands.get(commandName);
     if(command.args && !args.length) {
         let reply = 'Missing arguments!';
-        if(command.usage) reply += '\nFormat: `' + secret.prefix + command.name + ' ' + command.usage + '`';
+        if(command.usage) reply += '\nFormat: `' + config.prefix + command.name + ' ' + command.usage + '`';
         message.channel.send(reply);
     }
 
