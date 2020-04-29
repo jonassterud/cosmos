@@ -29,6 +29,7 @@
         "no-duplicate-case": "error",
         "no-unreachable": "error",
         "use-isnan": "error",
+        "space-before-blocks": "error",
         "no-eval": "error",
         "no-var": "error",
         "no-undef": 0,

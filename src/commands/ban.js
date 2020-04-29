@@ -5,7 +5,7 @@ module.exports = {
     args: true,
     usage: '<user mention> <reason?>',
     execute (message, args) {
-    // Variables:
+        // Variables:
         const member = message.mentions.members.first();
         const reason = args.splice(1).join(' ');
 

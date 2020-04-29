@@ -5,8 +5,6 @@ module.exports = {
     args: true,
     usage: '<user mention>',
     execute (message, args) {
-        message.channel.send('Under construction..');
-    /*
         // Variables:
         const member = message.mentions.members.first();
         const reason = args.splice(1).join(' ');
@@ -16,9 +14,15 @@ module.exports = {
         if(!message.member.hasPermission('ADMINISTRATOR')) return message.channel.send("\:no_entry: You can't unmute that person, <@" + message.author.id + ">!");
 
         // Execute:
-        //...
+        message.guild.channels.cache.each(channel => {
+            channel.overwritePermissions([
+                {
+                    id: member,
+                    allow: ['SEND_MESSAGES', 'SPEAK']
+                }
+            ], reason);
+        });
 
         return message.channel.send("\:mute: Unmuted <@" + member.user.id + ">" + (reason.length > 0 ? " for " + reason : "") + "!");
-        */
     }
 };

@@ -1,8 +1,9 @@
 module.exports = async (client, message) => {
-    if(message.author.bot) return;
+    /*
     const data = JSON.parse(fs.readFileSync('./data.json'));
     data[message.guild.id].users[message.author.id].credits++;
     fs.writeFileSync('./data.json', JSON.stringify(data));
+    */
 
     // Split command and arguments:
     if(!message.content.startsWith(secret.prefix) || message.author.bot) return;
