@@ -4,7 +4,7 @@ module.exports = {
     description: '\:closed_book: See all available commands or get help on a specific command!',
     args: false,
     usage: '(command?)',
-    execute (message, args) {
+    execute(message, args) {
         // Variables
         const embed = new Discord.MessageEmbed();
 

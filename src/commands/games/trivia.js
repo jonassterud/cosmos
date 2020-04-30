@@ -17,7 +17,7 @@ module.exports = {
     description: '\:thinking: Answer trivia for a chance to win credits!',
     args: false,
     usage: '',
-    execute (message) {
+    execute(message) {
         request({
             url: 'https://opentdb.com/api.php?amount=1&difficulty=medium&type=multiple',
             json: true

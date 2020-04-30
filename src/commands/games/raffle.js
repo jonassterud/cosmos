@@ -4,7 +4,7 @@ module.exports = {
     description: '\:tada: Create giveaways! (The creator of the giveaway will not be able to participate).',
     args: true,
     usage: '<hh:mm:ss> <item>',
-    execute (message, args) {
+    execute(message, args) {
         // Guards:
         if(!/^\d\d:\d\d:\d\d$/m.test(args[0])) return message.channel.send('\:no_entry: Something went wrong. Type `' + config.prefix + 'help ' + this.name + '`, <@' + message.author.id + '>!');
         if(!args[1]) return message.channel.send('\:no_entry: You need to specify what item you are giving away, <@' + message.author.id + '>!');

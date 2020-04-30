@@ -4,7 +4,7 @@ module.exports = {
     description: '\:frame_photo: Search for an image!',
     args: true,
     usage: '<query>',
-    execute (message, args) {
+    execute(message, args) {
         request({
             url: 'https://pixabay.com/api/?key=' + process.env.PIXABAY + '&q=' + args.join('+').toLowerCase() + '&image_type=photo',
             json: true

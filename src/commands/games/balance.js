@@ -4,7 +4,7 @@ module.exports = {
     description: '\:moneybag: Check the credit balance of yourself or another user!',
     args: false,
     usage: '(user?)',
-    execute (message) {
+    execute(message) {
         // Variables:
         const user = message.mentions.users.first() || message.author;
         const credits = JSON.parse(fs.readFileSync('./data.json'))[message.guild.id].users[user.id].credits;
