@@ -1,10 +1,9 @@
 // Packages:
-const {promisify} = require('util');
-const readdir = promisify(require('fs').readdir);
+const readdirSync = require('fs').readdirSync;
 
 // Load modules into client:
 exports.registerModules = async client => {
-    const moduleFiles = await readdir('./modules/');
+    const moduleFiles = readdirSync('./modules/');
     moduleFiles.forEach(file => {
         const moduleName = file.split('.')[0];
         if(moduleName[0] === moduleName[0].toLowerCase() || moduleName === 'Loader') return;
@@ -14,21 +13,25 @@ exports.registerModules = async client => {
 
 // Load commands into client:
 exports.registerCommands = async client => {
-    const cmdFiles = await readdir('./commands/');
-    client.logger.log(`Loading ${cmdFiles.length} commands`);
-    const registeredCommands = [];
-    cmdFiles.forEach(file => {
-        const commandName = file.split('.')[0];
-        const props = require(`../commands/${file}`);
-        client.commands.set(props.name, props);
-        registeredCommands.push(commandName);
+    const cmdFolders = readdirSync('./commands/');
+    let registeredCommands = [];
+    cmdFolders.forEach(folder => {
+        const cmdFiles = readdirSync('./commands/' + folder);
+        client.logger.log(`Loading ${cmdFiles.length} commands`); // Too much?
+        cmdFiles.forEach(file => {
+            const commandName = file.split('.')[0];
+            const props = require(`../commands/${folder}/${file}`);
+            client.commands.set(props.name, props);
+            registeredCommands.push(commandName);
+        });
     });
     client.logger.log(`Loaded: [${registeredCommands.join(' ')}]`);
+
 };
 
 // Load events into client:
 exports.registerEvents = async client => {
-    const eventFiles = await readdir('./events/');
+    const eventFiles = readdirSync('./events/');
     client.logger.log(`Loading ${eventFiles.length} events`);
 
     const registeredEvents = [];

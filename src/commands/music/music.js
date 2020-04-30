@@ -189,7 +189,8 @@ module.exports = {
                 queue[message.guild.id].stream = ytdl(queue[message.guild.id].urls[0], {
                     quality: 'highestaudio',
                     //filter: 'audioonly', // Doesn't work with (some) live videos!
-                    highWaterMark: 1024 * 1024 * 30 // 30mb
+                    highWaterMark: 1024 * 1024 * 30, // 30mb
+                    liveBuffer: 1000 * 60 * 2 // 2 minutes!
                 });
 
                 // Play stream:
