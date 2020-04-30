@@ -119,7 +119,7 @@ module.exports = {
                     };
                 }
 
-                // Extract data from URL:
+                // Extract data (videoID and/or playlistID) from URL:
                 const regexResult = /www\.youtube\.com\/(?:watch\?v=([^&]+)|playlist\?)(?:&*list=([^&]+))*/.exec(args[0]);
 
                 // Add to queue based on URL type:
@@ -177,7 +177,7 @@ module.exports = {
             }
         }
 
-        // Functions:
+        // Play function:
         function play () {
             // Join channel:
             voice.join().then(connection => {
@@ -188,18 +188,16 @@ module.exports = {
                 // Download song:
                 queue[message.guild.id].stream = ytdl(queue[message.guild.id].urls[0], {
                     quality: 'highestaudio',
-                    filter: 'audioonly',
+                    //filter: 'audioonly', // Doesn't work with (some) live videos!
                     highWaterMark: 1024 * 1024 * 30 // 30mb
                 });
 
                 // Play stream:
                 queue[message.guild.id].dispatcher = connection.play(queue[message.guild.id].stream, {
                     highWaterMark: 1,
-                    bitrate: 'auto'
+                    bitrate: 'auto',
+                    volume: false
                 });
-
-                // Set volume:
-                queue[message.guild.id].dispatcher.setVolumeDecibels(-16);
 
                 // Finish event:
                 queue[message.guild.id].dispatcher.on('finish', () => {
