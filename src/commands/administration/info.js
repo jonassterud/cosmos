@@ -11,7 +11,7 @@ module.exports = {
             .setColor('#ff0000')
             .setTimestamp(new Date());
 
-        // Check for errors:
+        // Guard:
         if(!member || !message.guild.member(member.id)) return message.channel.send("\:no_entry: Wasn't able to find that person, <@" + message.author.id + '>!');
 
         // Edit embed:

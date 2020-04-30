@@ -6,7 +6,7 @@ module.exports = {
     usage: '(amount?)',
     execute(message, args) {
         // Guard:
-        if(!queue[message.guild.id] || !queue[message.guild.id].connection) return message.channel.send("\:no_entry: I'm not playing anything yet, <@" + message.author.id + '>!');
+        if(!queue[message.guild.id] || !queue[message.guild.id].connection) return message.channel.send("\:question: I'm not playing anything yet, <@" + message.author.id + '>!');
 
         // Skip:
         if(args[1] && /^\d+$/m.test(args[1])) {

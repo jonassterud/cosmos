@@ -1,9 +1,9 @@
 // Command
 module.exports = {
     name: 'add',
-    description: '\:musical_note: Listen to music from a YouTube video trough a voice channel!',
+    description: '\:notes: Listen to music from a YouTube video trough a voice channel!',
     args: true,
-    usage: '<Video | Playlist | Live>',
+    usage: '<video | playlist | live>',
     execute(message, args) {
         // Variables:
         const voice = message.member.voice.channel;
@@ -41,15 +41,12 @@ module.exports = {
                 queue[message.guild.id].urls.push(url);
                 if(!queue[message.guild.id].playing) play();
                 ytdl.getBasicInfo(url, (err, data) => {
-                    if(err) {
-                        message.channel.send('\:ok_hand: Added song based on your search query, <@' + message.author.id + '>!');
-                    } else {
-                        message.channel.send('\:ok_hand: Added ' + '"*' + data.title + '*"' + ' based on your search query, <@' + message.author.id + '>!');
-                    }
+                    if(err) message.channel.send('\:mag: Added song based on your search query, <@' + message.author.id + '>!');
+                    else message.channel.send('\:mag: Added ' + '"*' + data.title + '*"' + ' based on your search query, <@' + message.author.id + '>!');
                 });
             });
         } else if(regexResult[2]) { // Playlist
-            (function getItems (nextPageToken = '') {
+            (function getItems(nextPageToken='') {
                 youtube.playlistItems.list({
                     playlistId: args[0].match(/list=([^&]+)/)[1],
                     part: 'snippet',
@@ -66,9 +63,9 @@ module.exports = {
 
                     // Play:
                     if(!queue[message.guild.id].playing) play();
-                    message.channel.send('\:ok_hand: Added songs from the playlist to the queue, <@' + message.author.id + '>!');
+                    message.channel.send('\:mailbox: Added songs from the playlist to the queue, <@' + message.author.id + '>!');
                 }).catch(() => {
-                    return message.channel.send('\:thinking: Something went wrong, <@' + message.author.id + '>!');
+                    return message.channel.send('\:no_entry: Something went wrong, <@' + message.author.id + '>!');
                 });
             })();
         } else if(regexResult[1] && !regexResult[2]) { // Song

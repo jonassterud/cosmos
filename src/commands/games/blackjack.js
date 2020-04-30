@@ -60,12 +60,13 @@ function createEmbed (pl1Cards, pl2Cards, userUrl) {
 // Command
 module.exports = {
     name: 'blackjack',
-    description: '\:wave: Play blackjack against the bot!',
+    description: '\:slot_machine: Play blackjack against the bot!',
     args: true,
     usage: '<credit amount>',
     execute(message, args) {
-    // Check for errors:
+        // Guard:
         if(!/^[\d]+$/.test(args[0])) return message.channel.send('\:no_entry: Invalid input, <@' + message.author.id + '>!');
+
         // Variables:
         const bet = args[0];
         const emos = ['🏏', '🧍‍♂️'];
@@ -74,7 +75,9 @@ module.exports = {
         const playerCards = []; const dealerCards = [];
 
         // Check if user has appropriate credit count:
-        if(data[message.guild.id].users[message.author.id].credits < bet) return message.channel.send('\:no_entry: You do not have enough credits to make this bet, <@' + message.author.id + '>!');
+        if(data[message.guild.id].users[message.author.id].credits < bet) {
+            return message.channel.send('\:question: You do not have enough credits to make this bet, <@' + message.author.id + '>!');
+        }
 
         // Deduct credits:
         data[message.guild.id].users[message.author.id].credits -= bet;
@@ -85,12 +88,9 @@ module.exports = {
         playerCards.push(deck.pop());
         playerCards.push(deck.pop());
 
-        while(getJackSum(dealerCards) < 17) {
-            dealerCards.push(deck.pop());
-        }
+        while(getJackSum(dealerCards) < 17) dealerCards.push(deck.pop());
 
         const embed = createEmbed(dealerCards, playerCards, message.author.avatarUrl);
-
         message.channel.send(embed).then(msg => {
             handleGame(msg);
         }).catch();

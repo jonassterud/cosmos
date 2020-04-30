@@ -5,7 +5,7 @@ module.exports = {
     args: false,
     usage: '',
     execute(message) {
-        if(!queue[message.guild.id] || !queue[message.guild.id].urls) return message.channel.send('\:no_entry: Queue is empty, <@' + message.author.id + '>!');
+        if(!queue[message.guild.id] || !queue[message.guild.id].urls) return message.channel.send('\:question: Queue is empty, <@' + message.author.id + '>!');
 
         // Create embed:
         const embed = new Discord.MessageEmbed()

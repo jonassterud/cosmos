@@ -6,7 +6,7 @@ module.exports = {
     usage: '',
     execute(message) {
         // Guard:
-        if(!queue[message.guild.id]) return message.channel.send('\:no_entry: There is nothing to reset, <@' + message.author.id + '>!');
+        if(!queue[message.guild.id]) return message.channel.send('\:question: There is nothing to reset, <@' + message.author.id + '>!');
 
         // Reset:
         queue[message.guild.id].urls = [];

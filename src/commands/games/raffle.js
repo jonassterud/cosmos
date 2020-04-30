@@ -7,7 +7,7 @@ module.exports = {
     execute(message, args) {
         // Guards:
         if(!/^\d\d:\d\d:\d\d$/m.test(args[0])) return message.channel.send('\:no_entry: Something went wrong. Type `' + config.prefix + 'help ' + this.name + '`, <@' + message.author.id + '>!');
-        if(!args[1]) return message.channel.send('\:no_entry: You need to specify what item you are giving away, <@' + message.author.id + '>!');
+        if(!args[1]) return message.channel.send('\:question: You need to specify what item you are giving away, <@' + message.author.id + '>!');
 
         // Variables:
         const timeArray = args[0].split(':');

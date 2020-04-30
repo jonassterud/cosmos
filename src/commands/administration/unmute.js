@@ -15,12 +15,7 @@ module.exports = {
 
         // Execute:
         message.guild.channels.cache.each(channel => {
-            channel.overwritePermissions([
-                {
-                    id: member,
-                    allow: ['SEND_MESSAGES', 'SPEAK']
-                }
-            ], reason);
+            channel.overwritePermissions([{id: member, allow: ['SEND_MESSAGES', 'SPEAK']}], reason);
         });
 
         return message.channel.send("\:mute: Unmuted <@" + member.user.id + ">" + (reason.length > 0 ? " for " + reason : "") + "!");
