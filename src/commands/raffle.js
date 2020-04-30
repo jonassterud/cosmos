@@ -6,7 +6,7 @@ module.exports = {
     usage: '<hh:mm:ss> <item>',
     execute (message, args) {
         // Guards:
-        if(!/^\d\d:\d\d:\d\d$/m.test(args[0])) return message.channel.send('\:no_entry: Something went wrong. Type `' + config.prefix + 'help ' + this.name + '`<@' + message.author.id + '>!');
+        if(!/^\d\d:\d\d:\d\d$/m.test(args[0])) return message.channel.send('\:no_entry: Something went wrong. Type `' + config.prefix + 'help ' + this.name + '`, <@' + message.author.id + '>!');
         if(!args[1]) return message.channel.send('\:no_entry: You need to specify what item you are giving away, <@' + message.author.id + '>!');
 
         // Variables:
