@@ -1,7 +1,7 @@
 ![Image](https://i.ibb.co/dLp1FSX/Untitled.png)
 
 ## About
-Cosmos is a Discord bot made with Node.js. It mainly focuses on entertainment type commands, but it also supports some administration commands (`ban`, `kick`, `mute`, etc.). Cosmos also supports playing music from YouTube. It can handle both individual videos and playlists (and even live videos!). You can also search for videos trough Cosmos. It also includes a credit system (*NOT FINISHED*). You can use the credits you earn over time on different minigames (`blackjack`, `coinflip`, `trivia`, etc.). Type `?help` to get started!
+Cosmos is an open source Discord bot made with Node.js. It mainly focuses on entertainment type commands, but it also supports some administration commands (`ban`, `kick`, `mute`, etc.). Cosmos also supports playing music from YouTube. It can handle both individual videos and playlists (and even live videos!). You can also search for videos trough Cosmos. It also includes a credit system (*NOT FINISHED*). You can use the credits you earn over time on different minigames (`blackjack`, `coinflip`, `trivia`, etc.). Type `?help` to get started!
 
 ## Links
 [Invite me!]() (*Coming Soon*)  
