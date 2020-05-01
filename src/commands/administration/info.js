@@ -12,7 +12,7 @@ module.exports = {
             .setTimestamp(new Date());
 
         // Guard:
-        if(!member || !message.guild.member(member.id)) return message.channel.send("\:no_entry: Wasn't able to find that person, <@" + message.author.id + '>!');
+        if(!member || !message.guild.member(member.id)) return message.channel.send(`\:no_entry: Wasn't able to find that person, <@${message.author.id}>!`);
 
         // Edit embed:
         embed.setTitle(member.user.tag);

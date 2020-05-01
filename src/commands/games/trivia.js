@@ -21,10 +21,10 @@ module.exports = {
         request({
             url: 'https://opentdb.com/api.php?amount=1&difficulty=medium&type=multiple',
             json: true
-        }, (e, r, body) => {
-            // Check for errors:
-            if(e) return message.channel.send("\:no_entry: Wasn't able to retrieve any questions, <@" + message.author.id + '>!');
-            if(!body.results.length) return message.channel.send('\:no_entry: No questions were found, <@' + message.author.id + '>!');
+        }, (err, _, body) => {
+            // Guards:
+            if(err) return message.channel.send(`\:no_entry: Wasn't able to retrieve any questions, <@${message.author.id}>!`);
+            if(!body.results.length) return message.channel.send(`\:no_entry: No questions were found, <@${message.author.id}>!`);
 
             // Variables:
             const aps = /&#039;/g;
@@ -41,7 +41,7 @@ module.exports = {
             // Randomize questions:
             answers = shuffle(answers);
             answers.forEach((ans, i) => {
-                optionString += (ans + ' ' + emos[i] + ' \n');
+                optionString += `${ans} ${emos[i]}\n`;
                 if(ans == body.results[0].correct_answer) emoAns = emos[i];
             });
 
@@ -50,32 +50,35 @@ module.exports = {
                 .setTitle('Trivia! Respond by reacting to the correct answer')
                 .setThumbnail(message.author.avatarURL)
                 .setColor('#ff0000')
-                .addField('Category:', ' ' + body.results[0].category.replace(aps, "'").replace(quot, '"'))
-                .addField('Question:', ' ' + body.results[0].question.replace(aps, "'").replace(quot, '"'))
-                .addField('Options:', ' ' + optionString.replace(aps, "'").replace(quot, '"'))
+                .addField('Category:', ` ${body.results[0].category.replace(aps, '\'').replace(quot, '\'')}`)
+                .addField('Question:', ` ${body.results[0].question.replace(aps, '\'').replace(quot, '\'')}`)
+                .addField('Options:', ` ${optionString.replace(aps, '\'').replace(quot, '\'')}`)
                 .setTimestamp(new Date());
 
-            // Send embed with reactions:
-            message.channel.send(embed).then(msg => {
-                msg.react(emos[0]).then(() => {
-                    msg.react(emos[1]).then(() => {
-                        msg.react(emos[2]).then(() => {
-                            msg.react(emos[3]).then(() => {
-                                msg.awaitReactions((reaction, user) => user.id == message.author.id && emos.includes(reaction.emoji.name), {
-                                    max: 1,
-                                    time: 60000
-                                }).then(collected => {
-                                    if(collected.first().emoji.name == emoAns) {
-                                        message.channel.send('\:ballot_box_with_check: Correct answer, <@' + message.author.id + '>!');
-                                    } else {
-                                        message.channel.send('\:regional_indicator_x: Wrong answer, <@' + message.author.id + '>!');
-                                    }
-                                }).catch(() => message.channel.send('\:no_entry: No reaction was found, trivia cancelled!'));
-                            }).catch();
-                        }).catch();
-                    }).catch();
-                }).catch();
-            }).catch();
+            // Start trivia:
+            (async function() {
+                try {
+                    const sentMessage = await message.channel.send(embed);
+                    for(const emo of emos) await sentMessage.react(emo);
+                    const filter = (reaction, user) => user.id == message.author.id && emos.includes(reaction.emoji.name);
+                    const collector = sentMessage.createReactionCollector(filter, {max: 1, time: 60000});
+                    let someoneReacted = false;
+
+                    collector.on('collect', reaction => {
+                        someoneReacted = true;
+                        console.log(reaction);
+                        if(reaction.emoji.name == emoAns) return message.channel.send(`\:ballot_box_with_check: Correct answer, <@${message.author.id}>!`);
+                        else return message.channel.send(`\:regional_indicator_x: Wrong answer, <@${message.author.id}>!`);
+                    });
+
+                    collector.on('end', () => {
+                        if(!someoneReacted) return message.channel.send('\:no_entry: No reaction was found, trivia cancelled');
+                    });
+                } catch(error) {
+                    client.logger.error(error);
+                    return message.channel.send(`\:no_entry: Something went wrong, <@${message.author.id}>!`);
+                }
+            })();
         });
     }
 };

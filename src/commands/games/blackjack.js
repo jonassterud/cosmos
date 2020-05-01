@@ -1,20 +1,18 @@
 // Shuffle deck function
 function shuffle (array) {
     let currentIndex = array.length; let tempVal; let randomIndex;
-
-    while(currentIndex !== 0) {
+    while(!currentIndex) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex--;
         tempVal = array[currentIndex];
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = tempVal;
     }
-
     return array;
 }
 
 // Get a card string from a given number function
-function getCard (num) {
+function getCard(num) {
     const types = ['spades', 'clubs', 'hearts', 'diamonds'];
     const faces = ['Ace', 'Jack', 'Queen', 'King'];
     const type = types[Math.trunc((num / 13) - 0.0001)];
@@ -29,7 +27,7 @@ function getCard (num) {
         default: value = num; break;
     }
 
-    return value + ' of ' + type;
+    return `${value} of ${type}`;
 }
 
 // TODO: Aces can be 11 or 1, something like that. Right now, it is only 1
@@ -45,9 +43,9 @@ function getJackSum (arr) {
 
 // Create embed function
 function createEmbed (pl1Cards, pl2Cards, userUrl) {
-    const pl1string = getCard(pl1Cards[0]) + ' \n *hidden*';
+    const pl1string = `${getCard(pl1Cards[0])}\n*hidden*`;
     let pl2string = '';
-    pl2Cards.forEach(card => pl2string += getCard(card) + '\n');
+    pl2Cards.forEach(card => pl2string += `${getCard(card)}\n`);
     const embed = new Discord.MessageEmbed()
         .setTitle('BlackJack! React with 🏏 to hit, 🧍‍♂️ to stand.')
         .setThumbnail(userUrl)
@@ -65,18 +63,18 @@ module.exports = {
     usage: '<credit amount>',
     execute(message, args) {
         // Guard:
-        if(!/^[\d]+$/.test(args[0])) return message.channel.send('\:no_entry: Invalid input, <@' + message.author.id + '>!');
+        if(!/^[\d]+$/.test(args[0])) return message.channel.send(`\:no_entry: Invalid input, <@${message.author.id}>!`);
 
         // Variables:
         const bet = args[0];
         const emos = ['🏏', '🧍‍♂️'];
         const deck = new Array(52).fill(0).map((curr, ind) => curr = ind + 1);
         const data = JSON.parse(fs.readFileSync('./data.json'));
-        const playerCards = []; const dealerCards = [];
+        const playerCards = [], dealerCards = [];
 
         // Check if user has appropriate credit count:
         if(data[message.guild.id].users[message.author.id].credits < bet) {
-            return message.channel.send('\:question: You do not have enough credits to make this bet, <@' + message.author.id + '>!');
+            return message.channel.send(`\:question: You do not have enough credits to make this bet, <@${message.author.id}>!`);
         }
 
         // Deduct credits:
@@ -91,11 +89,9 @@ module.exports = {
         while(getJackSum(dealerCards) < 17) dealerCards.push(deck.pop());
 
         const embed = createEmbed(dealerCards, playerCards, message.author.avatarUrl);
-        message.channel.send(embed).then(msg => {
-            handleGame(msg);
-        }).catch();
+        message.channel.send(embed).then(msg => handleGame(msg));
 
-        function handleGame (mess) {
+        function handleGame(mess) { // :'(
             mess.react(emos[0]).then(() => {
                 mess.react(emos[1]).then(() => {
                     mess.awaitReactions((reaction, user) => user.id == message.author.id && emos.includes(reaction.emoji.name), {
@@ -110,37 +106,35 @@ module.exports = {
                                 noWinner = false;
                                 data[message.guild.id].users[message.author.id].credits += 2 * bet;
                                 fs.writeFileSync('./data.json', JSON.stringify(data));
-                                return message.channel.send('\:moneybag: BlackJack! You got 21 points, <@' + message.author.id + '>');
+                                return message.channel.send(`\:moneybag: BlackJack! You got 21 points, <@${message.author.id}>!`);
                             } else if(getJackSum(playerCards) > 21) {
                                 noWinner = false;
                                 console.log(playerCards);
                                 console.log(getJackSum(playerCards));
-                                return message.channel.send('\:x: Busted! You got more than 21 points, <@' + message.author.id + '>');
+                                return message.channel.send(`\:x: Busted! You got more than 21 points, <@${message.author.id}>!`);
                             } else {
-                                mess.clearReactions().then(() => {
-                                    handleGame(mess);
-                                }).catch();
+                                mess.clearReactions().then(() => handleGame(mess));
                             }
                         } else {
                             // Stand:
                             noWinner = false;
                             if(getJackSum(dealerCards) <= 21 && getJackSum(dealerCards) > getJackSum(playerCards)) {
                                 // Dealer won:
-                                message.channel.send('\:x: Busted! The dealer had more points than you, <@' + message.author.id + '>');
+                                message.channel.send(`\:x: Busted! The dealer had more points than you, <@${message.author.id}>!`);
                             } else if(getJackSum(dealerCards) <= 21 && getJackSum(dealerCards) == getJackSum(playerCards)) {
                                 // Draw:
                                 data[message.guild.id].users[message.author.id].credits += bet;
-                                message.channel.send('\:monkey: Draw! The dealer had the same amount of points as you, <@' + message.author.id + '>');
+                                message.channel.send(`\:monkey: Draw! The dealer had the same amount of points as you, <@${message.author.id}>!`);
                             } else {
                                 // Dealer lost:
                                 data[message.guild.id].users[message.author.id].credits += 2 * bet;
-                                message.channel.send('\:moneybag: Winner! You had more points than the dealer, <@' + message.author.id + '>');
+                                message.channel.send(`\:moneybag: Winner! You had more points than the dealer, <@${message.author.id}>!`);
                             }
                             return fs.writeFileSync('./data.json', JSON.stringify(data));
                         }
                     }).catch(() => {
                         noWinner = false;
-                        return message.channel.send("\:no_entry: Didn't join in time, <@" + message.author.id + '>');
+                        return message.channel.send(`\:no_entry: Didn't join in time, <@${message.author.id}>!`);
                     });
                 }).catch();
             }).catch();

@@ -10,6 +10,6 @@ module.exports = {
         const credits = JSON.parse(fs.readFileSync('./data.json'))[message.guild.id].users[user.id].credits;
 
         // Respond:
-        return message.channel.send('<@' + user.id + '> has ' + credits + ' credit' + (credits > 1 ? 's' : '') + '!');
+        return message.channel.send(`<@${user.id}> has ${credits} credit${credits > 1 ? 's' : ''}!`);
     }
 };

@@ -15,14 +15,14 @@ module.exports = async (client, message) => {
     const command = client.commands.get(commandName);
     if(command.args && !args.length) {
         let reply = 'Missing arguments!';
-        if(command.usage) reply += '\nFormat: `' + config.prefix + command.name + ' ' + command.usage + '`';
-        message.channel.send(reply);
+        if(command.usage) reply += `\nFormat: \`${config.prefix + command.name} ${command.usage}\``;
+        return message.channel.send(reply);
     }
 
     // Execute command:
     try {
-        command.execute(message, args);
-    } catch (e) {
-        console.error('Command execution error:\n' + e);
+        return command.execute(message, args);
+    } catch(error) {
+        return client.logger.error(error);
     }
 };

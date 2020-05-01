@@ -6,13 +6,13 @@ module.exports = {
     usage: '<query>',
     execute(message, args) {
         request({
-            url: 'https://pixabay.com/api/?key=' + process.env.PIXABAY + '&q=' + args.join('+').toLowerCase() + '&image_type=photo',
+            url: `https://pixabay.com/api/?key=${process.env.PIXABAY}&q=${args.join('+').toLowerCase()}&image_type=photo`,
             json: true
         },
-        (e, r, body) => {
+        (err, _, body) => {
             // Guards:
-            if(e) return message.channel.send("\:no_entry: Wasn't able to retrieve any images, <@" + message.author.id + '>!');
-            if(!body.hits.length) return message.channel.send('\:no_entry: No images were found, <@' + message.author.id + '>!');
+            if(err) return message.channel.send(`\:no_entry: Wasn't able to retrieve any images, <@${message.author.id}>!`);
+            if(!body.hits.length) return message.channel.send(`\:no_entry: No images were found, <@${message.author.id}>!`);
 
             // Variables:
             const topSearchLen = (body.hits.length * 0.25 > 50 ? 50 : Math.round(body.hits.length * 0.25));

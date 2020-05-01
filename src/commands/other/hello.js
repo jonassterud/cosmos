@@ -5,6 +5,6 @@ module.exports = {
     args: false,
     usage: '',
     execute(message) {
-        return message.channel.send('\:wave: Hello, <@' + message.author.id + '>!');
+        return message.channel.send(`\:wave: Hello, <@${message.author.id}>!`);
     }
 };

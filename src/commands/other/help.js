@@ -12,18 +12,18 @@ module.exports = {
         if(args.length) {
             const command = client.commands.get(args[0].toLowerCase());
 
-            // Guards:
-            if(!command) return message.channel.send("\:no_entry: Command wasn't found, <@" + message.author.id + '>!');
+            // Guard:
+            if(!command) return message.channel.send(`\:no_entry: Command wasn't found, <@${message.author.id}>!`);
 
             // Edit embed:
             embed.setTitle(command.name);
             embed.addField('Description', command.description);
-            embed.addField('Format', '`' + config.prefix + command.name + (command.usage ? ' ' + command.usage : '') + '`');
+            embed.addField('Format', `\`${config.prefix + command.name} ${command.usage ? command.usage : ''}\``);
         } else {
             // Edit embed:
             embed.setTitle('\:closed_book: Command list');
             client.commands.each(command => {
-                embed.addField(config.prefix + command.name + ' ' + (command.usage ? command.usage : ''), command.description);
+                embed.addField(`${config.prefix + command.name} ${command.usage ? command.usage : ''}`, command.description);
             });
         }
 
