@@ -5,25 +5,30 @@ module.exports = {
     args: true,
     usage: '<query>',
     execute(message, args) {
-        request({
-            url: `http://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY}&q=${args.join('+').toLowerCase()}&limit=15`,
-            json: true
-        },
-        (err, _, body) => {
-            // Guards:
-            if(err) return message.channel.send(`\:no_entry: Wasn't able to retrieve any GIFs, <@${message.author.id}>!`);
-            if(!body.data.length) return message.channel.send(`\:no_entry: No GIFs were found, <@${message.author.id}>!`);
+        http.get(`http://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY}&q=${args.join('+').toLowerCase()}&limit=15`, response => {
+            let body = '';
+            response.on('data', chunk => body += chunk);
+            response.on('end', () => {
+                // Parse data:
+                body = JSON.parse(body);
 
-            // Variables:
-            const embed = new Discord.MessageEmbed();
-            const gif = body.data[Math.floor(Math.random() * body.data.length)];
+                // Guard:
+                if(!body.data.length) return message.channel.send(`\:no_entry: No GIFs were found, <@${message.author.id}>!`);
 
-            // Edit embed:
-            embed.setColor('#ff0000');
-            embed.image = {url: gif.images.downsized.url.replace('media1', 'i')};
+                // Select GIF:
+                const gif = body.data[Math.floor(Math.random() * body.data.length)];
 
-            // Send embed:
-            return message.channel.send(embed);
+                // Create embed:
+                const embed = new Discord.MessageEmbed()
+                    .setColor('#ff0000')
+                    .setImage(gif.images.downsized.url.replace('media1', 'i'));
+
+                // Send embed:
+                return message.channel.send(embed);
+            });
+        }).on('error', error => {
+            client.logger.error(error);
+            return message.channel.send(`\:no_entry: Something went wrong, <@${message.author.id}>!`);
         });
     }
 };
