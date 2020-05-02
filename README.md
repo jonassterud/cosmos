@@ -48,4 +48,4 @@ Donations are split across main contributors.
 * Bitcoin: `bc1qcglufz6ta8ea7phjtgf797nrnz8cy4qhw3hhuq`
 * Litecoin: `LfF1bQP8bmpyJiQQrysfP2iGGgCdf9Bha4`
 * Etherum: `0xbABaD8FCa51672d9ADDc2b0F229990EC44a9ca64`
-* or [PayPal](paypal.me/jonassterud)
+* or [PayPal](https://www.paypal.me/jonassterud)
