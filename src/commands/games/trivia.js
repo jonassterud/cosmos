@@ -1,4 +1,5 @@
 // Randomize questions function
+/*
 function shuffle (array) {
     let currentIndex = array.length; let tempVal; let randomIndex;
     while(currentIndex !== 0) {
@@ -10,6 +11,7 @@ function shuffle (array) {
     }
     return array;
 }
+*/
 
 // Command
 module.exports = {
@@ -18,6 +20,8 @@ module.exports = {
     args: false,
     usage: '',
     execute(message) {
+        return message.channel.send("\:no_entry: Under construction..");
+        /*
         request({
             url: 'https://opentdb.com/api.php?amount=1&difficulty=medium&type=multiple',
             json: true
@@ -80,5 +84,6 @@ module.exports = {
                 }
             })();
         });
+        */
     }
 };
