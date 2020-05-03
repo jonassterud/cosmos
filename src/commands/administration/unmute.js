@@ -4,7 +4,7 @@ module.exports = {
     description: '\:loud_sound: Unmute a user!',
     args: false,
     usage: '<user>',
-    execute(message) {
+    async execute(message) {
         // Variables:
         const member = message.mentions.members.first();
 

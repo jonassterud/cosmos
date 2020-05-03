@@ -4,21 +4,21 @@ module.exports = {
     description: '\:mag: Get info about a user!',
     args: true,
     usage: '<user>',
-    execute(message) {
-    // Variables:
+    async execute(message) {
+        // Variables:
         const member = message.mentions.members.first();
-        const embed = new Discord.MessageEmbed()
-            .setColor('#ff0000')
-            .setTimestamp(new Date());
 
         // Guard:
         if(!member || !message.guild.member(member.id)) return message.channel.send(`\:no_entry: Wasn't able to find that person, <@${message.author.id}>!`);
 
-        // Edit embed:
-        embed.setTitle(member.user.tag);
-        embed.setThumbnail(member.user.avatarURL);
-        embed.addField('Identification:', member.user.id);
-        embed.addField('Account created:', member.user.createdAt.toDateString());
+        // Create embed:
+        const embed = new Discord.MessageEmbed()
+            .setTitle(member.user.tag)
+            .setThumbnail(member.user.avatarURL)
+            .addField('Identification:', member.user.id)
+            .addField('Account created:', member.user.createdAt.toDateString())
+            .setColor('#ff0000')
+            .setTimestamp(new Date());
 
         // Send embed:
         return message.channel.send(embed);

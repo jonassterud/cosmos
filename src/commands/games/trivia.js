@@ -19,7 +19,7 @@ module.exports = {
     description: '\:thinking: Answer trivia for a chance to win credits!',
     args: false,
     usage: '',
-    execute(message) {
+    async execute(message) {
         return message.channel.send("\:no_entry: Under construction..");
         /*
         request({

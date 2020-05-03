@@ -4,7 +4,7 @@ module.exports = {
     description: '\:money_with_wings: Send credits to another user!',
     args: true,
     usage: '<credit amount> <user>',
-    execute(message, args) {
+    async execute(message, args) {
         // Variables:
         const member = message.mentions.members.first();
         const amount = parseFloat(args[0]);

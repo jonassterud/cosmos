@@ -4,7 +4,7 @@ module.exports = {
     description: '\:hammer: Ban a user!',
     args: true,
     usage: '<user> (reason?)',
-    execute(message, args) {
+    async execute(message, args) {
         // Variables:
         const member = message.mentions.members.first();
         const reason = args.splice(1).join(' ');

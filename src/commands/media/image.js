@@ -4,7 +4,7 @@ module.exports = {
     description: '\:frame_photo: Search for an image!',
     args: true,
     usage: '<query>',
-    execute(message, args) {
+    async execute(message, args) {
         https.get(`https://pixabay.com/api/?key=${process.env.PIXABAY}&q=${args.join('+').toLowerCase()}&image_type=photo`, response => {
             let body = '';
             response.on('data', chunk => body += chunk);

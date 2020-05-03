@@ -4,9 +4,10 @@ module.exports = {
     description: '\:closed_book: See all available commands or get help on a specific command!',
     args: false,
     usage: '(command?)',
-    execute(message, args) {
+    async execute(message, args) {
         // Variables
-        const embed = new Discord.MessageEmbed();
+        const embed = new Discord.MessageEmbed()
+            .setColor('#ff0000');
 
         // Execute:
         if(args.length) {
@@ -28,7 +29,6 @@ module.exports = {
         }
 
         // Send embed:
-        embed.setColor('#ff0000');
         return message.channel.send(embed);
     }
 };

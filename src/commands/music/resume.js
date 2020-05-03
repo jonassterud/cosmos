@@ -4,7 +4,7 @@ module.exports = {
     description: '\:arrow_forward: Resume the song',
     args: false,
     usage: '',
-    execute(message) {
+    async execute(message) {
         // Guards:
         if(!queue[message.guild.id] || !queue[message.guild.id].dispatcher) return message.channel.send(`\:question: I'm not playing anything yet, <@${message.author.id}>!`);
         if(!queue[message.guild.id].dispatcher.paused) return message.channel.send(`\:question: I'm not paused, <@${message.author.id}>!`);

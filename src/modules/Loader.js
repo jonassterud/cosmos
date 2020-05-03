@@ -44,7 +44,7 @@ exports.registerEvents = async client => {
 };
 
 // Log Discord status:
-exports.checkDiscordStatus = client => {
+exports.checkDiscordStatus = async client => {
     require('axios').get('https://srhpyqt94yxb.statuspage.io/api/v2/status.json').then(({data}) => {
         client.logger.log(`Discord API Status: ${data.status.description}`);
     });
