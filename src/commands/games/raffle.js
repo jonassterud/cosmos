@@ -20,9 +20,9 @@ module.exports = {
 
         // Create embed:
         const entryEmbed = new Discord.MessageEmbed()
-            .setTitle('\:tada: Raffle - ' + item)
+            .setTitle(`\:tada: Raffle - ${item}`)
             .setDescription(
-                `<@${message.author.id}> is giving awa ${item}!\n` +
+                `<@${message.author.id}> is giving away ${item}!\n` +
                 'To join, just react with **any** emoji below.\n' +
                 `The giveaway will end in:\n\`${timeText}\`\n` +
                 'Good luck! \:+1:'

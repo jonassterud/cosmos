@@ -375,6 +375,13 @@ camelcase@^5.3.1:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-5.3.1.tgz#e3c9b31569e106811df242f715725a1f4c494320"
   integrity sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg==
 
+cards@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/cards/-/cards-1.0.2.tgz#1c7f68771ae9954d84295b6399cf6f9dffb2d92c"
+  integrity sha512-FW16fh/fDNzwK2EWwZUr17/rsT7fjJohjt03P/6GQPLAdCean7md1YRhGOm8xQxMI/FxLgHJZlff50kOB+bHiQ==
+  dependencies:
+    rand-utils "^1.0.0"
+
 chalk@^2.0.0, chalk@^2.1.0, chalk@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
@@ -2445,6 +2452,11 @@ qs@^6.7.0:
   version "6.9.3"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.3.tgz#bfadcd296c2d549f1dffa560619132c977f5008e"
   integrity sha512-EbZYNarm6138UKKq46tdx08Yo/q9ZhFoAXAI1meAFd2GtbRDhbZY2WQSICskT0c5q99aFzLG1D4nvTk9tqfXIw==
+
+rand-utils@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/rand-utils/-/rand-utils-1.0.0.tgz#3d3bb9201566ce91450cd374a0080e79ed683328"
+  integrity sha1-PTu5IBVmzpFFDNN0oAgOee1oMyg=
 
 rc@^1.2.7, rc@^1.2.8:
   version "1.2.8"

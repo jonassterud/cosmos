@@ -7,6 +7,7 @@ global.http = require('http'); // Node.js packae - Request data from APIs
 global.https = require('https'); // Node.js packae - Request data from APIs
 global.ytdl = require('ytdl-core'); // Node.js package - Downloads YouTube videos
 global.youtube = require('googleapis').google.youtube({version: 'v3', auth: process.env.YOUTUBE}); // Youtube API
+global.decks = require('cards').decks;
 
 // Globals
 global.queue = {};

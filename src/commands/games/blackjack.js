@@ -1,143 +1,104 @@
-// Shuffle deck function
-function shuffle (array) {
-    let currentIndex = array.length; let tempVal; let randomIndex;
-    while(!currentIndex) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-        tempVal = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = tempVal;
-    }
-    return array;
-}
-
-// Get a card string from a given number function
-function getCard(num) {
-    const types = ['spades', 'clubs', 'hearts', 'diamonds'];
-    const faces = ['Ace', 'Jack', 'Queen', 'King'];
-    const type = types[Math.trunc((num / 13) - 0.0001)];
-    let value = 0;
-
-    while(num > 13) num -= 13;
-    switch(num) {
-        case 1: value = faces[0]; break;
-        case 11: value = faces[1]; break;
-        case 12: value = faces[2]; break;
-        case 13: value = faces[3]; break;
-        default: value = num; break;
-    }
-
-    return `${value} of ${type}`;
-}
-
-// TODO: Aces can be 11 or 1, something like that. Right now, it is only 1
-// Given an array of cards, return the sum of the values function
-function getJackSum (arr) {
-    if(!arr.length) return 0;
-    return arr.reduce((acc, val) => {
-        let b = val;
-        while(b > 13) b -= 13;
-        return acc + (b > 10 ? 10 : b);
-    }, 0);
-}
-
-// Create embed function
-function createEmbed (pl1Cards, pl2Cards, userUrl) {
-    const pl1string = `${getCard(pl1Cards[0])}\n*hidden*`;
-    let pl2string = '';
-    pl2Cards.forEach(card => pl2string += `${getCard(card)}\n`);
-    const embed = new Discord.MessageEmbed()
-        .setTitle('BlackJack! React with 🏏 to hit, 🧍‍♂️ to stand.')
-        .setThumbnail(userUrl)
-        .setColor('#ff0000')
-        .addField('Dealer:', pl1string)
-        .addField('Player:', pl2string);
-    return embed;
-}
-
 // Command
 module.exports = {
     name: 'blackjack',
-    description: '\:slot_machine: Play blackjack against the bot!',
+    description: '\:slot_machine: Play blackjack!',
     args: true,
     usage: '<credit amount>',
-    execute(message, args) {
-        // Guard:
-        if(!/^[\d]+$/.test(args[0])) return message.channel.send(`\:no_entry: Invalid input, <@${message.author.id}>!`);
-
+    async execute(message, args) {
         // Variables:
-        const bet = args[0];
-        const emos = ['🏏', '🧍‍♂️'];
-        const deck = new Array(52).fill(0).map((curr, ind) => curr = ind + 1);
-        const data = JSON.parse(fs.readFileSync('./data.json'));
-        const playerCards = [], dealerCards = [];
+        const betAmount = parseInt(args[0]);
 
-        // Check if user has appropriate credit count:
-        if(data[message.guild.id].users[message.author.id].credits < bet) {
-            return message.channel.send(`\:question: You do not have enough credits to make this bet, <@${message.author.id}>!`);
+        // Guard:
+        if(isNaN(betAmount)) return message.channel.send(`\:question: You need to specify the amount of credits you want to bet, <@${message.author.id}>!`);
+
+        // Start game:
+        const emotes = {stand: '🧍‍♂️', hit: '🏏'};
+        const deck = new decks.StandardDeck();
+        deck.shuffleAll();
+
+        const dealer = deck.draw(2);
+        const player = deck.draw(2);
+
+        // Create embed:
+        const embed = new Discord.MessageEmbed()
+            .setTitle('\:slot_machine: Blackjack!')
+            .setDescription(
+                `The pot is on ${betAmount} credits.\n` +
+                `React with ${emotes.stand} to stand or ${emotes.hit} to hit!`
+            )
+            .addField('Dealer:', `${dealer[0].rank.longName} of ${dealer[0].suit.name}\n*hidden*`)
+            .addField('Player:', `${player[0].rank.longName} of ${player[0].suit.name}\n${player[1].rank.longName} of ${player[1].suit.name}`)
+            .setColor('#ff0000')
+            .setTimestamp(new Date());
+
+        // Send embed and react with emotes:
+        const sentMessage = await message.channel.send(embed);
+        for(const emoteProperty in emotes) await sentMessage.react(emotes[emoteProperty]);
+
+        // Create collector:
+        const filter = (reaction, user) => user.id == message.author.id && Object.values(emotes).includes(reaction.emoji.name);
+        const collector = sentMessage.createReactionCollector(filter, {time: 1000 * 60});
+
+        // On reaction:
+        collector.on('collect', reaction => {
+            if(reaction.emoji.name == emotes.stand) { // Stand
+                // Draw card(s) and update embed:
+                while(calculatePoints(dealer) < 17) dealer.push(...deck.draw(1));
+                revealDealerHand();
+
+                // Compare and check points:
+                const playerPoints = calculatePoints(player);
+                const dealerPoints = calculatePoints(dealer);
+
+                if(playerPoints === dealerPoints) {
+                    return message.channel.send(`\:monkey: Push! You and the dealer got the same amount of points, <@${message.author.id}>!`);
+                } else if(playerPoints > 21) {
+                    // TODO: Deduct credits
+                    return message.channel.send(`\:x: Busted! You got more than 21 points, <@${message.author.id}>!`);
+                } else if(playerPoints === 21) {
+                    const winAmount = betAmount * 1.5;
+                    // TODO: Add credits
+                    return message.channel.send(`\:moneybag: Blackjack! You won ${winAmount} credits, <@${message.author.id}>!`);
+                } else {
+                    // TODO: Add credits
+                    return message.channel.send(`\:moneybag: You won ${betAmount} credits, <@${message.author.id}>!`);
+                }
+            } else if(reaction.emoji.name == emotes.hit) { // Hit
+                // Draw card:
+                player.push(...deck.draw(1));
+
+                // Update embed:
+                embed.fields[1].value = '';
+                for(const card of player) embed.fields[1].value += `${card.rank.longName} of ${card.suit.name}\n`;
+                sentMessage.edit(embed);
+                reaction.users.remove(message.author.id);
+
+                // Check points:
+                const playerPoints = calculatePoints(player);
+                if(playerPoints > 21) {
+                    // TODO: Deduct credits
+                    revealDealerHand();
+                    return message.channel.send(`\:x: Busted! You got more than 21 points, <@${message.author.id}>!`);
+                }
+            }
+        });
+
+        // Functions:
+        function calculatePoints(hand) {
+            let sum = 0;
+            for(const card of hand) {
+                if(card.rank.shortName === 'A') sum += 11;
+                else if(isNaN(card.rank.shortName)) sum += 10;
+                else sum += parseInt(card.rank.shortName);
+            }
+            if(sum > 21 && hand.find(e => e.rank.shortName === 'A')) sum -= 10;
+            return sum;
         }
 
-        // Deduct credits:
-        data[message.guild.id].users[message.author.id].credits -= bet;
-        fs.writeFileSync('./data.json', JSON.stringify(data));
-
-        // Setup message:
-        shuffle(deck);
-        playerCards.push(deck.pop());
-        playerCards.push(deck.pop());
-
-        while(getJackSum(dealerCards) < 17) dealerCards.push(deck.pop());
-
-        const embed = createEmbed(dealerCards, playerCards, message.author.avatarUrl);
-        message.channel.send(embed).then(msg => handleGame(msg));
-
-        function handleGame(mess) { // :'(
-            mess.react(emos[0]).then(() => {
-                mess.react(emos[1]).then(() => {
-                    mess.awaitReactions((reaction, user) => user.id == message.author.id && emos.includes(reaction.emoji.name), {
-                        max: 1,
-                        time: 30000
-                    }).then(coll => {
-                        // emos[0] corresponds to a 'hit':
-                        if(coll.first().emoji.name == emos[0]) {
-                            playerCards.push(deck.pop());
-                            mess.edit(createEmbed(dealerCards, playerCards, message.author.avatarUrl));
-                            if(getJackSum(playerCards) == 21) {
-                                noWinner = false;
-                                data[message.guild.id].users[message.author.id].credits += 2 * bet;
-                                fs.writeFileSync('./data.json', JSON.stringify(data));
-                                return message.channel.send(`\:moneybag: BlackJack! You got 21 points, <@${message.author.id}>!`);
-                            } else if(getJackSum(playerCards) > 21) {
-                                noWinner = false;
-                                console.log(playerCards);
-                                console.log(getJackSum(playerCards));
-                                return message.channel.send(`\:x: Busted! You got more than 21 points, <@${message.author.id}>!`);
-                            } else {
-                                mess.clearReactions().then(() => handleGame(mess));
-                            }
-                        } else {
-                            // Stand:
-                            noWinner = false;
-                            if(getJackSum(dealerCards) <= 21 && getJackSum(dealerCards) > getJackSum(playerCards)) {
-                                // Dealer won:
-                                message.channel.send(`\:x: Busted! The dealer had more points than you, <@${message.author.id}>!`);
-                            } else if(getJackSum(dealerCards) <= 21 && getJackSum(dealerCards) == getJackSum(playerCards)) {
-                                // Draw:
-                                data[message.guild.id].users[message.author.id].credits += bet;
-                                message.channel.send(`\:monkey: Draw! The dealer had the same amount of points as you, <@${message.author.id}>!`);
-                            } else {
-                                // Dealer lost:
-                                data[message.guild.id].users[message.author.id].credits += 2 * bet;
-                                message.channel.send(`\:moneybag: Winner! You had more points than the dealer, <@${message.author.id}>!`);
-                            }
-                            return fs.writeFileSync('./data.json', JSON.stringify(data));
-                        }
-                    }).catch(() => {
-                        noWinner = false;
-                        return message.channel.send(`\:no_entry: Didn't join in time, <@${message.author.id}>!`);
-                    });
-                }).catch();
-            }).catch();
+        function revealDealerHand() {
+            embed.fields[0].value = '';
+            for(const card of dealer) embed.fields[0].value += `${card.rank.longName} of ${card.suit.name}\n`;
+            sentMessage.edit(embed);
         }
     }
 };
