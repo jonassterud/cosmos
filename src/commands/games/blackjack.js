@@ -44,7 +44,7 @@ module.exports = {
             if(reaction.emoji.name == emotes.stand) { // Stand
                 // Draw card(s) and update embed:
                 while(calculatePoints(dealer) < 17) dealer.push(...deck.draw(1));
-                revealDealerHand();
+                endRound();
 
                 // Compare and check points:
                 const playerPoints = calculatePoints(player);
@@ -77,7 +77,7 @@ module.exports = {
                 const playerPoints = calculatePoints(player);
                 if(playerPoints > 21) {
                     // TODO: Deduct credits
-                    revealDealerHand();
+                    endRound();
                     return message.channel.send(`\:x: Busted! You got more than 21 points, <@${message.author.id}>!`);
                 }
             }
@@ -95,7 +95,12 @@ module.exports = {
             return sum;
         }
 
-        function revealDealerHand() {
+        function endRound() {
+            // Stop collector and remove reactions:
+            collector.stop();
+            sentMessage.reactions.removeAll();
+
+            // Show dealer's hand:
             embed.fields[0].value = '';
             for(const card of dealer) embed.fields[0].value += `${card.rank.longName} of ${card.suit.name}\n`;
             sentMessage.edit(embed);
