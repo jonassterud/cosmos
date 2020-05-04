@@ -6,10 +6,11 @@ module.exports = {
     usage: '<credit amount>',
     async execute(message, args) {
         // Variables:
-        const betAmount = parseInt(args[0]);
+        const creditAmount = parseInt(args[0]);
 
-        // Guard:
-        if(isNaN(betAmount)) return message.channel.send(`\:question: You need to specify the amount of credits you want to bet, <@${message.author.id}>!`);
+        // Guards:
+        if(!Object.prototype.hasOwnProperty.call(accounts, message.author.id)) return message.channel.send(`\:no_entry: Create an account first with \`${config.prefix}account\`, <@${message.author.id}>!`);
+        if(isNaN(creditAmount)) return message.channel.send(`\:question: You need to specify the amount of credits you want to bet, <@${message.author.id}>!`);
 
         // Start game:
         const emotes = {stand: '🧍‍♂️', hit: '🏏'};
@@ -23,7 +24,7 @@ module.exports = {
         const embed = new Discord.MessageEmbed()
             .setTitle('\:slot_machine: Blackjack!')
             .setDescription(
-                `The pot is on ${betAmount} credits.\n` +
+                `The pot is on ${creditAmount} credits.\n` +
                 `React with ${emotes.stand} to stand or ${emotes.hit} to hit!`
             )
             .addField('Dealer:', `${dealer[0].rank.longName} of ${dealer[0].suit.name}\n*hidden*`)
@@ -56,12 +57,12 @@ module.exports = {
                     // TODO: Deduct credits
                     return message.channel.send(`\:x: Busted! You got more than 21 points, <@${message.author.id}>!`);
                 } else if(playerPoints === 21) {
-                    const winAmount = betAmount * 1.5;
+                    const winAmount = creditAmount * 1.5;
                     // TODO: Add credits
                     return message.channel.send(`\:moneybag: Blackjack! You won ${winAmount} credits, <@${message.author.id}>!`);
                 } else {
                     // TODO: Add credits
-                    return message.channel.send(`\:moneybag: You won ${betAmount} credits, <@${message.author.id}>!`);
+                    return message.channel.send(`\:moneybag: You won ${creditAmount} credits, <@${message.author.id}>!`);
                 }
             } else if(reaction.emoji.name == emotes.hit) { // Hit
                 // Draw card:

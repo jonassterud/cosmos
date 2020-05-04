@@ -18,7 +18,7 @@ module.exports = {
         if(parseInt(timeArray[2])) timeText += `${parseInt(timeArray[2])} second${parseInt(timeArray[2]) > 1 ? 's.' : '.'}`;
         const item = args.splice(1).join(' ');
 
-        // Create embed:
+        // Create entry embed:
         const entryEmbed = new Discord.MessageEmbed()
             .setTitle(`\:tada: Raffle - ${item}`)
             .setDescription(
@@ -41,8 +41,7 @@ module.exports = {
 
         // On reaction:
         collector.on('collect', (_, user) => {
-            const id = user.id;
-            if(!contestants.includes(id)) contestants.push(id);
+            if(!contestants.includes(user.id)) contestants.push(user.id);
         });
 
         // On raffle end:

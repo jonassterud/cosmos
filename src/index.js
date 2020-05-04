@@ -11,6 +11,13 @@ global.decks = require('cards').decks;
 
 // Globals
 global.queue = {};
+global.accounts = fs.existsSync('./backups/accounts.json') ? JSON.parse(fs.readFileSync('./backups/accounts.json')) : {};
+
+// Backup loop
+setInterval(() => {
+    if(!fs.existsSync('./backups')) fs.mkdirSync('./backups');
+    fs.writeFileSync('./backups/accounts.json', JSON.stringify(accounts));
+}, 1000 * 60 * 5);
 
 // Create bot
 client = new Discord.Client();
