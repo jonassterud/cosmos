@@ -1,4 +1,4 @@
-*/data.json
+*/backups
 node_modules
 .env
 package-lock.json
