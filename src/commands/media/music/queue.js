@@ -1,11 +1,10 @@
-// Command
 module.exports = {
     name: 'queue',
     description: '\:musical_note: See the music queue!',
     args: false,
     usage: '',
     async execute(message) {
-        // Guard:
+        // Guard(s):
         if(!queue[message.guild.id] || !queue[message.guild.id].urls) return message.channel.send(`\:question: Queue is empty, <@${message.author.id}>!`);
 
         // Create embed:

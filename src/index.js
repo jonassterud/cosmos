@@ -1,4 +1,4 @@
-// Packages
+// Package(s)
 require('dotenv').config();
 global.config = require('./config.json'); // Secret data
 global.fs = require('fs'); // Node.js package - file system
@@ -9,7 +9,7 @@ global.ytdl = require('ytdl-core'); // Node.js package - Downloads YouTube video
 global.youtube = require('googleapis').google.youtube({version: 'v3', auth: process.env.YOUTUBE}); // Youtube API
 global.decks = require('cards').decks;
 
-// Globals
+// Global(s)
 global.queue = {};
 global.accounts = fs.existsSync('./backups/accounts.json') ? JSON.parse(fs.readFileSync('./backups/accounts.json')) : {};
 

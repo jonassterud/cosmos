@@ -1,11 +1,10 @@
-// Command
 module.exports = {
     name: 'skip',
     description: '\:arrow_right: Skip forward in the queue!',
     args: false,
     usage: '(amount?)',
     async execute(message, args) {
-        // Guard:
+        // Guard(s):
         if(!queue[message.guild.id] || !queue[message.guild.id].connection) return message.channel.send(`\:question: I'm not playing anything yet, <@${message.author.id}>!`);
 
         // Skip:

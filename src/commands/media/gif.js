@@ -1,4 +1,3 @@
-// Command
 module.exports = {
     name: 'gif',
     description: '\:frame_photo: Search for a GIF!',
@@ -12,13 +11,11 @@ module.exports = {
                 // Parse data:
                 body = JSON.parse(body);
 
-                // Guard:
+                // Guard(s):
                 if(!body.data.length) return message.channel.send(`\:no_entry: No GIFs were found, <@${message.author.id}>!`);
 
-                // Select GIF:
+                // Select GIF and create embed:
                 const gif = body.data[Math.floor(Math.random() * body.data.length)];
-
-                // Create embed:
                 const embed = new Discord.MessageEmbed()
                     .setColor('#ff0000')
                     .setImage(gif.images.downsized.url.replace('media1', 'i'));

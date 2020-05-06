@@ -1,11 +1,10 @@
-// Command
 module.exports = {
     name: 'account',
     description: '\:shield: Check your balance, someones else\'s balance or create an account!',
     args: false,
     usage: '(user?)',
     async execute(message) {
-        // Variables:
+        // Variable(s):
         const user = message.mentions.users.first() || message.author;
         const member = message.mentions.members.first() || message.member;
         let newAccount = false;

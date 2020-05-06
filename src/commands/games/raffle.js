@@ -1,16 +1,15 @@
-// Command
 module.exports = {
     name: 'raffle',
     description: '\:tada: Create giveaways! (The creator of the giveaway will not be able to participate).',
     args: true,
     usage: '<hh:mm:ss> <item>',
     async execute(message, args) {
-        // Guards:
-        // Change from 01:10:20 to 1h10m20s
+        // Guard(s):
+        // TODO: Change from 01:10:20 to 1h10m20s
         if(!/^\d\d:\d\d:\d\d$/m.test(args[0])) return message.channel.send(`\:no_entry: Something went wrong. Type \`${config.prefix}help ${this.name}\`, <@${message.author.id}>!`);
         if(!args[1]) return message.channel.send(`\:question: You need to specify what item you are giving away, <@${message.author.id}>!`);
 
-        // Variables:
+        // Variable(s):
         const timeArray = args[0].split(':');
         let timeText = ''; // Format text nicely: plural numbers, comma/and, etc. -> bad solution?
         if(parseInt(timeArray[0])) timeText += `${parseInt(timeArray[0])} hour${parseInt(timeArray[0]) > 1 ? 's' : ''}${!parseInt(timeArray[2]) ? (!parseInt(timeArray[1]) ? '.' : ' and ') : ', '}`;

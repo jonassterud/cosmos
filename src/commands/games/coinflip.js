@@ -1,21 +1,20 @@
-// Command
 module.exports = {
     name: 'coinflip',
     description: '\:dollar: Make a coinflip bet with the bot or against other user(s)!',
     args: true,
     usage: '<credit amount> (max users?)',
     async execute(message, args) {
-        // Variables:
+        // Variable(s):
         const creditAmount = parseInt(args[0]);
         const maxUsers = parseInt(args[1]);
 
-        // Guards:
+        // Guard(s):
         if(!Object.prototype.hasOwnProperty.call(accounts, message.author.id)) return message.channel.send(`\:no_entry: Create an account first with \`${config.prefix}account\`, <@${message.author.id}>!`);
         if(isNaN(creditAmount)) return message.channel.send(`\:no_entry: Credit amount should be a number, <@${message.author.id}>!`);
         if(args[1] && isNaN(maxUsers)) return message.channel.send(`\:no_entry: Max users should be a number, <@${message.author.id}>!`);
         if(creditAmount > accounts[message.author.id].balance) return message.channel.send(`\:moneybag: Insufficient funds, <@${message.author.id}>!`);
 
-        // Coinflip:
+        // Check if max users is specified:
         if(args[1]) {
             // Deduct credits from host:
             accounts[message.author.id].balance -= creditAmount;
@@ -50,6 +49,7 @@ module.exports = {
                 } else if(contestants.length >= maxUsers) {
                     return message.channel.send(`\:no_entry: No more spots, <@${user.id}>!`);
                 } else {
+                    // Push contestant and deduct credits:
                     contestants.push(user.id);
                     accounts[user.id].balance -= creditAmount;
                 }

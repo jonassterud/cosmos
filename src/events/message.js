@@ -1,5 +1,5 @@
 module.exports = async (client, message) => {
-    // Split command and arguments:
+    // Split command and argument(s):
     if(!message.content.startsWith(config.prefix) || message.author.bot) return;
     const args = message.content.slice(config.prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();

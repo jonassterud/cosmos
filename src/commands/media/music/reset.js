@@ -1,11 +1,10 @@
-// Command
 module.exports = {
     name: 'reset',
     description: '\:fire: Reset the queue!',
     args: false,
     usage: '',
     async execute(message) {
-        // Guard:
+        // Guard(s):
         if(!queue[message.guild.id]) return message.channel.send(`\:question: There is nothing to reset, <@${message.author.id}>!`);
 
         // Reset:

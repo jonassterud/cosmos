@@ -1,11 +1,10 @@
-// Command
 module.exports = {
     name: 'wrongsong',
     description: '\:chair: Remove recently added song!',
     args: false,
     usage: '',
     async execute(message) {
-        // Guard:
+        // Guard(s):
         if(!queue[message.guild.id] || !queue[message.guild.id].urls) return message.channel.send(`\:question: Queue is empty, <@${message.author.id}>!`);
 
         // Remove last song:

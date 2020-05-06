@@ -1,14 +1,13 @@
-// Command
 module.exports = {
     name: 'add',
     description: '\:notes: Listen to music from a YouTube video trough a voice channel!',
     args: true,
     usage: '<video | playlist | live>',
     async execute(message, args) {
-        // Variables:
+        // Variable(s):
         const voice = message.member.voice.channel;
 
-        // Guard:
+        // Guard(s):
         if(!voice) return message.channel.send(`\:no_entry: Please join a voicechannel before executing the command, <@${message.author.id}>!`);
 
         // Create queue:
@@ -40,7 +39,7 @@ module.exports = {
                 return message.channel.send(`\:no_entry: Something went wrong, <@${message.author.id}>!`);
             }
 
-            // Guard:
+            // Guard(s):
             if(!list.data.items.length) return message.channel.send(`\:thinking: No songs were found, <@${message.author.id}>!`);
 
             // Add to queue:
