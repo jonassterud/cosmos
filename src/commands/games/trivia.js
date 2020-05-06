@@ -29,7 +29,14 @@ module.exports = {
                     str += chunk;
                 });
                 response.on('end', () => {
-                    const body = JSON.parse(str);
+                    let body;
+                    try {
+                        body = JSON.parse(str);
+                    } catch(error) {
+                        //This is just in case the API is down or something wonky happens with the request
+                        client.logger.error(error);
+                        return;
+                    }
                     if(!body) return message.channel.send(`\:no_entry: Wasn't able to retrieve any questions, <@${message.author.id}>!`);
                     // Variables:
                     const aps = /&#039;/g;
@@ -74,7 +81,6 @@ module.exports = {
 
                             collector.on('collect', reaction => {
                                 someoneReacted = true;
-                                console.log(reaction);
                                 if(reaction.emoji.name == emoAns) return message.channel.send(`\:ballot_box_with_check: Correct answer, <@${message.author.id}>!`);
                                 else return message.channel.send(`\:regional_indicator_x: Wrong answer, <@${message.author.id}>!`);
                             });
