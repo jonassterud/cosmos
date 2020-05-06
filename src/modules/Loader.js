@@ -13,18 +13,27 @@ exports.registerModules = async client => {
 
 // Load commands into client:
 exports.registerCommands = async client => {
-    const cmdFolders = readdirSync('./commands/');
+    const { readdirSync, statSync } = require('fs');
+    const { join } = require('path');
     let registeredCommands = [];
-    cmdFolders.forEach(folder => {
-        const cmdFiles = readdirSync(`./commands/${folder}`);
-        client.logger.log(`Loading ${cmdFiles.length} commands from ${folder}`);
-        cmdFiles.forEach(file => {
-            const commandName = file.split('.')[0];
-            const properties = require(`../commands/${folder}/${file}`);
+    const getDirs = p => readdirSync(p).filter(f => statSync(join(p, f)).isDirectory());
+    let dirs = getDirs('./commands/');
+    for(let i = 0; i < dirs.length; i++) {
+        let dir = dirs[i];
+        client.logger.log(`Loading ${dir} commands`);
+        const files = readdirSync(`./commands/${dir}`);
+        for(let j = 0; j < files.length; j++) {
+            const file = files[j];
+            if(statSync(`./commands/${dir}/${file}`).isDirectory()) {
+                dirs.push(`${dir}/${file}`);
+                continue;
+            }
+            const name = file.split('.')[0];
+            const properties = require(`../commands/${dir}/${file}`);
             client.commands.set(properties.name, properties);
-            registeredCommands.push(commandName);
-        });
-    });
+            registeredCommands.push(name);
+        }
+    }
     client.logger.log(`Loaded: [${registeredCommands.join(' ')}]`);
 };
 
