@@ -1,9 +1,9 @@
-// Packages:
-const readdirSync = require('fs').readdirSync;
+// Package(s)
+const fs = require('fs');
 
-// Load modules into client:
+// Load modules into client
 exports.registerModules = async client => {
-    const moduleFiles = readdirSync('./modules/');
+    const moduleFiles = fs.readdirSync('./modules/');
     moduleFiles.forEach(file => {
         const moduleName = file.split('.')[0];
         if(moduleName[0] === moduleName[0].toLowerCase() || moduleName === 'Loader') return;
@@ -11,23 +11,23 @@ exports.registerModules = async client => {
     });
 };
 
-// Load commands into client:
+// Load commands into client
 exports.registerCommands = async client => {
-    const { readdirSync, statSync } = require('fs');
-    const { join } = require('path');
-    let registeredCommands = [];
-    const getDirs = p => readdirSync(p).filter(f => statSync(join(p, f)).isDirectory());
-    let dirs = getDirs('./commands/');
-    for(let i = 0; i < dirs.length; i++) {
-        let dir = dirs[i];
+    const registeredCommands = [];
+    const dirs = fs.readdirSync('./commands/').filter(file => fs.statSync(`./commands/${file}`).isDirectory());
+
+    // Loop trough directories:
+    for(const dir of dirs) {
         client.logger.log(`Loading ${dir} commands`);
-        const files = readdirSync(`./commands/${dir}`);
-        for(let j = 0; j < files.length; j++) {
-            const file = files[j];
-            if(statSync(`./commands/${dir}/${file}`).isDirectory()) {
+        const files = fs.readdirSync(`./commands/${dir}`);
+        for(const file of files) {
+            // Add subfolders:
+            if(fs.statSync(`./commands/${dir}/${file}`).isDirectory()) {
                 dirs.push(`${dir}/${file}`);
                 continue;
             }
+
+            // Add command to client:
             const name = file.split('.')[0];
             const properties = require(`../commands/${dir}/${file}`);
             client.commands.set(properties.name, properties);
@@ -37,9 +37,9 @@ exports.registerCommands = async client => {
     client.logger.log(`Loaded: [${registeredCommands.join(' ')}]`);
 };
 
-// Load events into client:
+// Load events into client
 exports.registerEvents = async client => {
-    const eventFiles = readdirSync('./events/');
+    const eventFiles = fs.readdirSync('./events/');
     client.logger.log(`Loading ${eventFiles.length} events`);
 
     const registeredEvents = [];
@@ -52,7 +52,7 @@ exports.registerEvents = async client => {
     client.logger.log(`Loaded: [${registeredEvents.join(' ')}]`);
 };
 
-// Log Discord status:
+// Log Discord status
 exports.checkDiscordStatus = async client => {
     require('axios').get('https://srhpyqt94yxb.statuspage.io/api/v2/status.json').then(({data}) => {
         client.logger.log(`Discord API Status: ${data.status.description}`);
