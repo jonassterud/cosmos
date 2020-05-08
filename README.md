@@ -45,7 +45,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](https://gi
 
 ## Donate
 Donations are split across main contributors.
-* Bitcoin: `bc1qcglufz6ta8ea7phjtgf797nrnz8cy4qhw3hhuq`
-* Litecoin: `LfF1bQP8bmpyJiQQrysfP2iGGgCdf9Bha4`
-* Etherum: `0xbABaD8FCa51672d9ADDc2b0F229990EC44a9ca64`
+* Bitcoin: `3LQx9ua2iiHVuzscx6dnXR59TN7xoehFRN`
+* Litecoin: `MWXmQLHvndYnuL9Cgfd2kx8SS8domG6Tpu`
 * or [PayPal](https://www.paypal.me/jonassterud)
