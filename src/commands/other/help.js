@@ -17,7 +17,7 @@ module.exports = {
             if(!command) return message.channel.send(`\:no_entry: Command wasn't found, <@${message.author.id}>!`);
 
             // Edit embed:
-            embed.setTitle(command.name);
+            embed.setTitle(command.name[0].toUpperCase() + command.name.slice(1));
             embed.addField('Description', command.description);
             embed.addField('Format', `\`${config.prefix + command.name} ${command.usage ? command.usage : ''}\``);
         } else {
