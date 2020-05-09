@@ -22,7 +22,7 @@ module.exports = {
         }
 
         // Extract data (videoID and/or playlistID) from URL:
-        const regexResult = /www\.youtube\.com\/(?:watch\?v=([^&]+)|playlist\?)(?:&*list=([^&]+))*/.exec(args[0]);
+        const regexResult = /(?:watch\?v=([^&]+)|playlist\?)(?:&*list=([^&]+))*/.exec(args[0]);
 
         // Add to queue based on URL type:
         if(!regexResult) { // Search
@@ -99,7 +99,7 @@ module.exports = {
             queue[message.guild.id].stream = ytdl(queue[message.guild.id].urls[0], {
                 quality: 'highestaudio',
                 highWaterMark: 1024 * 1024 * 30, // 30mb
-                liveBuffer: 1000 * 60 * 2 // 2 minutes
+                liveBuffer: 1000 * 60 * 5 // 5 minutes
             });
 
             // Play stream:

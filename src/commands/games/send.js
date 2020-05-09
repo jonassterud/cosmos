@@ -13,7 +13,7 @@ module.exports = {
         if(!Object.prototype.hasOwnProperty.call(accounts, member.id)) return message.channel.send(`\:no_entry: <@${member.id}> doesn't have an account yet. Create an account with \`${config.prefix}account\`!`);
         if(isNaN(sendAmount)) return message.channel.send(`\:question: You need to specify the amount of credits you want to bet, <@${message.author.id}>!`);
         if(sendAmount < 0) return message.channel.send(`\:question: Can't send a negative amount of credits, <@${message.author.id}>!`);
-        if(sendAmount > accounts[message.author.id].balance) return message.channel.send(`\:question: You don't have enough credits, <@${message.author.id}>!`);
+        if(sendAmount > accounts[message.author.id].balance) return message.channel.send(`\:moneybag: Insufficient funds, <@${message.author.id}>!`);
 
         // Send credit(s):
         accounts[message.author.id].balance -= sendAmount;

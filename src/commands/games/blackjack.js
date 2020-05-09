@@ -10,12 +10,15 @@ module.exports = {
         // Guard(s):
         if(!Object.prototype.hasOwnProperty.call(accounts, message.author.id)) return message.channel.send(`\:no_entry: Create an account first with \`${config.prefix}account\`, <@${message.author.id}>!`);
         if(isNaN(creditAmount)) return message.channel.send(`\:question: You need to specify the amount of credits you want to bet, <@${message.author.id}>!`);
+        if(creditAmount > accounts[message.author.id].balance) return message.channel.send(`\:moneybag: Insufficient funds, <@${message.author.id}>!`);
 
         // Start game:
         const emotes = {stand: '🧍‍♂️', hit: '🏏'};
         const deck = new decks.StandardDeck();
         deck.shuffleAll();
+        accounts[message.author.id].balance -= creditAmount;
 
+        // Draw cards:
         const dealer = deck.draw(2);
         const player = deck.draw(2);
 
@@ -50,17 +53,21 @@ module.exports = {
                 const playerPoints = calculatePoints(player);
                 const dealerPoints = calculatePoints(dealer);
 
+                // Respond based on all possible winning combinatins:
                 if(playerPoints === dealerPoints) {
+                    accounts[message.author.id].balance += creditAmount;
                     return message.channel.send(`\:monkey: Push! You and the dealer got the same amount of points, <@${message.author.id}>!`);
                 } else if(playerPoints > 21) {
-                    // TODO: Deduct credits
                     return message.channel.send(`\:x: Busted! You got more than 21 points, <@${message.author.id}>!`);
                 } else if(playerPoints === 21) {
-                    const winAmount = creditAmount * 1.5;
-                    // TODO: Add credits
-                    return message.channel.send(`\:moneybag: Blackjack! You won ${winAmount} credits, <@${message.author.id}>!`);
-                } else {
-                    // TODO: Add credits
+                    accounts[message.author.id].balance += creditAmount * 2.5;
+                    return message.channel.send(`\:moneybag: Blackjack! You won ${creditAmount * 1.5} credits, <@${message.author.id}>!`);
+                } else if(dealerPoints > 21) {
+                    return message.channel.send(`\:moneybag: The dealer busted, and you won ${creditAmount} credits, <@${message.author.id}>!`);
+                } else if(dealerPoints > playerPoints) {
+                    return message.channel.send(`\:x: The dealer got more points than you and you lost, <@${message.author.id}>!`);
+                } else if(playerPoints > dealerPoints) {
+                    accounts[message.author.id].balance += creditAmount * 2;
                     return message.channel.send(`\:moneybag: You won ${creditAmount} credits, <@${message.author.id}>!`);
                 }
             } else if(reaction.emoji.name == emotes.hit) { // Hit
@@ -76,14 +83,11 @@ module.exports = {
                 // Check points:
                 const playerPoints = calculatePoints(player);
                 if(playerPoints > 21) {
-                    // TODO: Deduct credits
                     endRound();
                     return message.channel.send(`\:x: Busted! You got more than 21 points, <@${message.author.id}>!`);
                 }
             }
         });
-
-        // TODO: What should happen when collector ends?
 
         // Functions:
         function calculatePoints(hand) {

@@ -14,7 +14,7 @@ module.exports = {
         if(args[1] && isNaN(maxUsers)) return message.channel.send(`\:no_entry: Max users should be a number, <@${message.author.id}>!`);
         if(creditAmount > accounts[message.author.id].balance) return message.channel.send(`\:moneybag: Insufficient funds, <@${message.author.id}>!`);
 
-        // Check if max users is specified:
+        // Check if game is open to other players:
         if(args[1]) {
             // Deduct credits from host:
             accounts[message.author.id].balance -= creditAmount;
@@ -70,7 +70,7 @@ module.exports = {
                 return message.channel.send(endEmbed);
             });
         } else {
-            // Choose winner and deduct/add credits:
+            // Deduct/add credits:
             const won = Math.floor(Math.random() * 2);
             accounts[message.author.id].balance += won ? creditAmount : -creditAmount;
 
