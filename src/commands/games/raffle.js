@@ -2,7 +2,7 @@ module.exports = {
     name: 'raffle',
     description: '\:tada: Create giveaways! (The creator of the giveaway will not be able to participate).',
     args: true,
-    usage: '<hh:mm:ss> <item>',
+    usage: '<_h_m_s (e.g. 1h20m35s)> <item>',
     async execute(message, args) {
         // Guard(s):
         if(!args[1]) return message.channel.send(`\:question: You need to specify what item you are giving away, <@${message.author.id}>!`);
