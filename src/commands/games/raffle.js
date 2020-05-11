@@ -5,17 +5,15 @@ module.exports = {
     usage: '<hh:mm:ss> <item>',
     async execute(message, args) {
         // Guard(s):
-        // TODO: Change from 01:10:20 to 1h10m20s
-        if(!/^\d\d:\d\d:\d\d$/m.test(args[0])) return message.channel.send(`\:no_entry: Something went wrong. Type \`${config.prefix}help ${this.name}\`, <@${message.author.id}>!`);
         if(!args[1]) return message.channel.send(`\:question: You need to specify what item you are giving away, <@${message.author.id}>!`);
 
         // Variable(s):
-        const timeArray = args[0].split(':');
-        let timeText = ''; // Format text nicely: plural numbers, comma/and, etc. -> bad solution?
-        if(parseInt(timeArray[0])) timeText += `${parseInt(timeArray[0])} hour${parseInt(timeArray[0]) > 1 ? 's' : ''}${!parseInt(timeArray[2]) ? (!parseInt(timeArray[1]) ? '.' : ' and ') : ', '}`;
-        if(parseInt(timeArray[1])) timeText += `${parseInt(timeArray[1])} minute${parseInt(timeArray[1]) > 1 ? 's' : ''}${!parseInt(timeArray[2]) ? '.' : ' and '}`;
-        if(parseInt(timeArray[2])) timeText += `${parseInt(timeArray[2])} second${parseInt(timeArray[2]) > 1 ? 's.' : '.'}`;
+        const regexResult = /(?:(\d*)h)*(?:(\d*)m)*(?:(\d*)s)*/.exec(args[0]);
+        const hours = parseFloat(regexResult[1]) || 0;
+        const minutes = parseFloat(regexResult[2]) || 0;
+        const seconds = parseFloat(regexResult[3]) || 0;
         const item = args.splice(1).join(' ');
+        const timeText = `${hours} hour${hours === 1 ? '': 's'}, ${minutes} minute${minutes === 1 ? '' : 's'} and ${seconds} second${seconds === 1 ? '' : 's'}.`;
 
         // Create entry embed:
         const entryEmbed = new Discord.MessageEmbed()
@@ -34,7 +32,7 @@ module.exports = {
 
         // Create collector:
         const filter = (_, user) => user.id != message.author.id;
-        const waitTime = (1000 * 60 * 60 * timeArray[0]) + (1000 * 60 * timeArray[1]) + (1000 * timeArray[2]);
+        const waitTime = (1000 * 60 * 60 * hours) + (1000 * 60 * minutes) + (1000 * seconds);
         const collector = await sentMessage.createReactionCollector(filter, {time: waitTime});
         let contestants = [];
 
