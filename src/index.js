@@ -4,10 +4,12 @@ global.config = require('./config.json'); // Secret data
 global.fs = require('fs'); // Node.js package - file system
 global.Discord = require('discord.js'); // Node.js package - Discord API
 global.http = require('http'); // Node.js packae - Request data from APIs
-global.https = require('https'); // Node.js packae - Request data from APIs
+global.https = require('https'); // Node.js package - Request data from APIs
 global.ytdl = require('ytdl-core'); // Node.js package - Downloads YouTube videos
 global.youtube = require('googleapis').google.youtube({version: 'v3', auth: process.env.YOUTUBE}); // Youtube API
-global.decks = require('cards').decks;
+global.decks = require('cards').decks; // Node.js package - Playing cards API
+global.moment = require('moment'); // Node.js package - Dates and time
+global.finance = require('alphavantage')({key: process.env.ALPHAVANTAGE}); // Node.js package - Wrapper for Alpha Vantage API
 
 // Global(s)
 global.queue = {};
