@@ -2,7 +2,7 @@ module.exports = {
     name: 'add',
     description: '\:notes: Listen to music from a YouTube video trough a voice channel!',
     args: true,
-    usage: '<video | playlist | live>',
+    usage: '<video | playlist | live | query>',
     async execute(message, args) {
         // Variable(s):
         const voice = message.member.voice.channel;
@@ -12,20 +12,52 @@ module.exports = {
 
         // Create queue:
         if(!queue[message.guild.id]) {
-            queue[message.guild.id] = {
-                urls: [],
-                playing: false,
-                stream: undefined,
-                dispatcher: undefined,
-                connection: undefined
-            };
+            queue[message.guild.id] = {urls: [], playing: false, stream: undefined, dispatcher: undefined, connection: undefined};
         }
 
         // Extract data (videoID and/or playlistID) from URL:
-        const regexResult = /(?:watch\?v=([^&]+)|playlist\?)(?:&*list=([^&]+))*/.exec(args[0]);
+        const ids = args[0].match(/(v=|youtu\.be\/)(?<video>[^&]+)(?!.*list=)|list=(?<playlist>[^&]+)/);
 
-        // Add to queue based on URL type:
-        if(!regexResult) { // Search
+        // Add songs from playlist:
+        if(ids && ids.groups.playlist) {
+            (async function getItems(nextPageToken='') {
+                let list = {};
+                try {
+                    // Load videos:
+                    list = await youtube.playlistItems.list({
+                        playlistId: ids.groups.playlist,
+                        part: 'snippet',
+                        maxResults: 50,
+                        pageToken: nextPageToken
+                    });
+                } catch(error) {
+                    client.logger.error(error);
+                    return message.channel.send(`\:no_entry: Something went wrong, <@${message.author.id}>!`);
+                }
+
+                // Add videos from current page:
+                list.data.items.forEach(item => {
+                    queue[message.guild.id].urls.push(`www.youtube.com/watch?v=${item.snippet.resourceId.videoId}`);
+                });
+
+                // Get items from next page:
+                if(list.data.nextPageToken) return getItems(list.data.nextPageToken);
+
+                // Play:
+                if(!queue[message.guild.id].playing) play();
+                message.channel.send(`\:mailbox: Added songs from the playlist to the queue, <@${message.author.id}>!`);
+            })();
+        }
+
+        // Add song:
+        else if(ids && ids.groups.video) {
+            queue[message.guild.id].urls.push(args[0]);
+            if(!queue[message.guild.id].playing) play();
+            message.channel.send(`\:ok_hand: Added song to the queue, <@${message.author.id}>!`);
+        }
+
+        // Add song based on search query:
+        else {
             let list = {};
             try {
                 list = await youtube.search.list({
@@ -50,38 +82,6 @@ module.exports = {
                 if(err) message.channel.send(`\:mag: Added song based on your search query, <@${message.author.id}>!`);
                 else message.channel.send(`\:mag: Added "*${data.title}*" based on your search query, <@${message.author.id}>!`);
             });
-        } else if(regexResult[2]) { // Playlist
-            (async function getItems(nextPageToken='') {
-                let list = {};
-                try {
-                    // Load videos:
-                    list = await youtube.playlistItems.list({
-                        playlistId: args[0].match(/list=([^&]+)/)[1],
-                        part: 'snippet',
-                        maxResults: 50,
-                        pageToken: nextPageToken
-                    });
-                } catch(error) {
-                    client.logger.error(error);
-                    return message.channel.send(`\:no_entry: Something went wrong, <@${message.author.id}>!`);
-                }
-
-                // Add videos from current page:
-                list.data.items.forEach(item => {
-                    queue[message.guild.id].urls.push(`www.youtube.com/watch?v=${item.snippet.resourceId.videoId}`);
-                });
-
-                // Get items from next page:
-                if(list.data.nextPageToken) return getItems(list.data.nextPageToken);
-
-                // Play:
-                if(!queue[message.guild.id].playing) play();
-                message.channel.send(`\:mailbox: Added songs from the playlist to the queue, <@${message.author.id}>!`);
-            })();
-        } else if(regexResult[1] && !regexResult[2]) { // Song
-            queue[message.guild.id].urls.push(args[0]);
-            if(!queue[message.guild.id].playing) play();
-            message.channel.send(`\:ok_hand: Added song to the queue, <@${message.author.id}>!`);
         }
 
         // Play function:
@@ -107,6 +107,7 @@ module.exports = {
                 highWaterMark: 1,
                 bitrate: 'auto',
                 volume: false
+                //seek
             });
 
             // Finish event:
