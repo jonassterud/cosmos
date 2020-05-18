@@ -18,7 +18,7 @@ global.accounts = fs.existsSync('./backups/accounts.json') ? JSON.parse(fs.readF
 // Backup loop
 setInterval(() => {
     if(!fs.existsSync('./backups')) fs.mkdirSync('./backups');
-    fs.writeFileSync('./backups/accounts.json', JSON.stringify(accounts));
+    fs.writeFileSync('./backups/accounts.json', JSON.stringify(accounts, null, 4));
 }, 1000 * 60 * 5);
 
 // Create bot

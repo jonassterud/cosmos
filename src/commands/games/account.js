@@ -13,7 +13,7 @@ module.exports = {
         if(user.id === message.author.id && !Object.prototype.hasOwnProperty.call(accounts, user.id)) {
             newAccount = true;
             accounts[user.id] = {
-                balance: 5000
+                balance: config.starting_balance
             };
         }
 

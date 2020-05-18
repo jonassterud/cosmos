@@ -1,5 +1,10 @@
 module.exports = async (client, message) => {
-    // Split command and argument(s):
+    // Add credits to author:
+    if(Object.prototype.hasOwnProperty.call(accounts, message.author.id)) {
+        accounts[message.author.id].balance += config.message_reward;
+    }
+
+    // Split command and argument(s) + Guard(s):
     if(!message.content.startsWith(config.prefix) || message.author.bot) return;
     const args = message.content.slice(config.prefix.length).split(/ +/);
     const commandName = args.shift().toLowerCase();

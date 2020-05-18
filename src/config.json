@@ -1,3 +1,5 @@
 {
-    "prefix": "?"
+    "prefix": "?",
+    "message_reward": 1,
+    "starting_balance": 5000
 }
