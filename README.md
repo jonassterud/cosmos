@@ -19,13 +19,14 @@ Cosmos is an open source Discord bot made with Node.js. It mainly focuses on ent
 8. That's it! Need help? Create an issue [here](https://github.com/jonassterud/Cosmos/issues) and tag it as "*need help*".
  
 ## Secrets
-Secrets are stored in a *.env* file. It holds holds secret information such as the the [Discord bot token](https://discordapp.com/developers/applications/), the [Pixabay API token](https://pixabay.com/no/service/about/api/), the [API token for Giphy](https://developers.giphy.com/dashboard/) and the [YouTube API token](https://console.cloud.google.com/projectcreate). The *.env* file should be inside the *src* folder, and it should look like this:
+Secrets are stored in a *.env* file. It holds holds secret information such as the the [Discord bot token](https://discordapp.com/developers/applications/), the [Pixabay API token](https://pixabay.com/no/service/about/api/), the [API token for Giphy](https://developers.giphy.com/dashboard/), the [Alpha Vantage API token](https://www.alphavantage.co/) and the [YouTube API token](https://console.cloud.google.com/projectcreate). The *.env* file should be inside the *src* folder, and it should look like this:
 ```
 {
     TOKEN=Discord bot token here
     YOUTUBE=YouTube API token here
     GIPHY=Giphy API token here
     PIXABAY=Pixabay API token here
+    ALPHAVANTAGE=Alpha Vantage API token here
 }
 ```
 
