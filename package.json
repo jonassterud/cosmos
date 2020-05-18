@@ -4,14 +4,14 @@
     "description": "![Image](https://i.ibb.co/dLp1FSX/Untitled.png)",
     "main": "src/index.js",
     "scripts": {
-        "dev:server": "nodemon -q .",
+        "start": "cd ./src && node .",
         "dev:lint": "eslint . --fix"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/jonassterud/Cosmos.git"
     },
-    "author": "",
+    "author": "Jonas Sterud and Sebastian Refsnes",
     "license": "SEE LICENSE IN LICENSE",
     "bugs": {
         "url": "https://github.com/jonassterud/Cosmos/issues"
@@ -27,7 +27,6 @@
         "dotenv": "^8.2.0",
         "googleapis": "^47.0.0",
         "moment": "^2.24.0",
-        "nodemon": "^2.0.3",
         "ytdl-core": "^2.1.1"
     },
     "devDependencies": {
