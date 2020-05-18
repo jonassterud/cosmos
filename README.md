@@ -35,6 +35,8 @@ Configuration data is stored in the *config.json* file. The *config.json* file s
 ```
 {
     "prefix": "Your prefix here",
+    "message_reward": "Credit reward on each message here",
+    "starting_balance"": "Initial balance upon account creation here"
 }
 ```
 
