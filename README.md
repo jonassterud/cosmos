@@ -1,12 +1,12 @@
 ![Image](https://i.ibb.co/dLp1FSX/Untitled.png)
 
 ## About
-Cosmos is an open source Discord bot made with Node.js. It mainly focuses on entertainment type commands, but it also supports some administration commands (`ban`, `kick`, `mute`, etc.). Cosmos also supports playing music from YouTube. It can handle both individual videos and playlists (and even live videos!). You can also search for videos trough Cosmos. It also includes a credit system (*NOT FINISHED*). You can use the credits you earn over time on different minigames (`blackjack`, `coinflip`, `trivia`, etc.). Type `?help` to get started!
+Cosmos is an open source Discord bot made with Node.js. It mainly focuses on entertainment type commands, but it also supports some administration commands (`ban`, `kick`, `mute`, etc.). Cosmos also supports playing music from YouTube. It can handle both individual videos and playlists (and even live videos!). You can also search for videos trough Cosmos. It also includes a credit system. You can use the credits you earn over time on different minigames (`blackjack`, `coinflip`, `trivia`, etc.). Type `?help` to get started!
 
 ## Links
-[Invite me!]() (*Coming Soon*)  
+[Invite me!](https://discordapp.com/oauth2/authorize?client_id=672828141743374340&scope=bot&permissions=8) (*Still under development, but now available to invite!*)  
 [What's next?](https://github.com/jonassterud/Cosmos/projects/1)  
-[Something wrong?](https://github.com/jonassterud/Cosmos/issues)  
+[Something wrong?](https://github.com/jonassterud/Cosmos/issues)
 
 ## Local setup
 1. Install [Node.js](https://nodejs.org/en/).
@@ -14,8 +14,8 @@ Cosmos is an open source Discord bot made with Node.js. It mainly focuses on ent
 3. Run `yarn install` in a terminal in the project root directory.
 4. Generate a bot application on [Discord Developer Portal](https://discordapp.com/developers/applications/).
 5. Create a file called `.env` in the `src` folder and fill it with the secret keys specified below.
-6. Start your server by running `node .` from inside the `src` folder.
-7. Invite your bot by inserting the bot's client id into this link: `https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID_HERE&scope=bot&permissions=334687358`.
+6. Start your server by running `yarn run start` or `npm start`.
+7. Invite your bot by inserting the bot's client id into this link: `https://discordapp.com/oauth2/authorize?client_id=CLIENT_ID_HERE&scope=bot&permissions=8`.
 8. That's it! Need help? Create an issue [here](https://github.com/jonassterud/Cosmos/issues) and tag it as "*need help*".
  
 ## Secrets
