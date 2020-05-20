@@ -2,9 +2,10 @@
     "name": "cosmos",
     "version": "1.0.0",
     "description": "![Image](https://i.ibb.co/dLp1FSX/Untitled.png)",
-    "main": "src/index.js",
+    "main": "index.js",
     "scripts": {
         "start": "cd ./src && node .",
+        "dev:live": "cd ./src && nodemon .",
         "dev:lint": "eslint . --fix"
     },
     "repository": {
@@ -36,6 +37,7 @@
         "eslint-plugin-import": "^2.20.2",
         "eslint-plugin-node": "^11.1.0",
         "eslint-plugin-promise": "^4.2.1",
-        "eslint-plugin-standard": "^4.0.1"
+        "eslint-plugin-standard": "^4.0.1",
+        "nodemon": "^2.0.4"
     }
 }
