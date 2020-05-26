@@ -19,7 +19,8 @@ module.exports = {
                 const image = body.hits[Math.floor(Math.random() * topSearchLen)];
                 const embed = new Discord.MessageEmbed()
                     .setColor('#ff0000')
-                    .setImage(image.largeImageURL);
+                    .setImage(image.largeImageURL)
+                    .setTimestamp(new Date());
 
                 // Send embed:
                 return message.channel.send(embed);
