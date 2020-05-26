@@ -9,7 +9,7 @@ module.exports = {
             .setTitle('\:scroll: Leaderboard:')
             .setColor('#ff0000')
             .setTimestamp(new Date());
-        
+
         // Sort accounts by balance:
         const sortedArray = Object.keys(accounts).map((e, i) => ({id: e, balance: Object.values(accounts)[i].balance}));
         sortedArray.sort((a, b) => b.balance - a.balance);

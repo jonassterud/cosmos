@@ -44,7 +44,8 @@ module.exports = {
 
         // On reaction:
         collector.on('collect', reaction => {
-            if(reaction.emoji.name == emotes.stand) { // Stand
+            // Stand:
+            if(reaction.emoji.name == emotes.stand) {
                 // Draw card(s) and update embed:
                 while(calculatePoints(dealer) < 17) dealer.push(...deck.draw(1));
                 endRound();
@@ -68,9 +69,14 @@ module.exports = {
                     return message.channel.send(`\:x: The dealer got more points than you and you lost, <@${message.author.id}>!`);
                 } else if(playerPoints > dealerPoints) {
                     accounts[message.author.id].balance += creditAmount * 2;
-                    return message.channel.send(`\:moneybag: You won ${creditAmount} credits, <@${message.author.id}>!`);
+                    return message.channel.send(`\:moneybag: You got more points than the dealer and won ${creditAmount} credits, <@${message.author.id}>!`);
+                } else {
+                    accounts[message.author.id].balance += creditAmount;
+                    message.channel.send(`\:no_entry: Something went wrong, <@${message.author.id}>!`);
+                    return client.logger.error('Unknown combination in Blackjack.');
                 }
-            } else if(reaction.emoji.name == emotes.hit) { // Hit
+            // Hit:
+            } else if(reaction.emoji.name == emotes.hit) {
                 // Draw card:
                 player.push(...deck.draw(1));
 

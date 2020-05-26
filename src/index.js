@@ -1,4 +1,4 @@
-// Package(s)
+// Package(s):
 require('dotenv').config();
 global.config = require('./config.json'); // Secret data
 global.fs = require('fs'); // Node.js package - file system
@@ -11,20 +11,20 @@ global.decks = require('cards').decks; // Node.js package - Playing cards API
 global.moment = require('moment'); // Node.js package - Dates and time
 global.finance = require('alphavantage')({key: process.env.ALPHAVANTAGE}); // Node.js package - Wrapper for Alpha Vantage API
 
-// Global(s)
+// Global(s):
 global.queue = {};
 global.accounts = fs.existsSync('./backups/accounts.json') ? JSON.parse(fs.readFileSync('./backups/accounts.json')) : {};
 
-// Backup loop
+// Backup loop:
 setInterval(() => {
     if(!fs.existsSync('./backups')) fs.mkdirSync('./backups');
     fs.writeFileSync('./backups/accounts.json', JSON.stringify(accounts, null, 4));
 }, 1000 * 60 * 5);
 
-// Create bot
+// Create bot:
 client = new Discord.Client();
 
-// Create commands
+// Create commands:
 client.commands = new Discord.Collection();
 client.loader = require('./modules/Loader');
 

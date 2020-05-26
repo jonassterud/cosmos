@@ -107,7 +107,6 @@ module.exports = {
                 highWaterMark: 1,
                 bitrate: 'auto',
                 volume: false
-                //seek
             });
 
             // Finish event:

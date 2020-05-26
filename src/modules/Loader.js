@@ -1,7 +1,7 @@
-// Package(s)
+// Package(s):
 const fs = require('fs');
 
-// Load modules into client
+// Load modules into client:
 exports.registerModules = async client => {
     const moduleFiles = fs.readdirSync('./modules/');
     moduleFiles.forEach(file => {
@@ -11,7 +11,7 @@ exports.registerModules = async client => {
     });
 };
 
-// Load commands into client
+// Load commands into client:
 exports.registerCommands = async client => {
     const registeredCommands = [];
     const dirs = fs.readdirSync('./commands/').filter(file => fs.statSync(`./commands/${file}`).isDirectory());
@@ -37,7 +37,7 @@ exports.registerCommands = async client => {
     client.logger.log(`Loaded: [${registeredCommands.join(' ')}]`);
 };
 
-// Load events into client
+// Load events into client:
 exports.registerEvents = async client => {
     const eventFiles = fs.readdirSync('./events/');
     client.logger.log(`Loading ${eventFiles.length} events`);
@@ -52,7 +52,7 @@ exports.registerEvents = async client => {
     client.logger.log(`Loaded: [${registeredEvents.join(' ')}]`);
 };
 
-// Log Discord status
+// Log Discord status:
 exports.checkDiscordStatus = async client => {
     require('axios').get('https://srhpyqt94yxb.statuspage.io/api/v2/status.json').then(({data}) => {
         client.logger.log(`Discord API Status: ${data.status.description}`);

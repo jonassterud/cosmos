@@ -1,4 +1,4 @@
-// Package(s)
+// Package(s):
 const chalk = require('chalk');
 
 exports.log = (content, type = 'log') => {
