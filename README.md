@@ -9,7 +9,7 @@ Cosmos is an open source Discord bot made with Node.js. It mainly focuses on ent
 [Something wrong?](https://github.com/jonassterud/Cosmos/issues)
 
 ## Local setup
-1. Install [Node.js](https://nodejs.org/en/).
+1. Install [Node.js ^14.3.0](https://nodejs.org/en/).
 2. Install [yarn](https://classic.yarnpkg.com/en/docs/install/#windows-stable).
 3. Run `yarn install` in a terminal in the project root directory.
 4. Generate a bot application on [Discord Developer Portal](https://discordapp.com/developers/applications/).
