@@ -8,7 +8,7 @@ module.exports = {
         const creditAmount = parseInt(args[0]);
 
         // Guard(s):
-        if(!Object.prototype.hasOwnProperty.call(accounts, message.author.id)) return message.channel.send(`\:no_entry: Create an account first with \`${config.prefix}account\`, <@${message.author.id}>!`);
+        if(!accounts?.[message.author.id]) return message.channel.send(`\:no_entry: Create an account first with \`${config.prefix}account\`, <@${message.author.id}>!`);
         if(isNaN(creditAmount)) return message.channel.send(`\:question: You need to specify the amount of credits you want to bet, <@${message.author.id}>!`);
         if(creditAmount > accounts[message.author.id].balance) return message.channel.send(`\:moneybag: Insufficient funds, <@${message.author.id}>!`);
 
@@ -39,13 +39,13 @@ module.exports = {
         for(const emoteProperty in emotes) await sentMessage.react(emotes[emoteProperty]);
 
         // Create collector:
-        const filter = (reaction, user) => user.id == message.author.id && Object.values(emotes).includes(reaction.emoji.name);
+        const filter = (reaction, user) => user.id === message.author.id && Object.values(emotes).includes(reaction.emoji.name);
         const collector = sentMessage.createReactionCollector(filter, {time: 1000 * 60});
 
         // On reaction:
         collector.on('collect', reaction => {
             // Stand:
-            if(reaction.emoji.name == emotes.stand) {
+            if(reaction.emoji.name === emotes.stand) {
                 // Draw card(s) and update embed:
                 while(calculatePoints(dealer) < 17) dealer.push(...deck.draw(1));
                 endRound();
@@ -76,7 +76,7 @@ module.exports = {
                     return client.logger.error('Unknown combination in Blackjack.');
                 }
             // Hit:
-            } else if(reaction.emoji.name == emotes.hit) {
+            } else if(reaction.emoji.name === emotes.hit) {
                 // Draw card:
                 player.push(...deck.draw(1));
 

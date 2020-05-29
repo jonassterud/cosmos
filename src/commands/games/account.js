@@ -10,7 +10,7 @@ module.exports = {
         let newAccount = false;
 
         // Create account if account doesn't exist:
-        if(user.id === message.author.id && !Object.prototype.hasOwnProperty.call(accounts, user.id)) {
+        if(user.id === message.author.id && !accounts?.[user.id]) {
             newAccount = true;
             accounts[user.id] = {
                 balance: config.starting_balance
@@ -19,7 +19,7 @@ module.exports = {
 
         // Create embed:
         const roles = member.roles.cache.array().map(e => e.name).filter(e => e !== '@everyone');
-        const balance = Object.prototype.hasOwnProperty.call(accounts, user.id) ? `${accounts[user.id].balance} credits` : '*Unknown*';
+        const balance = `${accounts?.[user.id]?.balance || 0} credits`;
         const embed = new Discord.MessageEmbed()
             .setTitle(`\:shield: Account${newAccount ? ' created!' : ':'}`)
             .setThumbnail(user.displayAvatarURL())

@@ -5,7 +5,7 @@ module.exports = {
     usage: '',
     async execute(message) {
         // Guard(s):
-        if(!queue[message.guild.id] || !queue[message.guild.id].urls) return message.channel.send(`\:question: Queue is empty, <@${message.author.id}>!`);
+        if(!queue?.[message.guild.id] || !queue?.[message.guild.id]?.urls) return message.channel.send(`\:question: Queue is empty, <@${message.author.id}>!`);
 
         // Remove last song:
         await ytdl.getBasicInfo(queue[message.guild.id].urls.pop(), (err, data) => {

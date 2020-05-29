@@ -29,7 +29,7 @@ module.exports = {
         for(const emote of emotes.numbers) await sentMessage.react(emote);
 
         // Create collector:
-        const filter = (reaction, user) => (user.id == message.author.id || user.id == member.id) && emotes.numbers.includes(reaction.emoji.name);
+        const filter = (reaction, user) => (user.id === message.author.id || user.id === member.id) && emotes.numbers.includes(reaction.emoji.name);
         const collector = sentMessage.createReactionCollector(filter, {time: 1000 * 60 * 5});
 
         // On reaction:
@@ -40,8 +40,8 @@ module.exports = {
             // Guard(s):
             if(!Object.prototype.hasOwnProperty.call(accounts, user.id)) return message.channel.send(`\:no_entry: Create an account first with \`${config.prefix}account\`, <@${user.id}>!`);
             if(creditAmount > accounts[user.id].balance) return message.channel.send(`\:moneybag: Insufficient funds, <@${user.id}>!`);
-            if(user.id == member.id && !opponentTurn) return message.channel.send(`\:no_entry: It's not your turn yet, <@${member.id}>!`);
-            if(user.id == message.author.id && opponentTurn) return message.channel.send(`\:no_entry: It's not your turn yet, <@${message.author.id}>!`);
+            if(user.id === member.id && !opponentTurn) return message.channel.send(`\:no_entry: It's not your turn yet, <@${member.id}>!`);
+            if(user.id === message.author.id && opponentTurn) return message.channel.send(`\:no_entry: It's not your turn yet, <@${message.author.id}>!`);
 
             // Find position of piece:
             const xPosition = emotes.numbers.findIndex(e => e === reaction.emoji.name);

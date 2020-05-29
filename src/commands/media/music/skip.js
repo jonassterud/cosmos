@@ -4,19 +4,18 @@ module.exports = {
     args: false,
     usage: '(amount?)',
     async execute(message, args) {
+        // Variable(s):
+        const amount = parseInt(args[0]) || 1;
+
         // Guard(s):
-        if(!queue[message.guild.id] || !queue[message.guild.id].connection) return message.channel.send(`\:question: I'm not playing anything yet, <@${message.author.id}>!`);
+        if(!queue?.[message.guild.id] || !queue?.[message.guild.id]?.connection) return message.channel.send(`\:question: I'm not playing anything yet, <@${message.author.id}>!`);
 
         // Skip:
-        if(args[1] && /^\d+$/m.test(args[1])) {
-            if(parseInt(args[1]) <= queue[message.guild.id].urls.length && args[1] > 0) {
-                queue[message.guild.id].urls.splice(0, parseInt(args[1]) - 1);
-                return queue[message.guild.id].dispatcher.end();
-            } else {
-                return message.channel.send(`\:no_entry: Number is out of range, <@${message.author.id}>!`);
-            }
-        } else {
+        if(amount <= queue[message.guild.id].urls.length && amount > 0) {
+            queue[message.guild.id].urls.splice(0, amount - 1);
             return queue[message.guild.id].dispatcher.end();
+        } else {
+            return message.channel.send(`\:no_entry: Number is out of range, <@${message.author.id}>!`);
         }
     }
 };

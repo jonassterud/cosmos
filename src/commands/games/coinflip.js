@@ -9,7 +9,7 @@ module.exports = {
         const maxUsers = parseInt(args[1]);
 
         // Guard(s):
-        if(!Object.prototype.hasOwnProperty.call(accounts, message.author.id)) return message.channel.send(`\:no_entry: Create an account first with \`${config.prefix}account\`, <@${message.author.id}>!`);
+        if(!accounts?.[message.author.id]) return message.channel.send(`\:no_entry: Create an account first with \`${config.prefix}account\`, <@${message.author.id}>!`);
         if(isNaN(creditAmount)) return message.channel.send(`\:no_entry: Credit amount should be a number, <@${message.author.id}>!`);
         if(args[1] && isNaN(maxUsers)) return message.channel.send(`\:no_entry: Max users should be a number, <@${message.author.id}>!`);
         if(creditAmount > accounts[message.author.id].balance) return message.channel.send(`\:moneybag: Insufficient funds, <@${message.author.id}>!`);

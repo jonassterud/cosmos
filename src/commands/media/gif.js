@@ -12,7 +12,7 @@ module.exports = {
                 body = JSON.parse(body);
 
                 // Guard(s):
-                if(!body.data.length) return message.channel.send(`\:no_entry: No GIFs were found, <@${message.author.id}>!`);
+                if(!body?.data?.length) return message.channel.send(`\:no_entry: No GIFs were found, <@${message.author.id}>!`);
 
                 // Select GIF and create embed:
                 const gif = body.data[Math.floor(Math.random() * body.data.length)];

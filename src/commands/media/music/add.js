@@ -11,7 +11,7 @@ module.exports = {
         if(!voice) return message.channel.send(`\:no_entry: Please join a voicechannel before executing the command, <@${message.author.id}>!`);
 
         // Create queue:
-        if(!queue[message.guild.id]) {
+        if(!queue?.[message.guild.id]) {
             queue[message.guild.id] = {urls: [], playing: false, stream: undefined, dispatcher: undefined, connection: undefined};
         }
 

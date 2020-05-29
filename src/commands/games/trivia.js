@@ -70,7 +70,7 @@ module.exports = {
                     try {
                         const sentMessage = await message.channel.send(embed);
                         for(const emo of emos) await sentMessage.react(emo);
-                        const filter = (reaction, user) => user.id == message.author.id && emos.includes(reaction.emoji.name);
+                        const filter = (reaction, user) => user.id === message.author.id && emos.includes(reaction.emoji.name);
                         const collector = sentMessage.createReactionCollector(filter, {
                             max: 1,
                             time: 60000
@@ -79,7 +79,7 @@ module.exports = {
 
                         collector.on('collect', reaction => {
                             someoneReacted = true;
-                            if(reaction.emoji.name == emoAns) return message.channel.send(`\:ballot_box_with_check: Correct answer, <@${message.author.id}>!`);
+                            if(reaction.emoji.name === emoAns) return message.channel.send(`\:ballot_box_with_check: Correct answer, <@${message.author.id}>!`);
                             else return message.channel.send(`\:regional_indicator_x: Wrong answer, <@${message.author.id}>!`);
                         });
 

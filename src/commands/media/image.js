@@ -12,7 +12,7 @@ module.exports = {
                 body = JSON.parse(body);
 
                 // Guard(s):
-                if(!body.hits.length) return message.channel.send(`\:no_entry: No images were found, <@${message.author.id}>!`);
+                if(!body?.hits?.length) return message.channel.send(`\:no_entry: No images were found, <@${message.author.id}>!`);
 
                 // Select image and create embed:
                 const topSearchLen = (body.hits.length * 0.25 > 50 ? 50 : Math.round(body.hits.length * 0.25));

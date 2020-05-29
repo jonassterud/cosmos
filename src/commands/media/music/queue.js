@@ -5,7 +5,7 @@ module.exports = {
     usage: '',
     async execute(message) {
         // Guard(s):
-        if(!queue[message.guild.id] || !queue[message.guild.id].urls) return message.channel.send(`\:question: Queue is empty, <@${message.author.id}>!`);
+        if(!queue?.[message.guild.id] || !queue?.[message.guild.id]?.urls) return message.channel.send(`\:question: Queue is empty, <@${message.author.id}>!`);
 
         // Create embed:
         const embed = new Discord.MessageEmbed()
@@ -14,8 +14,8 @@ module.exports = {
             .setTimestamp(new Date());
 
         // Loop trough songs:
-        const maxSize = 3;
-        for(let i = 0; i < queue[message.guild.id].urls.length && i < maxSize; i++) {
+        const maxSize = 4;
+        for(let i = 0; i < queue[message.guild.id].urls.length && i < maxSize - 1; i++) {
             try {
                 const song = await ytdl.getBasicInfo(queue[message.guild.id].urls[i]);
                 const length = `${Math.floor(parseInt(song.length_seconds) / 60)} minutes and ${parseInt(song.length_seconds) % 60} seconds`;
