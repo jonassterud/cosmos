@@ -10,7 +10,7 @@ module.exports = {
         let opponentTurn = false;
 
         // Guard(s):
-        if(member.id  === message.author.id) return message.channel.send(`\:no_entry: You can't challenge yourself, <@${message.author.id}>!`);
+        if(member.id === message.author.id) return message.channel.send(`\:no_entry: You can't challenge yourself, <@${message.author.id}>!`);
         if(!Object.prototype.hasOwnProperty.call(accounts, message.author.id)) return message.channel.send(`\:no_entry: Create an account first with \`${config.prefix}account\`, <@${message.author.id}>!`);
         if(creditAmount > accounts[message.author.id].balance) return message.channel.send(`\:moneybag: Insufficient funds, <@${message.author.id}>!`);
 

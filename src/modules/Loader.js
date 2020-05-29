@@ -42,7 +42,7 @@ exports.registerCommands = async client => {
 exports.registerEvents = async client => {
     const eventFiles = fs.readdirSync('./events/');
     const registeredEvents = [];
-    
+
     // Add events to client:
     client.logger.log(`Loading ${eventFiles.length} event${eventFiles.length > 1 ? 's' : ''}`);
     eventFiles.forEach(file => {

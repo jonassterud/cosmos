@@ -15,7 +15,7 @@ module.exports = {
                     message.guild.members.unban(ban.user.id);
                     return message.channel.send(`\:pensive: Unbanned <@${ban.user.id}>!`);
                 } else {
-                    return message.channel.send(`\:no_entry: Can't find "*${args.join(" ")}*", <@${message.author.id}>!`);
+                    return message.channel.send(`\:no_entry: Can't find "*${args.join(' ')}*", <@${message.author.id}>!`);
                 }
             });
         });

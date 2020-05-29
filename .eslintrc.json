@@ -1,47 +1,19 @@
 {
     "env": {
-        "browser": true,
-        "commonjs": true,
-        "es6": true,
+        "es2020": true,
         "node": true
     },
-    "extends": [
-        "eslint:recommended"
-    ],
+    "extends": "eslint:recommended",
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
+    "parser": "babel-eslint", /* Better ES11 support */
     "parserOptions": {
-        "ecmaVersion": 2018
+        "ecmaVersion": 11, /* Also set as environment */
+        "sourceType": "module"
     },
     "rules": {
-        "indent": ["error", 4, {"SwitchCase": 1}],
-        "semi": [2, "always"],
-        "yoda": "error",
-        "no-extra-semi": "error",
-        "no-trailing-spaces": "error",
-        "no-multi-spaces": "error",
-        "no-multi-str": "error",
-        "no-useless-escape": "off",
-        "comma-dangle": ["error", "never"],
-        "no-dupe-else-if": "error",
-        "no-duplicate-case": "error",
-        "no-unused-vars": "warn",
-        "no-unreachable": "error",
-        "use-isnan": "error",
-        "space-before-blocks": "error",
-        "no-eval": "error",
-        "no-var": "error",
-        "no-undef": 0,
-        "arrow-parens": ["error", "as-needed"],
-        "prefer-arrow-callback": ["error", {
-            "allowNamedFunctions": true
-        }],
-        "comma-spacing": ["error", {
-            "before": false,
-            "after": true
-        }],
         "keyword-spacing": ["error", {
             "overrides": {
                 "if": {"after": false}, 
@@ -50,6 +22,29 @@
                 "switch": {"after": false},
                 "catch": {"after": false}
             }
-        }]
+        }],
+        
+        "no-undef": 0,
+        "no-var": "error",
+        "no-eval": "error",
+        "use-isnan": "error",
+        "semi": [2, "always"],
+        "no-multi-str": "error",
+        "no-unused-vars": "warn",
+        "no-extra-semi": "error",
+        "no-unreachable": "error",
+        "no-dupe-else-if": "error",
+        "no-multi-spaces": "error",
+        "no-useless-escape": "off",
+        "no-duplicate-case": "error",
+        "quotes": ["error", "single"],
+        "no-trailing-spaces": "error",
+        "space-before-blocks": "error",
+        "comma-dangle": ["error", "never"],
+        "linebreak-style": ["error", "unix"],
+        "arrow-parens": ["error", "as-needed"],
+        "indent": ["error", 4, {"SwitchCase": 1}],
+        "comma-spacing": ["error", {"before": false, "after": true}],
+        "prefer-arrow-callback": ["error", {"allowNamedFunctions": true}]
     }
 }

@@ -26,7 +26,7 @@ module.exports = {
                     `<@${message.author.id}> has created a coinflip for ${creditAmount} credits!\n` +
                     'To join, just react with **any** emoji below.\n' +
                     `Maximum ${maxUsers} users can join this coinflip.\n` +
-                    `The coinflip will end in:\n\`60\` seconds.\n` +
+                    'The coinflip will end in:\n`60` seconds.\n' +
                     'Good luck! \:+1:'
                 )
                 .setColor('#ff0000')
