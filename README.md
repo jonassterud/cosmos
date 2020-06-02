@@ -45,9 +45,3 @@ See [CONTRIBUTING.md]() (*Coming soon, but contributions are still highly welcom
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/jonassterud/Cosmos/blob/master/LICENSE) for details.
-
-## Donate
-Donations are split across main contributors.
-* Bitcoin: `3LQx9ua2iiHVuzscx6dnXR59TN7xoehFRN`
-* Litecoin: `MWXmQLHvndYnuL9Cgfd2kx8SS8domG6Tpu`
-* or [PayPal](https://www.paypal.me/jonassterud)
