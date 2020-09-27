@@ -78,10 +78,8 @@ module.exports = {
             const url = 'https://www.youtube.com/watch?v=' + list.data.items[0].id.videoId;
             queue[message.guild.id].urls.push(url);
             if(!queue[message.guild.id].playing) play();
-            ytdl.getBasicInfo(url, (err, data) => {
-                if(err) message.channel.send(`\:mag: Added song based on your search query, <@${message.author.id}>!`);
-                else message.channel.send(`\:mag: Added "*${data.title}*" based on your search query, <@${message.author.id}>!`);
-            });
+            const data = await ytdl.getBasicInfo(url)
+            message.channel.send(`\:mag: Added "*${data.videoDetails.title}*" based on your search query, <@${message.author.id}>!`);
         }
 
         // Play function:
