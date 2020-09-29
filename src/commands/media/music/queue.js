@@ -18,8 +18,8 @@ module.exports = {
         for(let i = 0; i < queue[message.guild.id].urls.length && i < maxSize - 1; i++) {
             try {
                 const song = await ytdl.getBasicInfo(queue[message.guild.id].urls[i]);
-                const length = `${Math.floor(parseInt(song.length_seconds) / 60)} minutes and ${parseInt(song.length_seconds) % 60} seconds`;
-                embed.addField((!i ? 'Currently playing:' : `${i}.`), `Title: *${song.title}*\nDuration: *${song.player_response.videoDetails.isLive ? 'live' : length}*`);
+                const length = `${Math.floor(parseInt(song.videoDetails.lengthSeconds) / 60)} minutes and ${parseInt(song.videoDetails.lengthSeconds) % 60} seconds`;
+                embed.addField((!i ? 'Currently playing:' : `${i}.`), `Title: *${song.videoDetails.title}*\nDuration: *${song.player_response.videoDetails.isLive ? 'live' : length}*`);
             } catch(_) {
                 queue[message.guild.id].urls.splice(i, 1);
             }
