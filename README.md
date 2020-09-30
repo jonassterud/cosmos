@@ -41,7 +41,7 @@ Configuration data is stored in the *config.json* file. The *config.json* file s
 ```
 
 ## Contributing
-See [CONTRIBUTING.md]() (*Coming soon, but contributions are still highly welcomed!*)
+Just do whatever you want and create a pull request.
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/jonassterud/Cosmos/blob/master/LICENSE) for details.
