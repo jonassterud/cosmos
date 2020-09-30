@@ -64,6 +64,7 @@ module.exports = {
                     accounts[message.author.id].balance += creditAmount * 2.5;
                     return message.channel.send(`\:moneybag: Blackjack! You won ${creditAmount * 1.5} credits, <@${message.author.id}>!`);
                 } else if(dealerPoints > 21) {
+                    accounts[message.author.id].balance += creditAmount * 2;
                     return message.channel.send(`\:moneybag: The dealer busted, and you won ${creditAmount} credits, <@${message.author.id}>!`);
                 } else if(dealerPoints > playerPoints) {
                     return message.channel.send(`\:x: The dealer got more points than you and you lost, <@${message.author.id}>!`);
