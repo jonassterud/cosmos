@@ -89,7 +89,7 @@ module.exports = {
                         collector.on('collect', reaction => {
                             someoneReacted = true;
                             if(reaction.emoji.name === emoAns) return message.channel.send(`\:ballot_box_with_check: Correct answer, <@${message.author.id}>!`);
-                            else return message.channel.send(`\:regional_indicator_x: Wrong answer, <@${message.author.id}>!`);
+                            else return message.channel.send(`\:regional_indicator_x: Wrong answer, <@${message.author.id}>! The correct answer was: ${body.results[0].correct_answer}`);
                         });
 
                         collector.on('end', () => {
