@@ -9,30 +9,7 @@ module.exports = {
             return message.channel.send(`\:no_entry: Permission denied!`);
         }
         const client = message.client;
-        if (args == undefined || args.length == 0) {
-            const dirs = fs.readdirSync('./commands/').filter((file) => fs.statSync(`./commands/${file}`).isDirectory());
-            for (const dir of dirs) {
-                const files = fs.readdirSync(`./commands/${dir}`);
-                for (const file of files) {
-                    if (fs.statSync(`./commands/${dir}/${file}`).isDirectory()) {
-                        dirs.push(`${dir}/${file}`);
-                        continue;
-                    }
-                    if (client.commands.has(file.split('.').shift())) {
-                        try {
-                            delete require.cache[require.resolve(`${global.rootPath}/commands/${dir}/${file}`)];
-                            const newProperties = require(`${global.rootPath}/commands/${dir}/${file}`);
-                            client.commands.set(newProperties.name, newProperties);
-                        } catch (e) {
-                            client.logger.error(`Something went wrong trying to reload a file via the reload command!`);
-                            client.logger.error(e);
-                            return message.channel.send(`\:no_entry: Something went wrong`);
-                        }
-                    }
-                }
-            }
-            return message.channel.send(`\:arrows_counterclockwise: Reloaded all commands!`);
-        }
+        const reloadAll = args == undefined || args.length == 0;
         const cmdName = args[0];
         const dirs = fs.readdirSync('./commands/').filter((file) => fs.statSync(`./commands/${file}`).isDirectory());
         for (const dir of dirs) {
@@ -42,23 +19,24 @@ module.exports = {
                     dirs.push(`${dir}/${file}`);
                     continue;
                 }
-                if (file.split('.').shift() == cmdName) {
+                if (reloadAll ? client.commands.has(file.split('.').shift()) : file.split('.').shift() == cmdName) {
                     try {
                         delete require.cache[require.resolve(`${global.rootPath}/commands/${dir}/${file}`)];
                         const newProperties = require(`${global.rootPath}/commands/${dir}/${file}`);
-                        console.log(newProperties.name);
                         client.commands.set(newProperties.name, newProperties);
-                        return message.channel.send(`\:arrows_counterclockwise: Command: ${cmdName} reloaded!`);
+                        if (!reloadAll) {
+                            return message.channel.send(`\:arrows_counterclockwise: Reloaded ${cmdName}!`);
+                        }
                     } catch (e) {
                         client.logger.error(`Something went wrong trying to reload a file via the reload command!`);
                         client.logger.error(e);
-                        return;
+                        return message.channel.send(`\:no_entry: Something went wrong`);
                     }
                 }
             }
         }
-
-        //Couldn't find the specified command
-        return message.channel.send(`\:no_entry: I wasn't able to find the command: "${cmdName}"`);
+        return reloadAll
+            ? message.channel.send(`\:arrows_counterclockwise: Reloaded all commands!`)
+            : message.channel.send(`\:no_entry: I wasn't able to find the command: "${cmdName}"`);
     },
 };
