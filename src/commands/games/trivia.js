@@ -40,7 +40,6 @@ module.exports = {
     args: false,
     usage: '[optional category]',
     async execute(message, args) {
-        unSanitize('someo&#039;e');
         let cat = '';
         if (args != undefined && args.length != 0) {
             triviaCategories?.trivia_categories?.find((obj) => {
