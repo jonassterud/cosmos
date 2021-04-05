@@ -1,4 +1,8 @@
-![Image](https://i.ibb.co/dLp1FSX/Untitled.png)
+<div align="center">
+ <image src="./logo/vector/default-monochrome.svg"/>
+ <br>
+ <a href="https://github.com/jonassterud/cosmos/actions"><img src="https://github.com/jonassterud/cosmos/actions/workflows/main.yml/badge.svg"/></a>
+</div>
 
 ## About
 Cosmos is an open source Discord bot made with Node.js. It mainly focuses on entertainment type commands, but it also supports some administration commands (`ban`, `kick`, `mute`, etc.). Cosmos also supports playing music from YouTube. It can handle both individual videos and playlists (and even live videos!). You can also search for videos trough Cosmos. It also includes a credit system. You can use the credits you earn over time on different minigames (`blackjack`, `coinflip`, `trivia`, etc.). Type `?help` to get started!
