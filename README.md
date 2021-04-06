@@ -2,6 +2,9 @@
  <image src="./logo/vector/default-monochrome.svg"/>
  <br>
  <a href="https://github.com/jonassterud/cosmos/actions"><img src="https://github.com/jonassterud/cosmos/actions/workflows/main.yml/badge.svg"/></a>
+ <a href="https://github.com/jonassterud/cosmos/graphs/contributors"><img src="https://img.shields.io/github/contributors/jonassterud/cosmos.svg?color=informational"/></a>
+ <a href="https://github.com/jonassterud/cosmos/issues"><img src="https://img.shields.io/github/issues/jonassterud/cosmos.svg?color=informational"/></a>
+ <a href="https://github.com/jonassterud/cosmos/blob/master/LICENSE"><img src="https://img.shields.io/github/license/jonassterud/cosmos.svg?color=informational"/></a>
 </div>
 
 ## About
