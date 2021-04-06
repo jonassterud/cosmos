@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  fetch:
+  update_and_deploy:
     runs-on: self-hosted
     steps:
       - name: Pull changes
@@ -18,16 +18,10 @@ jobs:
           git reset --hard
           git clean -fd
           ssh-agent bash -c 'ssh-add ~/.ssh/gh_deploy; git pull'
-  build:
-    runs-on: self-hosted
-    steps:
       - name: Install packages
         run: |
           cd ~/media/docker/cosmos
           yarn install
-  deploy:
-    runs-on: self-hosted
-    steps:
       - name: Recreate container
         run: |
           cd ~/media/docker
