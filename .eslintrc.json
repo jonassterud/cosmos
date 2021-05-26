@@ -23,7 +23,6 @@
                 "catch": {"after": false}
             }
         }],
-        
         "no-undef": 0,
         "no-var": "error",
         "no-eval": "error",
